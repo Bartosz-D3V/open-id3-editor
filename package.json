@@ -1,0 +1,30 @@
+{
+  "name": "open-audio-converter",
+  "version": "1.0.0",
+  "description": "A minimalistic audio converter",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
+    "lint-staged": "lint-staged --config .lintstagedrc"
+  },
+  "repository": "https://github.com/Bartosz-D3V/OpenAudioConverter.git",
+  "author": "Bartosz-D3V",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.0",
+    "husky": "1.0.0-rc.15",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^5.1.1"
+  },
+  "dependencies": {
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.1"
+  }
+}
