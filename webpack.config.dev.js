@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   devtool: 'inline-source-map',
   entry: './app/Index.tsx',
+  mode: 'development',
   output: {
     filename: './bundle.js',
   },
