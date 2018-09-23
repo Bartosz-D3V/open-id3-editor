@@ -1,0 +1,7 @@
+* text=auto whitespace=trailing-space, tabwidth=2
+
+.git* text export-ignore
+*.rc text
+
+*.js eol=lf
+*.ts eol=lf
