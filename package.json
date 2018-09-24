@@ -8,6 +8,7 @@
     "start": "npm-run-all --parallel build:dev electron",
     "electron": "electron .",
     "build:dev": "webpack --env=dev --watch",
+    "lint": "tslint --project tsconfig.json",
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
     "lint-staged": "lint-staged --config .lintstagedrc"
   },
@@ -26,6 +27,9 @@
     "rimraf": "^2.6.2",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^5.1.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "tslint-react": "^3.6.0",
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
