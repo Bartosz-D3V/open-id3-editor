@@ -1,18 +1,26 @@
 // Karma configuration
 // Generated on Tue Sep 25 2018 14:34:02 GMT+0100 (GMT Daylight Time)
 
+const { resolve } = require('path');
 const webpackTestConfig = require('./webpack.config.js')((env = 'test'));
 
 module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: resolve(''),
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
     webpack: webpackTestConfig,
+
+    webpackMiddleware: {
+      quiet: true,
+      stats: {
+        colors: true,
+      },
+    },
 
     // list of files / patterns to load in the browser
     files: ['**/*.spec.tsx', '**/*.spec.ts'],
@@ -35,6 +43,10 @@ module.exports = function(config) {
       'karma-spec-reporter',
       'karma-chrome-launcher',
     ],
+
+    logLevel: config.LOG_INFO,
+
+    failOnEmptyTestSuite: false,
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
