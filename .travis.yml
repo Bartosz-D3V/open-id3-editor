@@ -22,7 +22,6 @@ install:
 script:
   - yarn lint
   - yarn test
-  - yarn build:dev
 
 notifications:
   email:

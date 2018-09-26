@@ -64,7 +64,6 @@
     "only-arrow-functions": true,
     "prefer-const": true,
     "prefer-object-spread": true,
-    "quotemark": [true, "single"],
     "radix": true,
     "restrict-plus-operands": true,
     "semicolon": [true, "always"],
