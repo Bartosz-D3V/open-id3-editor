@@ -8,6 +8,7 @@
     "start": "npm-run-all --parallel build:dev electron",
     "electron": "electron .",
     "build:dev": "webpack --env=dev --watch",
+    "test": "karma start karma.conf.js --single-run",
     "lint": "tslint --project tsconfig.json",
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
     "lint-staged": "lint-staged --config .lintstagedrc"
@@ -43,6 +44,9 @@
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
+    "@types/enzyme": "^3.1.14",
+    "@types/jasmine": "^2.8.8",
+    "@types/karma": "^1.7.6",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "react": "^16.5.2",

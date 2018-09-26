@@ -1,8 +1,10 @@
 const buildConfig = env => {
-  if (env === 'dev' || env === 'prod') {
+  if (env === 'dev' || env === 'test' || env === 'prod') {
     return require('./webpack.config.' + env + '.js');
   } else {
-    throw new ReferenceError('Wrong webpack build parameter. Possible choices: `dev` or `prod`.');
+    throw new ReferenceError(
+      'Wrong webpack build parameter. Possible choices: `dev`, `test`, or `prod`.'
+    );
   }
 };
 

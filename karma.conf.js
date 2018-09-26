@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Tue Sep 25 2018 14:34:02 GMT+0100 (GMT Daylight Time)
 
-const testWebpackConfig = require('./config/webpack.test.js')({ env: 'test' });
+const webpackTestConfig = require('./webpack.config.js')((env = 'test'));
 
 module.exports = function(config) {
   config.set({
@@ -12,11 +12,10 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
+    webpack: webpackTestConfig,
+
     // list of files / patterns to load in the browser
     files: ['**/*.spec.tsx', '**/*.spec.ts'],
-
-    // list of files / patterns to exclude
-    exclude: ['**/*.map.*'],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
