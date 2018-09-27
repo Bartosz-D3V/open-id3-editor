@@ -2,12 +2,11 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
   entry: './app/Index.tsx',
-  mode: 'development',
-  watch: true,
+  mode: 'production',
+  watch: false,
   output: {
-    filename: './bundle.js',
+    filename: './bundle.min.js',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
@@ -16,20 +15,16 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: [
-          { loader: 'ts-loader', options: { happyPackMode: true, transpileOnly: true } },
-          { loader: 'source-map-loader' },
-        ],
+        use: [{ loader: 'ts-loader' }],
         exclude: /node_modules/,
       },
-      { test: /\.js$/, loader: 'source-map-loader' },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
           loader: 'css-loader',
           options: {
-            minimize: false,
             modules: true,
+            minimize: true,
           },
         }),
       },
@@ -47,6 +42,9 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: './index.html',
       filename: './index.html',
+      options: {
+        minify: true,
+      },
     }),
   ],
 };
