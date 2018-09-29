@@ -1,15 +1,21 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './app/Index.tsx',
   mode: 'production',
+  target: 'electron-main',
   watch: false,
   output: {
-    filename: './bundle.min.js',
+    filename: './bundle.js',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+  },
+  node: {
+    __dirname: false,
+    __filename: false,
   },
   module: {
     rules: [
@@ -28,7 +34,13 @@ module.exports = {
           },
         }),
       },
-      { test: /\.html$/, loader: 'html-loader' },
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+        options: {
+          minimize: true,
+        },
+      },
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
@@ -46,5 +58,6 @@ module.exports = {
         minify: true,
       },
     }),
+    new CopyWebpackPlugin([{ from: './package.json', to: './' }]),
   ],
 };
