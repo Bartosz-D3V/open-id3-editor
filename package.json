@@ -2,13 +2,17 @@
   "name": "open-audio-converter",
   "version": "1.0.0",
   "description": "A minimalistic audio converter",
-  "main": "main.js",
+  "main": "./main.js",
   "scripts": {
-    "prestart": "rimraf dist/",
+    "clean": "rimraf dist/",
+    "prestart": "npm run clean",
     "start": "npm-run-all build:dev electron",
     "electron": "electron dist/",
     "build:dev": "webpack --env=dev",
-    "build:prod": "webpack --env=prod",
+    "build:prod": "webpack --env=prod && webpack --config webpack.config.renderer.prod.js",
+    "preprod": "npm run clean",
+    "prod": "npm-run-all build:prod electron-pack",
+    "electron-pack": "electron-builder -w",
     "test": "karma start karma.conf.js --single-run",
     "lint": "tslint --project tsconfig.json",
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
@@ -17,8 +21,22 @@
   "repository": "https://github.com/Bartosz-D3V/OpenAudioConverter.git",
   "author": "Bartosz-D3V",
   "license": "MIT",
+  "homepage": "./",
+  "build": {
+    "appId": "org.open-audio-converter",
+    "files": [
+      "**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "NSIS"
+    }
+  },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.5.2",
     "electron": "^2.0.0",
+    "electron-builder": "^20.28.4",
     "enzyme": "^3.6.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-loader": "^0.5.5",
@@ -42,6 +60,7 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
     "tslint-react": "^3.6.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
