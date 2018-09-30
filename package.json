@@ -12,7 +12,7 @@
     "build:prod": "webpack --env=prod && webpack --config webpack.config.renderer.prod.js",
     "preprod": "npm run clean",
     "prod": "npm-run-all build:prod electron-pack",
-    "electron-pack": "electron-builder -w",
+    "electron-pack": "electron-builder ./ -w",
     "test": "karma start karma.conf.js --single-run",
     "lint": "tslint --project tsconfig.json",
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
@@ -24,11 +24,6 @@
   "homepage": "./",
   "build": {
     "appId": "org.open-audio-converter",
-    "files": [
-      "**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
     "win": {
       "target": "NSIS"
     }

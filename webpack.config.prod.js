@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: './app/Index.tsx',
   mode: 'production',
-  target: 'electron-main',
+  target: 'electron-renderer',
   watch: false,
   output: {
     filename: './bundle.js',

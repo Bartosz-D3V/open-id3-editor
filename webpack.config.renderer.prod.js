@@ -3,7 +3,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
   entry: './main.js',
   mode: 'production',
-  target: 'electron-main',
+  target: 'electron-renderer',
   watch: false,
   output: {
     filename: './main.js',
