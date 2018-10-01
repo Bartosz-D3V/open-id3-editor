@@ -5,6 +5,10 @@ module.exports = {
   mode: 'production',
   target: 'electron-renderer',
   watch: false,
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
   output: {
     filename: './main.js',
   },
