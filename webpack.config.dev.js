@@ -1,10 +1,12 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
   entry: './app/Index.tsx',
   mode: 'development',
+  target: 'electron-main',
   watch: true,
   output: {
     filename: './bundle.js',
@@ -48,5 +50,6 @@ module.exports = {
       template: './index.html',
       filename: './index.html',
     }),
+    new CopyWebpackPlugin([{ from: './package.json', to: './' }, { from: './main.js', to: './' }]),
   ],
 };
