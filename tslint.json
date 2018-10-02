@@ -119,7 +119,7 @@
     "jsdoc-format": true,
     "label-position": true,
     "max-line-length": {
-      "options": [120]
+      "options": [100]
     },
     "new-parens": true,
     "no-arg": true,
@@ -172,7 +172,6 @@
     },
     "trailing-comma": {
       "options": {
-        "multiline": "always",
         "singleline": "never"
       }
     },
