@@ -29,8 +29,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       // add webpack as preprocessor
-      '**/*.tsx': ['sourcemap'],
-      '**/*.ts': ['sourcemap'],
+      '**/*.tsx': ['sourcemap', 'coverage'],
+      '**/*.ts': ['sourcemap', 'coverage'],
       '**/*.spec.tsx': ['webpack', 'sourcemap'],
       '**/*.spec.ts': ['webpack', 'sourcemap'],
     },
@@ -42,6 +42,7 @@ module.exports = function(config) {
       'karma-sourcemap-loader',
       'karma-spec-reporter',
       'karma-chrome-launcher',
+      'karma-coverage',
     ],
 
     logLevel: config.LOG_INFO,
@@ -76,5 +77,12 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
+
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      type: 'html',
+      dir: 'coverage/',
+    },
   });
 };
