@@ -6,12 +6,12 @@
   "scripts": {
     "clean": "rimraf dist/",
     "prestart": "npm run clean",
-    "start": "npm run build:dev & npm run electron-run",
-    "build:dev": "webpack --env=dev",
-    "build:prod": "webpack --env=prod & webpack --config webpack.config.renderer.prod.js",
+    "start": "concurrently \"npm run build:dev\" \"npm run electron-run\"",
+    "build:dev": "webpack --hot --env=dev",
+    "build:prod": "concurrently \"webpack --env=prod\" \"webpack --config webpack.config.renderer.prod.js\"",
     "preprod": "npm run clean",
     "prod": "npm run build:prod && npm run electron-pack",
-    "electron-run": "electron ./dist",
+    "electron-run": "sleep 10s && electron ./dist",
     "electron-pack": "electron-builder --projectDir=./dist -wl --x64 --publish=never",
     "lint": "tslint --project tsconfig.json",
     "postlint": "tslint ./*.js",
@@ -29,6 +29,7 @@
     }
   },
   "devDependencies": {
+    "concurrently": "^4.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "electron": "^2.0.0",
     "electron-builder": "^20.28.4",
