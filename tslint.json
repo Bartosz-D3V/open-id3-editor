@@ -67,6 +67,7 @@
     "radix": true,
     "restrict-plus-operands": true,
     "semicolon": [true, "always"],
+    "prefer-array-literal": false,
     "trailing-comma": [
       true,
       {
@@ -99,10 +100,17 @@
       }
     ],
     "unified-signatures": true,
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
     "whitespace": [true, "check-branch", "check-operator", "check-separator", "check-type"],
     "use-isnan": true,
-    "no-var-requires": true
+    "no-var-requires": true,
+    "import-name": false
   },
   "jsRules": {
     "align": {
