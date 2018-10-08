@@ -17,7 +17,7 @@
     "prelint": "npm run stylelint",
     "lint": "tslint --project tsconfig.json",
     "postlint": "tslint ./*.js",
-    "test": "jest --coverage",
+    "test": "jest --colors --coverage --detectLeaks",
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
     "lint-staged": "lint-staged --config .lintstagedrc"
   },
