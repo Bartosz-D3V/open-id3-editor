@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Hello } from './components/Hello';
+import { App } from './components/App';
 
 const appElement: HTMLElement = document.getElementById('app');
 
 if (appElement) {
-  ReactDOM.render(<Hello compiler="TypeScript" framework="React" />, appElement);
+  ReactDOM.render(<App />, appElement);
 } else {
   throw new ReferenceError('Expected element does not exist');
 }
