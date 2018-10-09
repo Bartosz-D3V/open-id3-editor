@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import ReactDropzone from 'react-dropzone';
-
-declare type ImageFile = ReactDropzone.ImageFile;
+import ReactDropzone, { ImageFile } from 'react-dropzone';
 
 const DropzoneWrapper = styled.div`
   height: 400px;
