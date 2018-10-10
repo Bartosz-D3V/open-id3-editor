@@ -6,7 +6,9 @@
     "module": "es2015",
     "target": "es5",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": ["./app/**/*"]
+  "include": ["./app/**/*"],
+  "exclude": ["node_modules/"]
 }

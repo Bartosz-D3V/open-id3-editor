@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
+import { DragAndDrop } from './DragAndDrop';
 
-describe('App component', () => {
+describe('DragAndDrop component', () => {
   it('should render', () => {
     const div: HTMLElement = document.createElement('div');
-    ReactDOM.render(<App />, div);
+    ReactDOM.render(<DragAndDrop />, div);
     ReactDOM.unmountComponentAtNode(div);
 
-    expect(div.getElementsByTagName('App')).toBeTruthy();
+    expect(div.getElementsByTagName('DragAndDrop')).toBeTruthy();
   });
 });

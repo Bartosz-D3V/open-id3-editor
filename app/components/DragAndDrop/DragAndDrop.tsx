@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as ReactDropzone from 'react-dropzone';
+import ReactDropzone, { ImageFile } from 'react-dropzone';
 
 const DropzoneWrapper = styled.div`
   height: 400px;
@@ -21,10 +21,7 @@ const Guidance = styled.h2`
 `;
 
 export class DragAndDrop extends React.Component<{}> {
-  public static onDrop(
-    acceptedFiles: Array<ReactDropzone.ImageFile>,
-    rejectedFiles: Array<ReactDropzone.ImageFile>
-  ): void {
+  public static onDrop(acceptedFiles: Array<ImageFile>, rejectedFiles: Array<ImageFile>): void {
     return;
   }
 
