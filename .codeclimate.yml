@@ -26,6 +26,7 @@ exclude_paths:
   - 'dist/'
 exclude_patterns:
   - '**/*.test.tsx'
+  - '**/*.test.ts'
   - '**/*.test.js'
   - '**/*.d.ts'
   - '**/*.conf.js'
