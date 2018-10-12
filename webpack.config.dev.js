@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
-  entry: './app/Index.tsx',
+  entry: './app/index.tsx',
   mode: 'development',
   target: 'electron-main',
   watch: true,
