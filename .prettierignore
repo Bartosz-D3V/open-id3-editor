@@ -1,3 +1,4 @@
-*.map*
-coverage
-dist
+*.map.*
+coverage/
+dist/
+node_modules/

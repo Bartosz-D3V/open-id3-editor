@@ -15,4 +15,22 @@ export default class {
       };
     });
   };
+
+  public static blobToDataURL = async (blob: Blob): Promise<any> => {
+    const fileReader: FileReader = new FileReader();
+    let dataURL;
+    fileReader.readAsDataURL(blob);
+
+    return new Promise<ArrayBuffer>((resolve: Function, reject: Function) => {
+      fileReader.onload = () => {
+        dataURL = <ArrayBuffer>fileReader.result;
+        resolve(dataURL);
+      };
+
+      fileReader.onerror = () => {
+        fileReader.abort();
+        reject(new ReferenceError('Cannot read the file'));
+      };
+    });
+  };
 }
