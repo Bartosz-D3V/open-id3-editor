@@ -10,7 +10,7 @@ describe('blobConverter class', () => {
       });
       const stringDecoder: NodeStringDecoder = new StringDecoder();
       const actualArrayBuffer: ArrayBuffer = await BlobConverter.blobToArrayBuffer(mockBlob);
-      const actualText: string = stringDecoder.write(new Buffer(actualArrayBuffer));
+      const actualText: string = stringDecoder.write(Buffer.from(actualArrayBuffer));
 
       expect(actualText).toBeDefined();
       expect(actualText).toEqual(mockText);
