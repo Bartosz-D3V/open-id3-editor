@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './app/Index.tsx',
+  entry: './app/index.tsx',
   mode: 'production',
   target: 'electron-renderer',
   watch: false,
