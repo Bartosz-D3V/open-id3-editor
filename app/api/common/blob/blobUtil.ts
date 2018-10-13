@@ -1,4 +1,4 @@
-export default class BlobConverter {
+export default class BlobUtil {
   private static cannotReadFileErrorMsg = 'Cannot read the file';
   private static incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
 
@@ -14,9 +14,34 @@ export default class BlobConverter {
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError(BlobConverter.cannotReadFileErrorMsg));
+        reject(new ReferenceError(BlobUtil.cannotReadFileErrorMsg));
       };
     });
+  };
+
+  public static blobToDataView = async (blob: Blob): Promise<DataView> => {
+    const fileReader: FileReader = new FileReader();
+    let dataView: DataView;
+    fileReader.readAsArrayBuffer(blob);
+    return new Promise<DataView>((resolve: Function, reject: Function) => {
+      fileReader.onload = () => {
+        dataView = new DataView(<ArrayBuffer>fileReader.result);
+        resolve(dataView);
+      };
+
+      fileReader.onerror = () => {
+        fileReader.abort();
+        reject(new ReferenceError(BlobUtil.cannotReadFileErrorMsg));
+      };
+    });
+  };
+
+  public static dataViewToString = (dataView: DataView): string => {
+    let data = '';
+    for (let i = 0; i < dataView.byteLength; i++) {
+      data += dataView.getInt8(i);
+    }
+    return data;
   };
 
   public static blobToDataURL = async (blob: Blob): Promise<string> => {
@@ -32,7 +57,7 @@ export default class BlobConverter {
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError(BlobConverter.cannotReadFileErrorMsg));
+        reject(new ReferenceError(BlobUtil.cannotReadFileErrorMsg));
       };
     });
   };
@@ -43,7 +68,7 @@ export default class BlobConverter {
     try {
       decodedData = window.atob(dataNoMIME);
     } catch (e) {
-      throw new ReferenceError(BlobConverter.incorrectBase64ErrorMsg);
+      throw new ReferenceError(BlobUtil.incorrectBase64ErrorMsg);
     }
     return decodedData;
   };
