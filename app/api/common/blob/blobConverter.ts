@@ -1,4 +1,6 @@
-export default class {
+export default class BlobConverter {
+  private static errorMsg = 'Cannot read the file';
+
   public static blobToArrayBuffer = async (blob: Blob): Promise<ArrayBuffer> => {
     const fileReader: FileReader = new FileReader();
     let arrayBuffer: ArrayBuffer;
@@ -11,25 +13,25 @@ export default class {
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError('Cannot read the file'));
+        reject(new ReferenceError(BlobConverter.errorMsg));
       };
     });
   };
 
-  public static blobToDataURL = async (blob: Blob): Promise<any> => {
+  public static blobToDataURL = async (blob: Blob): Promise<string> => {
     const fileReader: FileReader = new FileReader();
-    let dataURL;
+    let dataURL: string;
     fileReader.readAsDataURL(blob);
 
-    return new Promise<ArrayBuffer>((resolve: Function, reject: Function) => {
+    return new Promise<string>((resolve: Function, reject: Function) => {
       fileReader.onload = () => {
-        dataURL = <ArrayBuffer>fileReader.result;
+        dataURL = <string>fileReader.result;
         resolve(dataURL);
       };
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError('Cannot read the file'));
+        reject(new ReferenceError(BlobConverter.errorMsg));
       };
     });
   };

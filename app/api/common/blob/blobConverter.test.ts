@@ -16,4 +16,19 @@ describe('blobConverter class', () => {
       expect(actualText).toEqual(mockText);
     });
   });
+
+  describe('blobToDataURL function', async () => {
+    it('should convert blob to data URL', async () => {
+      const mockDataURL = 'data:text/plain;charset=undefined,Hello%2C%20World!';
+      const mockBlob: Blob = new Blob(['Hello, World!'], {
+        type: 'text/plain',
+      });
+      const stringDecoder: NodeStringDecoder = new StringDecoder();
+      const actualDataURL: string = await BlobConverter.blobToDataURL(mockBlob);
+      const actualText: string = stringDecoder.write(Buffer.from(actualDataURL));
+
+      expect(actualText).toBeDefined();
+      expect(actualText).toEqual(mockDataURL);
+    });
+  });
 });
