@@ -45,14 +45,15 @@ describe('blobConverter class', () => {
 
   describe('dataViewToString function', async () => {
     it('should convert dataView to string', async () => {
-      const mockBlob: Blob = new Blob(['Hello, World!'], {
+      const mockText = 'Hello, World!';
+      const mockBlob: Blob = new Blob([mockText], {
         type: 'text/plain',
       });
       const dataView: DataView = await BlobUtil.blobToDataView(mockBlob);
-      const actualString: string = BlobUtil.dataViewToString(dataView);
+      const actualString: string = BlobUtil.dataViewToString(dataView, 0, dataView.byteLength);
 
       expect(actualString).toBeDefined();
-      expect(actualString).toEqual('7210110810811144328711111410810033');
+      expect(actualString).toEqual(mockText);
     });
   });
 

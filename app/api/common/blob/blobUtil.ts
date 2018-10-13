@@ -36,10 +36,13 @@ export default class BlobUtil {
     });
   };
 
-  public static dataViewToString = (dataView: DataView): string => {
+  public static dataViewToString = (dataView: DataView, offset: number, length: number): string => {
     let data = '';
-    for (let i = 0; i < dataView.byteLength; i++) {
-      data += dataView.getInt8(i);
+    for (let i = offset; i < offset + length; i++) {
+      const charCode: number = dataView.getInt8(i);
+      if (charCode > 31) {
+        data += String.fromCharCode(charCode);
+      }
     }
     return data;
   };
