@@ -1,5 +1,6 @@
 export default class BlobConverter {
-  private static errorMsg = 'Cannot read the file';
+  private static cannotReadFileErrorMsg = 'Cannot read the file';
+  private static incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
 
   public static blobToArrayBuffer = async (blob: Blob): Promise<ArrayBuffer> => {
     const fileReader: FileReader = new FileReader();
@@ -13,7 +14,7 @@ export default class BlobConverter {
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError(BlobConverter.errorMsg));
+        reject(new ReferenceError(BlobConverter.cannotReadFileErrorMsg));
       };
     });
   };
@@ -31,8 +32,19 @@ export default class BlobConverter {
 
       fileReader.onerror = () => {
         fileReader.abort();
-        reject(new ReferenceError(BlobConverter.errorMsg));
+        reject(new ReferenceError(BlobConverter.cannotReadFileErrorMsg));
       };
     });
+  };
+
+  public static decodeDataURL = (dataURL: string): string => {
+    const dataNoMIME: string = dataURL.split(',')[1];
+    let decodedData: string;
+    try {
+      decodedData = window.atob(dataNoMIME);
+    } catch (e) {
+      throw new ReferenceError(BlobConverter.incorrectBase64ErrorMsg);
+    }
+    return decodedData;
   };
 }
