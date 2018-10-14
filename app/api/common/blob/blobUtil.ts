@@ -1,6 +1,6 @@
 export default class BlobUtil {
-  private static cannotReadFileErrorMsg = 'Cannot read the file';
-  private static incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
+  private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
+  private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
 
   public static blobToArrayBuffer = async (blob: Blob): Promise<ArrayBuffer> => {
     const fileReader: FileReader = new FileReader();
