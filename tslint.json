@@ -110,7 +110,8 @@
     "whitespace": [true, "check-branch", "check-operator", "check-separator", "check-type"],
     "use-isnan": true,
     "no-var-requires": true,
-    "import-name": false
+    "import-name": false,
+    "no-increment-decrement": false
   },
   "jsRules": {
     "align": {
