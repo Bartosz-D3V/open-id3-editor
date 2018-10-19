@@ -75,4 +75,17 @@ export default class BlobUtil {
     }
     return decodedData;
   };
+
+  public static createArrayBuffer(text: string): ArrayBuffer {
+    const buffer: ArrayBuffer = new ArrayBuffer(text.length * 2);
+    const bufView: Uint16Array = new Uint16Array(buffer);
+    for (let i = 0, strLen = text.length; i < strLen; i++) {
+      bufView[i] = text.charCodeAt(i);
+    }
+    return buffer;
+  }
+
+  public static decodeArrayBuffer(buffer: ArrayBuffer): string {
+    return String.fromCharCode.apply(null, new Uint16Array(buffer));
+  }
 }
