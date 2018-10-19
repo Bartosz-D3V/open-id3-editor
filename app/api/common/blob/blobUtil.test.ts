@@ -76,4 +76,24 @@ describe('blobConverter class', () => {
       expect(actualData).toThrowError('Incorrect Base64 encoding');
     });
   });
+
+  describe('createArrayBuffer function', () => {
+    it('should create array buffer', () => {
+      const mockText = 'Example string to encode';
+      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText);
+
+      expect(actualData).toBeDefined();
+      expect(String.fromCharCode.apply(null, new Uint16Array(actualData))).toEqual(mockText);
+    });
+
+    it('should create array buffer and fill to specified length', () => {
+      const mockText = 'Example string to encode';
+      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText, 40);
+
+      expect(actualData).toBeDefined();
+      expect(String.fromCharCode.apply(null, new Uint16Array(actualData))).toEqual(
+        mockText + ' '.repeat(5)
+      );
+    });
+  });
 });
