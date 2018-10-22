@@ -88,12 +88,12 @@ describe('blobConverter class', () => {
 
     it('should create array buffer and fill to specified length', () => {
       const mockText = 'Example string to encode';
-      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText, 40);
+      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText, 58);
+      const actualText: string = String.fromCharCode.apply(null, new Uint16Array(actualData));
 
       expect(actualData).toBeDefined();
-      expect(String.fromCharCode.apply(null, new Uint16Array(actualData))).toEqual(
-        mockText + ' '.repeat(5)
-      );
+      expect(actualData.byteLength).toEqual(58);
+      expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(5));
     });
   });
 });

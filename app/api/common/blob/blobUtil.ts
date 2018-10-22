@@ -1,3 +1,5 @@
+import { AssertionError } from 'assert';
+
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
   private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
@@ -76,16 +78,16 @@ export default class BlobUtil {
     return decodedData;
   };
 
-  public static createArrayBuffer(text: string, byteLenght?: number): ArrayBuffer {
-    const buffer: ArrayBuffer = new ArrayBuffer(text.length * 2);
+  public static createArrayBuffer(text: string, bufferSize?: number): ArrayBuffer {
+    if (bufferSize && text.length * 2 > bufferSize) {
+      throw new AssertionError({
+        message: 'Buffer size cannot be less than size of text',
+      });
+    }
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || text.length * 2);
     const bufView: Uint16Array = new Uint16Array(buffer);
-    const bufLength: number = bufView.length;
     for (let i = 0, strLen = text.length; i < strLen; i++) {
       bufView[i] = text.charCodeAt(i);
-    }
-    console.log(bufLength);
-    if (byteLenght && bufLength < byteLenght) {
-      bufView.fill(0x0, bufLength, bufLength + byteLenght);
     }
     return buffer;
   }
