@@ -35,4 +35,6 @@ describe('BufferUtil class', () => {
       expect(BufferUtil.decodeArrayBuffer(actualData)).toEqual(mockText);
     });
   });
+
+  describe('concatArrayBuffers function', () => {});
 });

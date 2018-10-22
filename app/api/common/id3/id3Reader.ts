@@ -1,7 +1,7 @@
 import ID3 from './id3';
 import BlobUtil from '../blob/blobUtil';
 
-export class Id3Reader {
+export default class Id3Reader {
   public static readID3(dataView: DataView): ID3 {
     const title: string = BlobUtil.dataViewToString(dataView, 3, 30);
     const artist: string = BlobUtil.dataViewToString(dataView, 33, 30);

@@ -3,7 +3,8 @@ import { AssertionError } from 'assert';
 export default class BufferUtil {
   private static readonly tooSmallArrayBufferSize = 'Buffer size cannot be less than size of text';
 
-  public static createArrayBuffer(text: string, bufferSize?: number): ArrayBuffer {
+  public static createArrayBuffer<T>(data: T, bufferSize?: number): ArrayBuffer {
+    const text = data.toString();
     if (bufferSize && text.length * 2 > bufferSize) {
       throw new AssertionError({
         message: BufferUtil.tooSmallArrayBufferSize,
@@ -19,5 +20,19 @@ export default class BufferUtil {
 
   public static decodeArrayBuffer(buffer: ArrayBuffer): string {
     return String.fromCharCode.apply(null, new Uint16Array(buffer));
+  }
+
+  public static concatArrayBuffers(...arrayBuffers: Array<ArrayBuffer>): ArrayBuffer {
+    const totalSize: number = arrayBuffers.reduce(
+      (arrBuffPrev: ArrayBuffer, arrBuffNext: ArrayBuffer) => {
+        return new ArrayBuffer(arrBuffPrev.byteLength + arrBuffNext.byteLength);
+      }
+    ).byteLength;
+    const combinedBuffer: ArrayBuffer = new ArrayBuffer(totalSize);
+    const combinedUint8 = new Uint8Array(combinedBuffer);
+    for (const arrBuff of arrayBuffers) {
+      combinedUint8.set(new Uint8Array(arrBuff), combinedUint8.length);
+    }
+    return combinedBuffer;
   }
 }
