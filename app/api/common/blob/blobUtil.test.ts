@@ -68,32 +68,12 @@ describe('blobConverter class', () => {
       expect(actualDataURL).toEqual(expectedDataURL);
     });
 
-    it('should throw error if contains corrupted Base64 data', () => {
+    it('should throw an error if contains corrupted Base64 data', () => {
       const encodedDataURL = 'data:text/plain;charset=utf-8;base64,S%VsbG8sIFdvcmxkIQ==';
 
       const actualData = () => BlobUtil.decodeDataURL(encodedDataURL);
 
       expect(actualData).toThrowError('Incorrect Base64 encoding');
-    });
-  });
-
-  describe('createArrayBuffer function', () => {
-    it('should create array buffer', () => {
-      const mockText = 'Example string to encode';
-      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText);
-
-      expect(actualData).toBeDefined();
-      expect(String.fromCharCode.apply(null, new Uint16Array(actualData))).toEqual(mockText);
-    });
-
-    it('should create array buffer and fill to specified length', () => {
-      const mockText = 'Example string to encode';
-      const actualData: ArrayBuffer = BlobUtil.createArrayBuffer(mockText, 58);
-      const actualText: string = String.fromCharCode.apply(null, new Uint16Array(actualData));
-
-      expect(actualData).toBeDefined();
-      expect(actualData.byteLength).toEqual(58);
-      expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(5));
     });
   });
 });
