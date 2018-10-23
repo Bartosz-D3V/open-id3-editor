@@ -77,4 +77,6 @@ export default class BlobUtil {
     }
     return decodedData;
   };
+
+  public static concatDataView = (...dataViews: Array<DataView>): DataView => {};
 }
