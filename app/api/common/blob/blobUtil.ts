@@ -1,5 +1,3 @@
-import { AssertionError } from 'assert';
-
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
   private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
@@ -77,6 +75,4 @@ export default class BlobUtil {
     }
     return decodedData;
   };
-
-  public static concatDataView = (...dataViews: Array<DataView>): DataView => {};
 }
