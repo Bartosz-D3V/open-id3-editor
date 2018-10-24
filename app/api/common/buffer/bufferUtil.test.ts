@@ -35,4 +35,24 @@ describe('BufferUtil class', () => {
       expect(BufferUtil.decodeArrayBuffer(actualData)).toEqual(mockText);
     });
   });
+
+  describe('concatArrayBuffers function', () => {
+    it('should return a combined arrayBuffer', () => {
+      const arrBuff1: ArrayBuffer = BufferUtil.createArrayBuffer('Test 1', 14);
+      const arrBuff2: ArrayBuffer = BufferUtil.createArrayBuffer('Test 2', 14);
+      const arrBuff3: ArrayBuffer = BufferUtil.createArrayBuffer('Test 3', 14);
+      const combinedUint: Uint16Array = <Uint16Array>(
+        BufferUtil.concatTypedArrays(
+          new Uint16Array(arrBuff1),
+          new Uint16Array(arrBuff2),
+          new Uint16Array(arrBuff3)
+        )
+      );
+
+      expect(combinedUint.byteLength).toEqual(84);
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 1');
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 2');
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 3');
+    });
+  });
 });

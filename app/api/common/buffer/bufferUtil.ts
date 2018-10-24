@@ -21,4 +21,21 @@ export default class BufferUtil {
   public static decodeArrayBuffer(buffer: ArrayBuffer): string {
     return String.fromCharCode.apply(null, new Uint16Array(buffer));
   }
+
+  public static decodeTypedArray(typedArr: TypedArray): string {
+    return String.fromCharCode.apply(null, typedArr);
+  }
+
+  public static concatTypedArrays(...typedArrays: Array<TypedArray>): TypedArray {
+    const combinedTypedArrSize: number = typedArrays
+      .map((val: TypedArray) => val.byteLength)
+      .reduce((prev: number, next: number) => prev + next, 0);
+    const combinedTypedArr: TypedArray = new Uint16Array(combinedTypedArrSize);
+    let offset = 0;
+    typedArrays.forEach((val: TypedArray) => {
+      combinedTypedArr.set(new Uint16Array(val), offset);
+      offset += val.byteLength;
+    });
+    return combinedTypedArr;
+  }
 }
