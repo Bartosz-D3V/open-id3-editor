@@ -50,7 +50,9 @@ describe('BufferUtil class', () => {
       );
 
       expect(combinedUint.byteLength).toEqual(84);
-      expect(BufferUtil.decodeTypedArray(combinedUint)).toEqual('');
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 1');
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 2');
+      expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 3');
     });
   });
 });
