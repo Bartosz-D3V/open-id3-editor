@@ -27,15 +27,25 @@ export default class BufferUtil {
   }
 
   public static concatTypedArrays(...typedArrays: Array<TypedArray>): TypedArray {
-    const combinedTypedArrSize: number = typedArrays
-      .map((val: TypedArray) => val.byteLength)
-      .reduce((prev: number, next: number) => prev + next, 0);
-    const combinedTypedArr: TypedArray = new Uint16Array(combinedTypedArrSize);
+    const typedArrSize: number = BufferUtil.getTypedArrSize(...typedArrays);
+    const combinedTypedArr: TypedArray = new Uint16Array(typedArrSize);
     let offset = 0;
     typedArrays.forEach((val: TypedArray) => {
       combinedTypedArr.set(new Uint16Array(val), offset);
       offset += val.byteLength;
     });
     return combinedTypedArr;
+  }
+
+  public static getBufferSize(...arrBuffers: Array<ArrayBuffer>): number {
+    return arrBuffers
+      .map((val: ArrayBuffer) => val.byteLength)
+      .reduce((prev: number, next: number) => prev + next, 0);
+  }
+
+  public static getTypedArrSize(...typedArrays: Array<TypedArray>): number {
+    return typedArrays
+      .map((val: TypedArray) => val.byteLength)
+      .reduce((prev: number, next: number) => prev + next, 0);
   }
 }

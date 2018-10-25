@@ -1,3 +1,5 @@
+import BufferUtil from '../buffer/bufferUtil';
+
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
   private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
@@ -45,6 +47,21 @@ export default class BlobUtil {
       }
     }
     return data;
+  };
+
+  public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
+    const buffSize: number = BufferUtil.getBufferSize(
+      ...dataViews.map((val: DataView) => val.buffer)
+    );
+    const buffer = new ArrayBuffer(buffSize);
+    const typedArr: TypedArray = new Uint8Array(buffer);
+    const dataView: DataView = new DataView(buffer);
+    let offset = 0;
+    dataViews.map((val: DataView) => val.buffer).forEach((val: ArrayBuffer) => {
+      typedArr.set(new Uint16Array(val), offset);
+      offset += val.byteLength;
+    });
+    return dataView;
   };
 
   public static blobToDataURL = async (blob: Blob): Promise<string> => {
