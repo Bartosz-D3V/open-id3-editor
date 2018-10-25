@@ -1,4 +1,5 @@
 import BufferUtil from './bufferUtil';
+import { O_TRUNC } from 'constants';
 
 describe('BufferUtil class', () => {
   describe('createArrayBuffer function', () => {
@@ -53,6 +54,24 @@ describe('BufferUtil class', () => {
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 1');
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 2');
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 3');
+    });
+  });
+
+  describe('getBufferSize function', () => {
+    it('should return total size of the ArrayBuffers', () => {
+      const buff1: ArrayBuffer = new ArrayBuffer(20);
+      const buff2: ArrayBuffer = new ArrayBuffer(25);
+
+      expect(BufferUtil.getBufferSize(buff1, buff2)).toEqual(45);
+    });
+  });
+
+  describe('getTypedArrSize function', () => {
+    it('should return total size of the TypedArray', () => {
+      const arr1: Uint8Array = new Uint8Array(20);
+      const arr2: Uint8Array = new Uint8Array(25);
+
+      expect(BufferUtil.getTypedArrSize(arr1, arr2)).toEqual(45);
     });
   });
 });

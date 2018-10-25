@@ -1,5 +1,6 @@
 import BlobUtil from './blobUtil';
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
+import BufferUtil from '../buffer/bufferUtil';
 
 describe('blobConverter class', () => {
   describe('blobToArrayBuffer function', () => {
@@ -54,6 +55,20 @@ describe('blobConverter class', () => {
 
       expect(actualString).toBeDefined();
       expect(actualString).toEqual(mockText);
+    });
+  });
+
+  describe('concatDataViews function', () => {
+    it('should concatenate array of DataViews', () => {
+      const buff1: ArrayBuffer = BufferUtil.createArrayBuffer('Test 1');
+      const dataView1: DataView = new DataView(buff1);
+      const buff2: ArrayBuffer = BufferUtil.createArrayBuffer('Test 2');
+      const dataView2: DataView = new DataView(buff2);
+
+      const concatDataView = BlobUtil.concatDataViews(dataView1, dataView2);
+      expect(concatDataView.byteLength).toEqual(24);
+      expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 1');
+      expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 2');
     });
   });
 
