@@ -6,7 +6,7 @@ declare type TypedArray =
   | Int8Array
   | Uint8Array
   | Int16Array
-  | Uint16Array
+  | Uint8Array
   | Int32Array
   | Uint32Array
   | Uint8ClampedArray

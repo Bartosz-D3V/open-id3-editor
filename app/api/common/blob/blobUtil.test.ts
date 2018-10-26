@@ -66,7 +66,7 @@ describe('blobConverter class', () => {
       const dataView2: DataView = new DataView(buff2);
 
       const concatDataView = BlobUtil.concatDataViews(dataView1, dataView2);
-      expect(concatDataView.byteLength).toEqual(24);
+      expect(concatDataView.byteLength).toEqual(12);
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 1');
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 2');
     });
