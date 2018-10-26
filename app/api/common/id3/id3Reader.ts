@@ -9,8 +9,7 @@ export default class Id3Reader {
     const year: number = Number.parseInt(BlobUtil.dataViewToString(dataView, 93, 4), 10);
     const comment: string = BlobUtil.dataViewToString(dataView, 97, 28);
     const zeroByte: boolean = !!BlobUtil.dataViewToString(dataView, 125, 1);
-    const track: number = Number.parseInt(BlobUtil.dataViewToString(dataView, 126, 1), 10);
-    console.log(BlobUtil.dataViewToString(dataView, 126, 1));
+    const track: string = BlobUtil.dataViewToString(dataView, 126, 1);
     const genre: number = Number.parseInt(BlobUtil.dataViewToString(dataView, 127, 1), 10);
     return new ID3(title, artist, album, year, comment, zeroByte, track, genre);
   }

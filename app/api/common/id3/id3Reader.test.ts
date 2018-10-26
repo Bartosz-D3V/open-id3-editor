@@ -13,7 +13,7 @@ describe('id3Reader', () => {
       const year: DataView = new DataView(BufferUtil.createArrayBuffer(1997, 4));
       const comment: DataView = new DataView(BufferUtil.createArrayBuffer('Example Comment', 28));
       const zeroByte: DataView = new DataView(BufferUtil.createArrayBuffer(1, 1));
-      const track: DataView = new DataView(BufferUtil.createArrayBuffer(12, 1));
+      const track: DataView = new DataView(BufferUtil.createArrayBuffer('12', 1));
       const genre: DataView = new DataView(BufferUtil.createArrayBuffer(7, 1));
       const id3DataView: DataView = BlobUtil.concatDataViews(
         header,
@@ -35,7 +35,7 @@ describe('id3Reader', () => {
       expect(id3.year).toEqual(1997);
       expect(id3.comment).toContain('Example Comment');
       expect(id3.zeroByte).toBeTruthy();
-      expect(id3.track).toEqual(12);
+      expect(id3.track).toEqual('12');
       expect(id3.genre).toEqual(7);
     });
   });

@@ -6,7 +6,7 @@ export default class {
   public year: number;
   public comment: string;
   public zeroByte: boolean;
-  public track: number;
+  public track: string;
   public genre: number;
 
   constructor(
@@ -16,7 +16,7 @@ export default class {
     year: number,
     comment: string,
     zeroByte: boolean,
-    track: number,
+    track: string,
     genre: number
   ) {
     this.title = title;
