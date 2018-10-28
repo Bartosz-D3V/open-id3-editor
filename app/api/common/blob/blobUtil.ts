@@ -1,6 +1,8 @@
+import BufferUtil from '../buffer/bufferUtil';
+
 export default class BlobUtil {
-  private static cannotReadFileErrorMsg = 'Cannot read the file';
-  private static incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
+  private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
+  private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
 
   public static blobToArrayBuffer = async (blob: Blob): Promise<ArrayBuffer> => {
     const fileReader: FileReader = new FileReader();
@@ -45,6 +47,24 @@ export default class BlobUtil {
       }
     }
     return data;
+  };
+
+  public static dataViewToNum = (dataView: DataView, offset: number): number =>
+    dataView.getInt8(offset);
+
+  public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
+    const buffSize: number = BufferUtil.getBufferSize(
+      ...dataViews.map((val: DataView) => val.buffer)
+    );
+    const buffer = new ArrayBuffer(buffSize);
+    const typedArr: TypedArray = new Uint8Array(buffer);
+    const dataView: DataView = new DataView(buffer);
+    let offset = 0;
+    dataViews.map((val: DataView) => val.buffer).forEach((val: ArrayBuffer) => {
+      typedArr.set(new Uint8Array(val), offset);
+      offset += val.byteLength;
+    });
+    return dataView;
   };
 
   public static blobToDataURL = async (blob: Blob): Promise<string> => {
