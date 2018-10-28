@@ -3,7 +3,7 @@ import { O_TRUNC } from 'constants';
 
 describe('BufferUtil class', () => {
   describe('createArrayBuffer function', () => {
-    it('should create array buffer', () => {
+    it('should create array buffer from string', () => {
       const mockText = 'Example string to encode';
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText);
 
@@ -11,7 +11,7 @@ describe('BufferUtil class', () => {
       expect(String.fromCharCode.apply(null, new Uint8Array(actualData))).toEqual(mockText);
     });
 
-    it('should create array buffer and fill to specified length', () => {
+    it('should create array buffer from string and fill to specified length', () => {
       const mockText = 'Example string to encode';
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText, 36);
       const actualText: string = String.fromCharCode.apply(null, new Uint8Array(actualData));
@@ -19,6 +19,15 @@ describe('BufferUtil class', () => {
       expect(actualData).toBeDefined();
       expect(actualData.byteLength).toEqual(36);
       expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(12));
+    });
+
+    it('should create array buffer from number and fill to specified length', () => {
+      const mockNumber = 100;
+      const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockNumber);
+      const actualNumber: number = BufferUtil.decodeArrayBufferFromNum(actualData);
+
+      expect(actualData).toBeDefined();
+      expect(actualNumber).toEqual(100);
     });
   });
 

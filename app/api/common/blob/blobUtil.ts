@@ -49,6 +49,9 @@ export default class BlobUtil {
     return data;
   };
 
+  public static dataViewToNum = (dataView: DataView, offset: number): number =>
+    dataView.getInt8(offset);
+
   public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
     const buffSize: number = BufferUtil.getBufferSize(
       ...dataViews.map((val: DataView) => val.buffer)

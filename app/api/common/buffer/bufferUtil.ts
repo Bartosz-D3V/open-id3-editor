@@ -1,12 +1,30 @@
 export default class BufferUtil {
-  private static readonly tooSmallArrayBufferSize = 'Buffer size cannot be less than size of text';
-
   public static createArrayBuffer<T>(data: T, bufferSize?: number): ArrayBuffer {
-    const text = data.toString();
+    switch (typeof data) {
+      case 'string':
+        return BufferUtil.createArrayBufferFromString(data, bufferSize);
+      case 'number':
+        return BufferUtil.createArrayBufferFromNum(data, bufferSize);
+    }
+  }
+
+  private static createArrayBufferFromString(text: string, bufferSize?: number): ArrayBuffer {
     const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || text.length);
     const bufView: Uint8Array = new Uint8Array(buffer);
     for (let i = 0, strLen = text.length; i < strLen; i++) {
       bufView[i] = text.charCodeAt(i);
+    }
+    return buffer;
+  }
+
+  private static createArrayBufferFromNum(num: number, bufferSize?: number): ArrayBuffer {
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || 8);
+    const bufView: Uint8Array = new Uint8Array(buffer);
+    let tmpNum = num;
+    for (let i = 0; i < bufView.length; i++) {
+      const byte = tmpNum & 0xff;
+      bufView[i] = byte;
+      tmpNum = (num - byte) / 256;
     }
     return buffer;
   }
@@ -17,6 +35,16 @@ export default class BufferUtil {
 
   public static decodeTypedArray(typedArr: TypedArray): string {
     return String.fromCharCode.apply(null, typedArr);
+  }
+
+  public static decodeArrayBufferFromNum(buffer: ArrayBuffer): number {
+    const bufView: Uint8Array = new Uint8Array(buffer);
+    let value = 0;
+    for (let i = bufView.length - 1; i >= 0; i--) {
+      value = value * 256 + bufView[i];
+    }
+
+    return value;
   }
 
   public static concatTypedArrays(...typedArrays: Array<TypedArray>): TypedArray {

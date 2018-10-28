@@ -1,6 +1,7 @@
 import BlobUtil from './blobUtil';
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
 import BufferUtil from '../buffer/bufferUtil';
+import TypedArray = NodeJS.TypedArray;
 
 describe('blobConverter class', () => {
   describe('blobToArrayBuffer function', () => {
@@ -55,6 +56,16 @@ describe('blobConverter class', () => {
 
       expect(actualString).toBeDefined();
       expect(actualString).toEqual(mockText);
+    });
+  });
+
+  describe('dataViewToNum function', () => {
+    it('should convert dataView to number', () => {
+      const buff: ArrayBuffer = new ArrayBuffer(16);
+      const mockView: DataView = new DataView(buff);
+      mockView.setInt8(0, 123);
+
+      expect(BlobUtil.dataViewToNum(mockView, 0)).toEqual(123);
     });
   });
 
