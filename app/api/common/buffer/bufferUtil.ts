@@ -1,37 +1,58 @@
-import { AssertionError } from 'assert';
-
 export default class BufferUtil {
-  private static readonly tooSmallArrayBufferSize = 'Buffer size cannot be less than size of text';
-
   public static createArrayBuffer<T>(data: T, bufferSize?: number): ArrayBuffer {
-    const text = data.toString();
-    if (bufferSize && text.length * 2 > bufferSize) {
-      throw new AssertionError({
-        message: BufferUtil.tooSmallArrayBufferSize,
-      });
+    switch (typeof data) {
+      case 'string':
+        return BufferUtil.createArrayBufferFromString(data, bufferSize);
+      case 'number':
+        return BufferUtil.createArrayBufferFromNum(data, bufferSize);
     }
-    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || text.length * 2);
-    const bufView: Uint16Array = new Uint16Array(buffer);
+  }
+
+  private static createArrayBufferFromString(text: string, bufferSize?: number): ArrayBuffer {
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || text.length);
+    const bufView: Uint8Array = new Uint8Array(buffer);
     for (let i = 0, strLen = text.length; i < strLen; i++) {
       bufView[i] = text.charCodeAt(i);
     }
     return buffer;
   }
 
+  private static createArrayBufferFromNum(num: number, bufferSize?: number): ArrayBuffer {
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || 8);
+    const bufView: Uint8Array = new Uint8Array(buffer);
+    let tmpNum = num;
+    for (let i = 0; i < bufView.length; i++) {
+      const byte = tmpNum & 0xff;
+      bufView[i] = byte;
+      tmpNum = (num - byte) / 256;
+    }
+    return buffer;
+  }
+
   public static decodeArrayBuffer(buffer: ArrayBuffer): string {
-    return String.fromCharCode.apply(null, new Uint16Array(buffer));
+    return String.fromCharCode.apply(null, new Uint8Array(buffer));
   }
 
   public static decodeTypedArray(typedArr: TypedArray): string {
     return String.fromCharCode.apply(null, typedArr);
   }
 
+  public static decodeArrayBufferFromNum(buffer: ArrayBuffer): number {
+    const bufView: Uint8Array = new Uint8Array(buffer);
+    let value = 0;
+    for (let i = bufView.length - 1; i >= 0; i--) {
+      value = value * 256 + bufView[i];
+    }
+
+    return value;
+  }
+
   public static concatTypedArrays(...typedArrays: Array<TypedArray>): TypedArray {
     const typedArrSize: number = BufferUtil.getTypedArrSize(...typedArrays);
-    const combinedTypedArr: TypedArray = new Uint16Array(typedArrSize);
+    const combinedTypedArr: TypedArray = new Uint8Array(typedArrSize);
     let offset = 0;
     typedArrays.forEach((val: TypedArray) => {
-      combinedTypedArr.set(new Uint16Array(val), offset);
+      combinedTypedArr.set(new Uint8Array(val), offset);
       offset += val.byteLength;
     });
     return combinedTypedArr;

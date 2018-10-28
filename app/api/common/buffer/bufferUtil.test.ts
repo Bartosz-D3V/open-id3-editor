@@ -3,28 +3,31 @@ import { O_TRUNC } from 'constants';
 
 describe('BufferUtil class', () => {
   describe('createArrayBuffer function', () => {
-    it('should create array buffer', () => {
+    it('should create array buffer from string', () => {
       const mockText = 'Example string to encode';
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText);
 
       expect(actualData).toBeDefined();
-      expect(String.fromCharCode.apply(null, new Uint16Array(actualData))).toEqual(mockText);
+      expect(String.fromCharCode.apply(null, new Uint8Array(actualData))).toEqual(mockText);
     });
 
-    it('should create array buffer and fill to specified length', () => {
+    it('should create array buffer from string and fill to specified length', () => {
       const mockText = 'Example string to encode';
-      const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText, 58);
-      const actualText: string = String.fromCharCode.apply(null, new Uint16Array(actualData));
+      const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText, 36);
+      const actualText: string = String.fromCharCode.apply(null, new Uint8Array(actualData));
 
       expect(actualData).toBeDefined();
-      expect(actualData.byteLength).toEqual(58);
-      expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(5));
+      expect(actualData.byteLength).toEqual(36);
+      expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(12));
     });
 
-    it('should throw an error if size of buffer is less than size of text', () => {
-      const actualData = () => BufferUtil.createArrayBuffer('Short data', 2);
+    it('should create array buffer from number and fill to specified length', () => {
+      const mockNumber = 100;
+      const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockNumber);
+      const actualNumber: number = BufferUtil.decodeArrayBufferFromNum(actualData);
 
-      expect(actualData).toThrowError('Buffer size cannot be less than size of text');
+      expect(actualData).toBeDefined();
+      expect(actualNumber).toEqual(100);
     });
   });
 
@@ -33,7 +36,9 @@ describe('BufferUtil class', () => {
       const mockText = 'Example string to encode';
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText, mockText.length * 2);
 
-      expect(BufferUtil.decodeArrayBuffer(actualData)).toEqual(mockText);
+      expect(BufferUtil.decodeArrayBuffer(actualData)).toEqual(
+        mockText + String.fromCharCode(0).repeat(24)
+      );
     });
   });
 
@@ -42,15 +47,15 @@ describe('BufferUtil class', () => {
       const arrBuff1: ArrayBuffer = BufferUtil.createArrayBuffer('Test 1', 14);
       const arrBuff2: ArrayBuffer = BufferUtil.createArrayBuffer('Test 2', 14);
       const arrBuff3: ArrayBuffer = BufferUtil.createArrayBuffer('Test 3', 14);
-      const combinedUint: Uint16Array = <Uint16Array>(
+      const combinedUint: Uint8Array = <Uint8Array>(
         BufferUtil.concatTypedArrays(
-          new Uint16Array(arrBuff1),
-          new Uint16Array(arrBuff2),
-          new Uint16Array(arrBuff3)
+          new Uint8Array(arrBuff1),
+          new Uint8Array(arrBuff2),
+          new Uint8Array(arrBuff3)
         )
       );
 
-      expect(combinedUint.byteLength).toEqual(84);
+      expect(combinedUint.byteLength).toEqual(42);
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 1');
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 2');
       expect(BufferUtil.decodeTypedArray(combinedUint)).toContain('Test 3');

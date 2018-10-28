@@ -28,7 +28,6 @@
       }
     ],
     "no-arg": true,
-    "no-bitwise": true,
     "no-console": [true, "log", "debug", "info", "time", "timeEnd", "trace"],
     "no-construct": true,
     "no-debugger": true,
@@ -132,7 +131,7 @@
     },
     "new-parens": true,
     "no-arg": true,
-    "no-bitwise": true,
+    "no-bitwise": false,
     "no-conditional-assignment": true,
     "no-consecutive-blank-lines": true,
     "no-console": true,
