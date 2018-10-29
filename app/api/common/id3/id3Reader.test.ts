@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import BufferUtil from '../buffer/bufferUtil';
 import BlobUtil from '../blob/blobUtil';
 import ID3 from './id3';

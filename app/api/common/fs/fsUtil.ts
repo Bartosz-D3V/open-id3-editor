@@ -1,13 +1,13 @@
 import fs from 'fs';
 
 export default class FsUtil {
-  public static readFile = (path: fs.PathLike): Promise<Buffer> => {
-    return new Promise((res, rej) => {
-      fs.readFile(path, (err, data) => {
+  public static readFile = async (path: fs.PathLike): Promise<Buffer> => {
+    return <Promise<Buffer>>new Promise((resolve, reject) => {
+      fs.readFile(path, (err: any, data: Buffer) => {
         if (err) {
-          rej(err);
+          reject(err);
         } else {
-          res(data);
+          resolve(data);
         }
       });
     });
