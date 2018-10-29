@@ -1,7 +1,6 @@
 import BlobUtil from './blobUtil';
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
 import BufferUtil from '../buffer/bufferUtil';
-import TypedArray = NodeJS.TypedArray;
 
 describe('blobConverter class', () => {
   describe('blobToArrayBuffer function', () => {

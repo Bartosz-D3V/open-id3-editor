@@ -1,5 +1,4 @@
 import BufferUtil from './bufferUtil';
-import { O_TRUNC } from 'constants';
 
 describe('BufferUtil class', () => {
   describe('createArrayBuffer function', () => {
