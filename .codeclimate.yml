@@ -12,6 +12,7 @@ plugins:
     enabled: true
   markdownlint:
     enabled: true
+    config: .stylelintrc
   editorconfig:
     enabled: true
 ratings:
