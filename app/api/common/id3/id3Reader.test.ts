@@ -40,7 +40,7 @@ describe('id3Reader', () => {
       expect(id3.genre).toEqual(7);
     });
 
-    it('should create ID3 object from DataView from real MP3 file', async () => {
+    it('should create ID3 object from DataView from real MP3 file where tag is in the beginning', async () => {
       const data1: Buffer = await FsUtil.readFile(`${__dirname}/mockID3Files/id3v1_004_basic.mp3`);
       const dataView1: DataView = new DataView(data1.buffer);
       const id31: ID3 = Id3Reader.readID3(dataView1);
@@ -57,6 +57,16 @@ describe('id3Reader', () => {
       expect(id32.title).toEqual('Dance');
       expect(id32.year).toEqual(2003);
       expect(id32.genre).toEqual(3);
+    });
+
+    it('should create ID3 object from DataView from real MP3 file where tag is in the end', async () => {
+      const data1: Buffer = await FsUtil.readFile(`${__dirname}/mockID3Files/id3v2_001_basic.mp3`);
+      const dataView1: DataView = new DataView(data1.buffer);
+      const id31: ID3 = Id3Reader.readID3(dataView1);
+
+      expect(id31.header).toEqual('TAG');
+      expect(id31.year).toEqual(2003);
+      expect(id31.genre).toEqual(0);
     });
   });
 });
