@@ -68,5 +68,11 @@ describe('id3Reader', () => {
       expect(id31.year).toEqual(2003);
       expect(id31.genre).toEqual(0);
     });
+
+    it('should throw error if file is missing "TAG" header', () => {
+      const invalidID3 = () => Id3Reader.readID3(null);
+
+      expect(invalidID3).toThrowError('Invalid MP3 file - ID3 tag is missing');
+    });
   });
 });
