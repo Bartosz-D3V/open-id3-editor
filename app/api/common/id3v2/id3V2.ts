@@ -1,5 +1,5 @@
-import ID3V2Header from 'id3V2Header';
-import ID3V2Frame from 'id3V2Frame';
+import ID3V2Header from './id3V2Header';
+import ID3V2Frame from './id3V2Frame';
 
 export default class {
   public header: ID3V2Header;
