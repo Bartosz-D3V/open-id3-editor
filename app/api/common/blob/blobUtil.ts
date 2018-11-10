@@ -50,7 +50,7 @@ export default class BlobUtil {
   };
 
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
-    dataView.getInt8(offset);
+    dataView.getUint8(offset);
 
   public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
     const buffSize: number = BufferUtil.getBufferSize(
