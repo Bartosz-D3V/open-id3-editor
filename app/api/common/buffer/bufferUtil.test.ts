@@ -31,7 +31,7 @@ describe('BufferUtil class', () => {
   });
 
   describe('decodeArrayBuffer function', () => {
-    it('should convert string from arrayBuffer', () => {
+    it('should convert arrayBuffer to string ', () => {
       const mockText = 'Example string to encode';
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockText, mockText.length * 2);
 

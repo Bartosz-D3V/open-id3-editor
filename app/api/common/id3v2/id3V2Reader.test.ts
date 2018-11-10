@@ -1,8 +1,7 @@
-import BufferUtil from '../buffer/bufferUtil';
-import BlobUtil from '../blob/blobUtil';
 import ID3V2 from './id3V2';
 import ID3V2Reader from './id3V2Reader';
 import FsUtil from '../fs/fsUtil';
+import { FrameID } from './frameID';
 
 describe('ID3V2Reader', () => {
   describe('readID3V2 function', () => {
@@ -11,7 +10,8 @@ describe('ID3V2Reader', () => {
       const dataView1: DataView = new DataView(data1.buffer);
       const id31: ID3V2 = ID3V2Reader.readID3V2(dataView1);
 
-      console.log(BlobUtil.dataViewToString(dataView1, 0, dataView1.byteLength));
+      expect(id31.body[0].frame.frameID).toEqual(FrameID.TALB);
+      expect(id31.body[0].data).toEqual('Example album');
     });
   });
 });
