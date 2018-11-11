@@ -12,6 +12,8 @@ describe('ID3V2Reader', () => {
 
       expect(id31.body[0].frame.frameID).toEqual(FrameID.TALB);
       expect(id31.body[0].data).toEqual('Example album');
+      expect(id31.body[1].frame.frameID).toEqual(FrameID.TPE2);
+      expect(id31.body[1].data).toEqual('Example artist;');
     });
   });
 });
