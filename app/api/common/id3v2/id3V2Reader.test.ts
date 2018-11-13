@@ -3,6 +3,7 @@ import ID3V2Reader from './id3V2Reader';
 import FsUtil from '../fs/fsUtil';
 import { FrameID } from './frameID';
 import BufferUtil from '../buffer/bufferUtil';
+import BlobUtil from '../blob/blobUtil';
 
 describe('ID3V2Reader', () => {
   describe('readID3V2 function', () => {
@@ -20,8 +21,8 @@ describe('ID3V2Reader', () => {
       const dataView2: DataView = new DataView(data2.buffer);
       const id32: ID3V2 = ID3V2Reader.readID3V2(dataView2);
 
-      expect(id32.body[0].frame.frameID).toEqual('TDRC');
-      expect(id32.body[0].data).toEqual('2016');
+      expect(id32.body[0].frame.frameID).toEqual(FrameID.TALB);
+      expect(id32.body[0].data).toEqual('Example album');
       expect(id32.body[1].frame.frameID).toEqual(FrameID.TCON);
       expect(id32.body[1].data).toEqual('Genre');
     });
