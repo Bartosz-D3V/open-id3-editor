@@ -23,8 +23,24 @@ describe('ID3V2Reader', () => {
 
       expect(id32.body[0].frame.frameID).toEqual(FrameID.TALB);
       expect(id32.body[0].data).toEqual('Example album');
-      expect(id32.body[1].frame.frameID).toEqual(FrameID.TCON);
-      expect(id32.body[1].data).toEqual('Genre');
+      expect(id32.body[1].frame.frameID).toEqual(FrameID.TPE1);
+      expect(id32.body[1].data).toEqual('Example artist');
+      expect(id32.body[2].frame.frameID).toEqual(FrameID.TPE2);
+      expect(id32.body[2].data).toEqual('Example artist');
+      expect(id32.body[3].frame.frameID).toEqual(FrameID.COMM);
+      expect(id32.body[3].data).toEqual('engExample comment');
+      expect(id32.body[4].frame.frameID).toEqual(FrameID.TCOM);
+      expect(id32.body[4].data).toEqual('Example composer');
+      expect(id32.body[5].frame.frameID).toEqual(FrameID.TPOS);
+      expect(id32.body[5].data).toEqual('12');
+      expect(id32.body[6].frame.frameID).toEqual(FrameID.TCON);
+      expect(id32.body[6].data).toEqual('Acoustic');
+      expect(id32.body[7].frame.frameID).toEqual(FrameID.TIT2);
+      expect(id32.body[7].data).toEqual('Example title');
+      expect(id32.body[8].frame.frameID).toEqual(FrameID.TRCK);
+      expect(id32.body[8].data).toEqual('12');
+      expect(id32.body[9].frame.frameID).toEqual(FrameID.TYER);
+      expect(id32.body[9].data).toEqual('2020');
     });
 
     it('should throw error if file is missing "TAG" header', () => {
