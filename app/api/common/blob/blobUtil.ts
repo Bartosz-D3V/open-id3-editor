@@ -41,7 +41,7 @@ export default class BlobUtil {
   public static dataViewToString = (dataView: DataView, offset: number, length: number): string => {
     let data = '';
     for (let i = offset; i < offset + length; i++) {
-      const charCode: number = dataView.getUint8(i);
+      const charCode: number = dataView.getInt8(i);
       if (charCode > 31) {
         data += String.fromCharCode(charCode);
       }
@@ -50,7 +50,7 @@ export default class BlobUtil {
   };
 
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
-    dataView.getUint8(offset);
+    dataView.getInt8(offset);
 
   public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
     const buffSize: number = BufferUtil.getBufferSize(

@@ -17,7 +17,7 @@ export default class ID3V2Reader {
 
     const data: Array<ID3V2FrameWrapper> = [];
     let i = 10;
-    while (i < size - 10 && dataView.getUint8(i) !== 0x00) {
+    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = ID3V2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
       const frameFlags = BlobUtil.dataViewToString(dataView, i + 8, 2);
