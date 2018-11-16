@@ -1,4 +1,4 @@
-import MP3Header from 'mp3Header';
+import MP3Header from './mp3Header';
 
 export default class {
   public syncBits: DataView;
