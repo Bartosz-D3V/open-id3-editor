@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "baseUrl": "./",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "es2015",
-    "target": "es2015",
+    "target": "es2017",
     "jsx": "react",
     "esModuleInterop": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "paths": {
+      "@common": ["app/api/common"]
+    }
   },
   "include": ["./app/**/*"],
   "exclude": ["node_modules/"]
