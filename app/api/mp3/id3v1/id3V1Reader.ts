@@ -1,5 +1,5 @@
 import ID3V1 from './id3V1';
-import BlobUtil from '../blob/blobUtil';
+import BlobUtil from '../../common/blob/blobUtil';
 
 export default class Id3V1Reader {
   private static readonly MISSING_ID3 = 'Invalid MP3 file - ID3V1 tag is missing';

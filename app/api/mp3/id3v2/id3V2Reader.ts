@@ -1,9 +1,9 @@
-import BlobUtil from '../blob/blobUtil';
-import ID3V2 from './id3V2';
-import ID3V2Header from './id3V2Header';
-import ID3V2Frame from './id3V2Frame';
-import ID3V2FrameWrapper from './id3V2FrameWrapper';
-import { FrameID } from './frameID';
+import BlobUtil from '../../common/blob/blobUtil';
+import ID3V2 from './domain/id3V2';
+import ID3V2Header from './domain/id3V2Header';
+import ID3V2Frame from './domain/id3V2Frame';
+import ID3V2FrameWrapper from './domain/id3V2FrameWrapper';
+import { FrameID } from './domain/frameID';
 
 export default class ID3V2Reader {
   private static readonly MISSING_ID3 = 'Invalid MP3 file - ID3V2 tag is missing';

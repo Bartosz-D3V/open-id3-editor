@@ -1,9 +1,8 @@
-import ID3V2 from './id3V2';
+import ID3V2 from './domain/id3V2';
 import ID3V2Reader from './id3V2Reader';
-import FsUtil from '../fs/fsUtil';
-import { FrameID } from './frameID';
-import BufferUtil from '../buffer/bufferUtil';
-import BlobUtil from '../blob/blobUtil';
+import FsUtil from '../../common/fs/fsUtil';
+import { FrameID } from './domain/frameID';
+import BufferUtil from '../../common/buffer/bufferUtil';
 
 describe('ID3V2Reader', () => {
   describe('readID3V2 function', () => {
