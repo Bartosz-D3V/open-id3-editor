@@ -21,7 +21,7 @@ export default class Mp3Util {
     let viewSize = dataView.byteLength;
     if (Mp3Util.hasID3V2(dataView)) {
       const id3V2Size = ID3V2Reader.getID3V2Size(dataView, 7);
-      mp3Buffer = mp3Buffer.slice(viewSize - id3V2Size);
+      mp3Buffer = mp3Buffer.slice(id3V2Size);
       viewSize = mp3Buffer.byteLength;
     }
     if (Mp3Util.hasID3V1(dataView)) {

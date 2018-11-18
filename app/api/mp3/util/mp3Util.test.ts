@@ -50,16 +50,11 @@ describe('mp3Util', () => {
       const mockMp3: Buffer = await FsUtil.readFile(
         `${__dirname}/../id3v2/mockID3Files/id3v2_001_basic.mp3`
       );
-      const mockMp3NoTags: Buffer = await FsUtil.readFile(
-        `${__dirname}/../id3v2/mockID3Files/id3v2_001_no_tags.mp3`
-      );
       const mockMp3View: DataView = new DataView(mockMp3.buffer);
-      const mockMp3NoTagsView: DataView = new DataView(mockMp3NoTags.buffer);
       const strippedMockView = Mp3Util.getMP3WithoutTags(mockMp3View);
 
-      expect(mockMp3View).toEqual(mockMp3NoTagsView);
-      expect(strippedMockView.byteLength).toBeLessThan(128);
-      expect(BlobUtil.dataViewToString(strippedMockView, 0, 3)).not.toEqual('ID3');
+      expect(Mp3Util.hasID3V1(strippedMockView)).toBeFalsy();
+      expect(Mp3Util.hasID3V2(strippedMockView)).toBeFalsy();
     });
   });
 });
