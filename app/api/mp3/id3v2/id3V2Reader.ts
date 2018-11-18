@@ -12,14 +12,14 @@ export default class ID3V2Reader {
     const offset: number = ID3V2Reader.getID3V2TagOffset(dataView);
     const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
     const flags: string = BlobUtil.dataViewToString(dataView, offset + 6, 1);
-    const size: number = ID3V2Reader.readFrameSize(dataView, 7);
+    const size: number = ID3V2Reader.getFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(version, flags, size);
 
     const data: Array<ID3V2FrameWrapper> = [];
     let i = 10;
     while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = ID3V2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
-      const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
+      const frameSize = ID3V2Reader.getFrameSize(dataView, i + 4);
       const frameFlags = BlobUtil.dataViewToString(dataView, i + 8, 2);
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
       const frame: ID3V2Frame = new ID3V2Frame(frameId, frameSize, frameFlags);
@@ -31,7 +31,15 @@ export default class ID3V2Reader {
     return new ID3V2(header, data);
   }
 
-  private static readFrameSize(dataView: DataView, offset: number): number {
+  public static getID3V2Size = (dataView: DataView, offset: number): number => {
+    const size1 = BlobUtil.dataViewToNum(dataView, offset);
+    const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
+    const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
+    const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
+    return size1 + size2 + size3 + size4;
+  };
+
+  private static getFrameSize(dataView: DataView, offset: number): number {
     const size1 = BlobUtil.dataViewToNum(dataView, offset);
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
