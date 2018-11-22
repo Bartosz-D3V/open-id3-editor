@@ -1,7 +1,7 @@
 {
-  "name": "open-audio-converter",
+  "name": "open-id3-editor",
   "version": "1.0.0",
-  "description": "A minimalistic audio converter",
+  "description": "A minimalistic ID3 editor",
   "main": "main.js",
   "scripts": {
     "clean": "rimraf dist/",
@@ -24,11 +24,11 @@
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/enzyme/enzyme.config.js"
   },
-  "repository": "https://github.com/Bartosz-D3V/OpenAudioConverter.git",
+  "repository": "https://github.com/Bartosz-D3V/open-id3-editor.git",
   "author": "Bartosz-D3V",
   "license": "MIT",
   "build": {
-    "appId": "org.open-audio-converter",
+    "appId": "org.open-id3-editor",
     "win": {
       "target": "NSIS"
     }
