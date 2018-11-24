@@ -68,6 +68,17 @@ describe('blobConverter class', () => {
     });
   });
 
+  describe('stringToInt8 function', () => {
+    it('should return UInt8 array of UTF-8 characters', () => {
+      const text = 'This is an example sentence.';
+      const arr: Uint8Array = BlobUtil.stringToInt8(text);
+      const stringDecoder: NodeStringDecoder = new StringDecoder();
+      const actualText: string = stringDecoder.write(Buffer.from(arr));
+
+      expect(actualText).toEqual(text);
+    });
+  });
+
   describe('concatDataViews function', () => {
     it('should concatenate array of DataViews', () => {
       const buff1: ArrayBuffer = BufferUtil.createArrayBuffer('Test 1');

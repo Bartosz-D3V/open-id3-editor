@@ -1,8 +1,8 @@
-import BufferUtil from '../../common/buffer/bufferUtil';
-import BlobUtil from '../../common/blob/blobUtil';
+import BufferUtil from '../common/buffer/bufferUtil';
+import BlobUtil from '../common/blob/blobUtil';
 import ID3V1 from './id3V1';
 import Id3V1Reader from './id3V1Reader';
-import FsUtil from '../../common/fs/fsUtil';
+import FsUtil from '../common/fs/fsUtil';
 
 describe('id3V1Reader', () => {
   describe('readID3V1 function', () => {
@@ -57,13 +57,6 @@ describe('id3V1Reader', () => {
       expect(id32.title).toEqual('Dance');
       expect(id32.year).toEqual(2003);
       expect(id32.genre).toEqual(3);
-    });
-
-    it('should throw error if file is missing "TAG" header', () => {
-      const invalidID3 = () =>
-        Id3V1Reader.readID3V1(new DataView(BufferUtil.createArrayBuffer('Test', 128)));
-
-      expect(invalidID3).toThrowError('Invalid MP3 file - ID3V1 tag is missing');
     });
   });
 });

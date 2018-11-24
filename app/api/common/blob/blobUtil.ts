@@ -49,8 +49,35 @@ export default class BlobUtil {
     return data;
   };
 
+  public static writeToDataView<T>(dataView: DataView, data: T, offset: number): DataView {
+    switch (typeof data) {
+      case 'string':
+        return BlobUtil.writeStringToDataView(dataView, data, offset);
+      case 'number':
+        return BlobUtil.writeNumToDataView(dataView, data, offset);
+    }
+  }
+
+  private static writeStringToDataView(dataView: DataView, data: string, offset: number): DataView {
+    // TODO Implement
+    return;
+  }
+
+  private static writeNumToDataView(dataView: DataView, data: number, offset: number): DataView {
+    // TODO Implement
+    return;
+  }
+
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
     dataView.getInt8(offset);
+
+  public static stringToInt8 = (data: string): Uint8Array => {
+    const arr: Array<number> = [];
+    for (let i = 0; i < data.length; i++) {
+      arr.push(data.charCodeAt(i));
+    }
+    return Uint8Array.from(arr);
+  };
 
   public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
     const buffSize: number = BufferUtil.getBufferSize(
