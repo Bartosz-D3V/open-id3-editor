@@ -1,5 +1,5 @@
-import BlobUtil from './blobUtil';
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
+import BlobUtil from './blobUtil';
 import BufferUtil from '../buffer/bufferUtil';
 
 describe('blobConverter class', () => {
@@ -61,13 +61,16 @@ describe('blobConverter class', () => {
   describe('writeToDataView function', () => {
     it('should write string to dataView', () => {
       const mockTxt = 'Example string';
-      const buff: ArrayBuffer = new ArrayBuffer(20);
+      const buff: ArrayBuffer = new ArrayBuffer(60);
       const view: DataView = new DataView(buff);
-      const updatedView: DataView = BlobUtil.writeToDataView(view, mockTxt, 0);
-      const actualText: string = BlobUtil.dataViewToString(updatedView, 0, updatedView.byteLength);
+      let updatedView: DataView = BlobUtil.writeToDataView(view, mockTxt, 0);
+      updatedView = BlobUtil.writeToDataView(view, mockTxt, 14);
+      const actualText1: string = BlobUtil.dataViewToString(updatedView, 0, 14);
+      const actualText2: string = BlobUtil.dataViewToString(updatedView, 14, 28);
 
-      expect(actualText).toEqual(mockTxt);
-      expect(updatedView.byteLength).toEqual(20);
+      expect(actualText1).toEqual(mockTxt);
+      expect(actualText2).toEqual(mockTxt);
+      expect(updatedView.byteLength).toEqual(60);
     });
 
     it('should write string to dataView from given offset', () => {
@@ -93,6 +96,17 @@ describe('blobConverter class', () => {
       expect(BlobUtil.dataViewToNum(updatedView, 0)).toEqual(100);
       expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(124);
       expect(BlobUtil.dataViewToNum(updatedView, 2)).toEqual(127);
+    });
+
+    it('should write boolean to dataView', () => {
+      const buff: ArrayBuffer = new ArrayBuffer(20);
+      const view: DataView = new DataView(buff);
+      let updatedView: DataView = BlobUtil.writeToDataView(view, true, 0);
+      updatedView = BlobUtil.writeToDataView(view, false, 1);
+
+      expect(updatedView.byteLength).toEqual(20);
+      expect(BlobUtil.dataViewToNum(updatedView, 0)).toEqual(1);
+      expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(0);
     });
   });
 
