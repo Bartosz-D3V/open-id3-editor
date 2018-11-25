@@ -59,19 +59,24 @@ export default class BlobUtil {
   }
 
   private static writeStringToDataView(dataView: DataView, data: string, offset: number): DataView {
-    // TODO Implement
-    return;
+    const encodedTxt: Uint8Array = BlobUtil.stringToUint8(data);
+    let i = offset;
+    for (let j = 0; j < encodedTxt.length; j++) {
+      dataView.setInt8(i, encodedTxt[j]);
+      i++;
+    }
+    return dataView;
   }
 
   private static writeNumToDataView(dataView: DataView, data: number, offset: number): DataView {
-    // TODO Implement
-    return;
+    dataView.setUint8(offset, data);
+    return dataView;
   }
 
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
     dataView.getInt8(offset);
 
-  public static stringToInt8 = (data: string): Uint8Array => {
+  public static stringToUint8 = (data: string): Uint8Array => {
     const arr: Array<number> = [];
     for (let i = 0; i < data.length; i++) {
       arr.push(data.charCodeAt(i));
