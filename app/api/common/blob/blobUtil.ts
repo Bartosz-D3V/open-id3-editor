@@ -55,6 +55,8 @@ export default class BlobUtil {
         return BlobUtil.writeStringToDataView(dataView, data, offset);
       case 'number':
         return BlobUtil.writeNumToDataView(dataView, data, offset);
+      case 'boolean':
+        return BlobUtil.writeBoolToDataView(dataView, data, offset);
     }
   }
 
@@ -69,7 +71,12 @@ export default class BlobUtil {
   }
 
   private static writeNumToDataView(dataView: DataView, data: number, offset: number): DataView {
-    dataView.setUint8(offset, data);
+    dataView.setInt8(offset, data);
+    return dataView;
+  }
+
+  private static writeBoolToDataView(dataView: DataView, data: boolean, offset: number): DataView {
+    dataView.setInt8(offset, +data);
     return dataView;
   }
 
