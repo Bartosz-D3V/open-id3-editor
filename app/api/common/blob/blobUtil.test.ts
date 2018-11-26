@@ -1,5 +1,5 @@
-import BlobUtil from './blobUtil';
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
+import BlobUtil from './blobUtil';
 import BufferUtil from '../buffer/bufferUtil';
 
 describe('blobConverter class', () => {
@@ -58,6 +58,58 @@ describe('blobConverter class', () => {
     });
   });
 
+  describe('writeToDataView function', () => {
+    it('should write string to dataView', () => {
+      const mockTxt = 'Example string';
+      const buff: ArrayBuffer = new ArrayBuffer(60);
+      const view: DataView = new DataView(buff);
+      let updatedView: DataView = BlobUtil.writeToDataView(view, mockTxt, 0);
+      updatedView = BlobUtil.writeToDataView(view, mockTxt, 14);
+      const actualText1: string = BlobUtil.dataViewToString(updatedView, 0, 14);
+      const actualText2: string = BlobUtil.dataViewToString(updatedView, 14, 28);
+
+      expect(actualText1).toEqual(mockTxt);
+      expect(actualText2).toEqual(mockTxt);
+      expect(updatedView.byteLength).toEqual(60);
+    });
+
+    it('should write string to dataView from given offset', () => {
+      const mockTxt = 'Example string';
+      const buff: ArrayBuffer = new ArrayBuffer(30);
+      const view: DataView = new DataView(buff);
+      const updatedView: DataView = BlobUtil.writeToDataView(view, mockTxt, 10);
+      const actualText: string = BlobUtil.dataViewToString(updatedView, 0, updatedView.byteLength);
+
+      expect(actualText).toEqual(mockTxt);
+      expect(updatedView.byteLength).toEqual(30);
+      expect(BlobUtil.dataViewToString(updatedView, 0, 10)).toEqual('');
+    });
+
+    it('should write number to dataView', () => {
+      const buff: ArrayBuffer = new ArrayBuffer(20);
+      const view: DataView = new DataView(buff);
+      let updatedView: DataView = BlobUtil.writeToDataView(view, 100, 0);
+      updatedView = BlobUtil.writeToDataView(view, 124, 1);
+      updatedView = BlobUtil.writeToDataView(view, 127, 2);
+
+      expect(updatedView.byteLength).toEqual(20);
+      expect(BlobUtil.dataViewToNum(updatedView, 0)).toEqual(100);
+      expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(124);
+      expect(BlobUtil.dataViewToNum(updatedView, 2)).toEqual(127);
+    });
+
+    it('should write boolean to dataView', () => {
+      const buff: ArrayBuffer = new ArrayBuffer(20);
+      const view: DataView = new DataView(buff);
+      let updatedView: DataView = BlobUtil.writeToDataView(view, true, 0);
+      updatedView = BlobUtil.writeToDataView(view, false, 1);
+
+      expect(updatedView.byteLength).toEqual(20);
+      expect(BlobUtil.dataViewToNum(updatedView, 0)).toEqual(1);
+      expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(0);
+    });
+  });
+
   describe('dataViewToNum function', () => {
     it('should convert dataView to number', () => {
       const buff: ArrayBuffer = new ArrayBuffer(16);
@@ -65,6 +117,17 @@ describe('blobConverter class', () => {
       mockView.setInt8(0, 123);
 
       expect(BlobUtil.dataViewToNum(mockView, 0)).toEqual(123);
+    });
+  });
+
+  describe('stringToUint8 function', () => {
+    it('should return UInt8 array of UTF-8 characters', () => {
+      const text = 'This is an example sentence.';
+      const arr: Uint8Array = BlobUtil.stringToUint8(text);
+      const stringDecoder: NodeStringDecoder = new StringDecoder();
+      const actualText: string = stringDecoder.write(Buffer.from(arr));
+
+      expect(actualText).toEqual(text);
     });
   });
 

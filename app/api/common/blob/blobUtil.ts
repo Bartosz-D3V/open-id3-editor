@@ -49,8 +49,47 @@ export default class BlobUtil {
     return data;
   };
 
+  public static writeToDataView<T>(dataView: DataView, data: T, offset: number): DataView {
+    switch (typeof data) {
+      case 'string':
+        return BlobUtil.writeStringToDataView(dataView, data, offset);
+      case 'number':
+        return BlobUtil.writeNumToDataView(dataView, data, offset);
+      case 'boolean':
+        return BlobUtil.writeBoolToDataView(dataView, data, offset);
+    }
+  }
+
+  private static writeStringToDataView(dataView: DataView, data: string, offset: number): DataView {
+    const encodedTxt: Uint8Array = BlobUtil.stringToUint8(data);
+    let i = offset;
+    for (let j = 0; j < encodedTxt.length; j++) {
+      dataView.setInt8(i, encodedTxt[j]);
+      i++;
+    }
+    return dataView;
+  }
+
+  private static writeNumToDataView(dataView: DataView, data: number, offset: number): DataView {
+    dataView.setInt8(offset, data);
+    return dataView;
+  }
+
+  private static writeBoolToDataView(dataView: DataView, data: boolean, offset: number): DataView {
+    dataView.setInt8(offset, +data);
+    return dataView;
+  }
+
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
     dataView.getInt8(offset);
+
+  public static stringToUint8 = (data: string): Uint8Array => {
+    const arr: Array<number> = [];
+    for (let i = 0; i < data.length; i++) {
+      arr.push(data.charCodeAt(i));
+    }
+    return Uint8Array.from(arr);
+  };
 
   public static concatDataViews = (...dataViews: Array<DataView>): DataView => {
     const buffSize: number = BufferUtil.getBufferSize(

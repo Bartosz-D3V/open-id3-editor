@@ -1,4 +1,4 @@
-import BlobUtil from '../../common/blob/blobUtil';
+import BlobUtil from '../common/blob/blobUtil';
 import ID3V2 from './domain/id3V2';
 import ID3V2Header from './domain/id3V2Header';
 import ID3V2Frame from './domain/id3V2Frame';
@@ -6,10 +6,8 @@ import ID3V2FrameWrapper from './domain/id3V2FrameWrapper';
 import { FrameID } from './domain/frameID';
 
 export default class ID3V2Reader {
-  private static readonly MISSING_ID3 = 'Invalid MP3 file - ID3V2 tag is missing';
-
   public static readID3V2(dataView: DataView): ID3V2 {
-    const offset: number = ID3V2Reader.getID3V2TagOffset(dataView);
+    const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
     const flags: string = BlobUtil.dataViewToString(dataView, offset + 6, 1);
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
@@ -42,13 +40,5 @@ export default class ID3V2Reader {
   private static getFrameID(tagId: string): FrameID | string {
     const frameID: any = Object.keys(FrameID).find(key => key === tagId);
     return frameID ? FrameID[frameID] : tagId;
-  }
-
-  private static getID3V2TagOffset(dataView: DataView): number {
-    const tag: string = BlobUtil.dataViewToString(dataView, 0, 3);
-    if (tag === 'ID3') {
-      return 0;
-    }
-    throw new Error(ID3V2Reader.MISSING_ID3);
   }
 }

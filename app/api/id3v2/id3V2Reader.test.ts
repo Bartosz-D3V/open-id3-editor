@@ -1,8 +1,7 @@
 import ID3V2 from './domain/id3V2';
 import ID3V2Reader from './id3V2Reader';
-import FsUtil from '../../common/fs/fsUtil';
+import FsUtil from '../common/fs/fsUtil';
 import { FrameID } from './domain/frameID';
-import BufferUtil from '../../common/buffer/bufferUtil';
 
 describe('ID3V2Reader', () => {
   describe('readID3V2 function', () => {
@@ -40,13 +39,6 @@ describe('ID3V2Reader', () => {
       expect(id32.body[8].data).toEqual('12');
       expect(id32.body[9].frame.frameID).toEqual(FrameID.TYER);
       expect(id32.body[9].data).toEqual('2020');
-    });
-
-    it('should throw error if file is missing "TAG" header', () => {
-      const invalidID3 = () =>
-        ID3V2Reader.readID3V2(new DataView(BufferUtil.createArrayBuffer('Test', 128)));
-
-      expect(invalidID3).toThrowError('Invalid MP3 file - ID3V2 tag is missing');
     });
   });
 });
