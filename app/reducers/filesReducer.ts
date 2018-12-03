@@ -2,11 +2,9 @@ import { FilesActionTypes } from '../actions/filesActionTypes';
 import { FilesState } from '../states/filesState';
 import { FilesAction } from '../actions/filesAction';
 
-const initialState: Array<FilesState> = [
-  {
-    files: [],
-  },
-];
+const initialState: FilesState = {
+  files: [],
+};
 
 export default (state = initialState, action: FilesAction): FilesState => {
   switch (action.type) {
@@ -15,6 +13,7 @@ export default (state = initialState, action: FilesAction): FilesState => {
       return state;
     case FilesActionTypes.ADD_FILES:
       return {
+        ...state,
         files: action.files,
       };
   }
