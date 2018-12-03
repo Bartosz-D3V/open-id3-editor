@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import ReactDropzone, { ImageFile } from 'react-dropzone';
+import { IDragAndDropProps } from './IDragAndDropProps';
+import { FilesAction } from '../../actions/filesAction';
 
 const DropzoneWrapper = styled.div`
   height: 400px;
@@ -20,15 +22,23 @@ const Guidance = styled.h2`
   text-align: center;
 `;
 
-export class DragAndDrop extends React.Component<{}> {
-  public static onDrop(acceptedFiles: Array<ImageFile>, rejectedFiles: Array<ImageFile>): void {
-    return;
+export class DragAndDrop extends React.Component<IDragAndDropProps> {
+  private readonly actions: FilesAction;
+
+  constructor(props: IDragAndDropProps) {
+    super(props);
+    this.actions = props.actions;
+    this.onDrop = this.onDrop.bind(this);
+  }
+
+  public onDrop(acceptedFiles: Array<ImageFile>, rejectedFiles: Array<ImageFile>): void {
+    this.actions.addFiles(acceptedFiles);
   }
 
   public render(): any {
     return (
       <DropzoneWrapper>
-        <Dropzone onDrop={DragAndDrop.onDrop}>
+        <Dropzone onDrop={this.onDrop}>
           <Guidance>Locate, or drop files</Guidance>
         </Dropzone>
       </DropzoneWrapper>
