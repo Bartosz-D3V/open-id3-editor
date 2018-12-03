@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-react", "tslint-config-airbnb"],
+  "extends": ["tslint-react", "tslint-config-airbnb", "tslint-config-prettier"],
   "rules": {
     "adjacent-overload-signatures": true,
     "array-type": [true, "generic"],

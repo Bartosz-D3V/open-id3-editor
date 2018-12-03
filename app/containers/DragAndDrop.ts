@@ -4,12 +4,9 @@ import * as FilesActions from '../actions/filesActions';
 import { DragAndDrop } from '../components/DragAndDrop/DragAndDrop';
 import { FilesState } from '../states/filesState';
 
-const mapStateToProps = (state: FilesState) => {
-  console.log(state);
-  return {
-    files: state.files,
-  };
-};
+const mapStateToProps = (state: FilesState) => ({
+  files: state.files,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(FilesActions, dispatch),
