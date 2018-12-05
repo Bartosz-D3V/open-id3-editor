@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import ReactDropzone, { ImageFile } from 'react-dropzone';
 import { IDragAndDropProps } from './IDragAndDropProps';
-import { FilesAction } from '../../actions/filesAction';
 
 const DropzoneWrapper = styled.div`
   height: 400px;
@@ -23,7 +22,7 @@ const Guidance = styled.h2`
 `;
 
 export class DragAndDrop extends React.Component<IDragAndDropProps> {
-  private readonly actions: FilesAction;
+  private readonly actions;
 
   constructor(props: IDragAndDropProps) {
     super(props);
