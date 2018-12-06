@@ -1,11 +1,12 @@
 import { FilesActionTypes } from '../actions/filesActionTypes';
-import { FilesState } from '../states/filesState';
+import { IFilesState } from '../states/iFilesState';
+import { FilesAction } from '../actions/iFilesAction';
 
-const initialState: FilesState = {
+const initialState: IFilesState = {
   files: [],
 };
 
-export default (state = initialState, action): FilesState => {
+export default (state = initialState, action: FilesAction): IFilesState => {
   switch (action.type) {
     case FilesActionTypes.GET_FILES:
     default:
@@ -13,7 +14,7 @@ export default (state = initialState, action): FilesState => {
     case FilesActionTypes.ADD_FILES:
       return {
         ...state,
-        files: action.files,
+        files: action.payload,
       };
   }
 };

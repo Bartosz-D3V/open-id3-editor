@@ -1,5 +1,5 @@
 import { ImageFile } from 'react-dropzone';
 
-export interface FilesState {
+export interface IFilesState {
   files: Array<ImageFile>;
 }

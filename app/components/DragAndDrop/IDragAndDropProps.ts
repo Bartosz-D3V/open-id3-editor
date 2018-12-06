@@ -1,5 +1,5 @@
-import { FilesAction } from '../../actions/filesAction';
+import { ImageFile } from 'react-dropzone';
 
 export interface IDragAndDropProps {
-  actions: FilesAction;
+  addFiles: (files: Array<ImageFile>) => void;
 }
