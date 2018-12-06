@@ -1,29 +1,31 @@
 import filesReducer from './filesReducer';
-import { FilesState } from '../states/filesState';
 import { FilesActionTypes } from '../actions/filesActionTypes';
+import { IFilesState } from '../states/iFilesState';
+import { FilesAction } from '../actions/iFilesAction';
+import { ImageFile } from 'react-dropzone';
 
 describe('FilesReducer', () => {
-  const mockState = [{}];
-
-  it('should return passed state by default', () => {
-    const newState: FilesState = filesReducer(mockState, null);
-
-    expect(newState).toEqual(mockState);
-  });
+  const mockFile: ImageFile = new File([], 'mockFileName', { type: 'image/pdf' });
+  const mockState: IFilesState = {
+    files: [mockFile],
+  };
 
   it('should return passed state for GET_FILES action', () => {
-    const newState: FilesState = filesReducer(mockState, FilesActionTypes.GET_FILES);
+    const action: FilesAction = {
+      type: FilesActionTypes.GET_FILES,
+    };
+    const newState: IFilesState = filesReducer(mockState, action);
 
-    expect(newState).toEqual(mockState);
+    expect(newState.files).toEqual(mockState.files);
   });
 
   it('should return new state with files for ADD_FILES action', () => {
-    const action = {
+    const action: FilesAction = {
       type: FilesActionTypes.ADD_FILES,
-      files: [{ file: 'mockFile' }],
+      payload: [mockFile],
     };
-    const newState: FilesState = filesReducer(mockState, action);
+    const newState: IFilesState = filesReducer(mockState, action);
 
-    expect(newState).toEqual(mockState);
+    expect(newState.files).toEqual(mockState.files);
   });
 });
