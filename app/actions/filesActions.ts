@@ -1,6 +1,6 @@
-import { FilesActionTypes } from './filesActionTypes';
-import { ImageFile } from 'react-dropzone';
 import { ActionCreator } from 'redux';
+import { ImageFile } from 'react-dropzone';
+import { FilesActionTypes } from './filesActionTypes';
 import { IAddFilesAction } from './IAddFilesAction';
 import { IGetFilesAction } from './IGetFilesAction';
 
