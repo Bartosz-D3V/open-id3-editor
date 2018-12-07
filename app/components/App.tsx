@@ -7,7 +7,7 @@ import FilesReducer from '../reducers/filesReducer';
 const store = createStore(FilesReducer);
 
 export class App extends React.Component {
-  public render(): any {
+  public render(): JSX.Element {
     return (
       <Provider store={store}>
         <DragAndDrop />
