@@ -11,7 +11,11 @@
     "esModuleInterop": true,
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "@common": ["app/api/common"]
+      "@api/*": ["app/api/*"],
+      "@actions/*": ["app/actions/*"],
+      "@reducers/*": ["app/reducers/*"],
+      "@states/*": ["app/states/*"],
+      "@containers/*": ["app/containers/*"]
     }
   },
   "include": ["./app/**/*"],

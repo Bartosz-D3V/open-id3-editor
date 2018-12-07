@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import DragAndDrop from '../containers/DragAndDrop';
-import FilesReducer from '../reducers/filesReducer';
+import FilesReducer from '@reducers/filesReducer';
+import DragAndDrop from '@containers/DragAndDrop';
 
 const store = createStore(FilesReducer);
 
