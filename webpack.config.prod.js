@@ -1,3 +1,4 @@
+const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -12,6 +13,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      '@api': path.resolve(__dirname, 'app/api'),
+      '@actions': path.resolve(__dirname, 'app/actions'),
+      '@reducers': path.resolve(__dirname, 'app/reducers'),
+      '@states': path.resolve(__dirname, 'app/states'),
+      '@containers': path.resolve(__dirname, 'app/containers'),
+    },
   },
   node: {
     __dirname: false,

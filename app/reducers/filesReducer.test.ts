@@ -1,8 +1,8 @@
-import filesReducer from './filesReducer';
-import { FilesActionTypes } from '../actions/filesActionTypes';
-import { IFilesState } from '../states/iFilesState';
-import { FilesAction } from '../actions/iFilesAction';
 import { ImageFile } from 'react-dropzone';
+import { FilesActionTypes } from '@actions/filesActionTypes';
+import { FilesAction } from '@actions/iFilesAction';
+import { IFilesState } from '@states/iFilesState';
+import filesReducer from './filesReducer';
 
 describe('FilesReducer', () => {
   const mockFile: ImageFile = new File([], 'mockFileName', { type: 'image/pdf' });

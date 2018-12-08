@@ -1,8 +1,8 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import * as FilesActions from '../actions/filesActions';
+import { IFilesState } from '@states/iFilesState';
+import * as FilesActions from '@actions/filesActions';
 import { DragAndDrop } from '../components/DragAndDrop/DragAndDrop';
-import { IFilesState } from '../states/iFilesState';
 
 const mapStateToProps = (state: IFilesState) => ({
   files: state.files,
