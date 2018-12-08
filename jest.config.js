@@ -14,5 +14,7 @@ module.exports = {
     '^@reducers/(.*)': '<rootDir>/app/reducers/$1',
     '^@states/(.*)': '<rootDir>/app/states/$1',
     '^@containers/(.*)': '<rootDir>/app/containers/$1',
+    '^@components/(.*)': '<rootDir>/app/components/$1',
   },
+  setupTestFrameworkScriptFile: '<rootDir>/enzyme/enzyme.config.js',
 };

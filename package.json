@@ -21,9 +21,6 @@
     "pretty": "prettier --write **/*.{js,ts,tsx,css,json,yml,md}",
     "lint-staged": "lint-staged --config .lintstagedrc"
   },
-  "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/enzyme/enzyme.config.js"
-  },
   "repository": "https://github.com/Bartosz-D3V/open-id3-editor.git",
   "author": "Bartosz-D3V",
   "license": "MIT",
@@ -65,19 +62,23 @@
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
-    "@types/enzyme": "^3.1.14",
+    "@types/enzyme": "^3.1.15",
     "@types/jsdom": "^11.12.0",
     "@types/node": "^10.12.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "^6.0.10",
+    "@types/react-router": "^4.4.1",
+    "@types/react-router-dom": "^4.3.1",
     "@types/redux": "^3.6.0",
     "@types/styled-components": "^3.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-dropzone": "^4.3.0",
     "react-redux": "^5.1.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "styled-components": "^3.4.9",
     "typescript": "^3.0.3",
