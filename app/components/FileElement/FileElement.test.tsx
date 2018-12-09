@@ -1,21 +1,23 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 import { FileElement } from '@components/FileElement/FileElement';
 
 describe('FileElement component', () => {
   const mockFileName = 'My_track.mp3';
-  const div: HTMLElement = document.createElement('div');
+  let wrapper: ReactWrapper | ShallowWrapper;
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
 
   it('should render', () => {
-    ReactDOM.render(<FileElement fileName={mockFileName} />, div);
-    ReactDOM.unmountComponentAtNode(div);
+    wrapper = mount(<FileElement fileName={mockFileName} />);
 
-    expect(div.getElementsByTagName('FileElement')).toBeTruthy();
+    expect(wrapper.find('FileElement')).toBeTruthy();
   });
 
   it('should render file name', () => {
-    const wrapper = shallow(<FileElement fileName={mockFileName} />);
+    wrapper = shallow(<FileElement fileName={mockFileName} />);
 
     expect(wrapper.text()).toEqual(mockFileName);
   });

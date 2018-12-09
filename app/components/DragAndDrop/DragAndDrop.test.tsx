@@ -1,13 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { DragAndDrop } from './DragAndDrop';
+import { mount, ReactWrapper } from 'enzyme';
+import { MemoryRouter } from 'react-router';
+import DragAndDrop from './DragAndDrop';
 
 describe('DragAndDrop component', () => {
-  it('should render', () => {
-    const div: HTMLElement = document.createElement('div');
-    ReactDOM.render(<DragAndDrop addFiles={jest.fn()} />, div);
-    ReactDOM.unmountComponentAtNode(div);
+  let wrapper: ReactWrapper;
 
-    expect(div.getElementsByTagName('DragAndDrop')).toBeTruthy();
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  it('should render', () => {
+    wrapper = mount(
+      <MemoryRouter initialEntries={['/']}>
+        <DragAndDrop addFiles={jest.fn()} />
+      </MemoryRouter>
+    );
+
+    expect(wrapper.find(DragAndDrop)).toBeTruthy();
   });
 });
