@@ -20,6 +20,7 @@ module.exports = {
       '@reducers': path.resolve(__dirname, 'app/reducers'),
       '@states': path.resolve(__dirname, 'app/states'),
       '@containers': path.resolve(__dirname, 'app/containers'),
+      '@components': path.resolve(__dirname, 'app/components'),
     },
   },
   module: {
