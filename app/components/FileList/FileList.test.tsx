@@ -1,12 +1,11 @@
 import React from 'react';
-import { ImageFile } from 'react-dropzone';
 import { mount, ReactWrapper } from 'enzyme';
 import { FileList } from '@components/FileList/FileList';
 
 describe('FileList component', () => {
-  const mockFile1: ImageFile = new File([], 'Mock_track_1.mp3', { type: 'image/pdf' });
-  const mockFile2: ImageFile = new File([], 'Mock_track_2.mp3', { type: 'image/pdf' });
-  const mockFileList: Array<ImageFile> = [mockFile1, mockFile2];
+  const mockFile1: File = new File([], 'Mock_track_1.mp3', { type: 'image/pdf' });
+  const mockFile2: File = new File([], 'Mock_track_2.mp3', { type: 'image/pdf' });
+  const mockFileList: Array<File> = [mockFile1, mockFile2];
   let wrapper: ReactWrapper;
 
   afterEach(() => {

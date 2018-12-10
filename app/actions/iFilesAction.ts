@@ -1,4 +1,4 @@
 import IAddFilesAction from './iAddFilesAction';
 import IGetFilesAction from './iGetFilesAction';
 
-export type FilesAction = IAddFilesAction | IGetFilesAction;
+export type FilesAction = IAddFilesAction<File> | IGetFilesAction;

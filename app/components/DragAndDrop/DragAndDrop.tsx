@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router';
-import ReactDropzone, { ImageFile } from 'react-dropzone';
+import ReactDropzone from 'react-dropzone';
 import styled from 'styled-components';
 import { IDragAndDropProps } from './IDragAndDropProps';
 
@@ -28,7 +28,7 @@ class DragAndDrop extends React.Component<IDragAndDropProps> {
     this.onDrop = this.onDrop.bind(this);
   }
 
-  public onDrop(acceptedFiles: Array<ImageFile>, rejectedFiles: Array<ImageFile>): any {
+  public onDrop<T extends File>(acceptedFiles: Array<T>, rejectedFiles: Array<T>): any {
     this.props.addFiles(acceptedFiles);
     this.props.history.push('/file-list');
   }
