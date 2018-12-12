@@ -1,18 +1,12 @@
-FROM node:slim
+FROM alpine:latest
 LABEL <AUTHOR>="Bartosz Wyporkiewicz"
 
-WORKDIR /usr/scr/app
+WORKDIR /home/node/app
 COPY . .
 
-RUN apt-get update -y && \
-    apt-get install -y libgtk2.0-0 && \
-    apt-get install -y libnotify-dev && \
-    apt-get install -y libgconf-2-4 && \
-    apt-get install -y libxss1 && \
-    apt-get install -y libnss3 && \
-    apt-get install -y libasound2
-RUN npm install -g electron --unsafe-perm=true --allow-root
-RUN npm install
+RUN apk add --update nodejs nodejs-npm yarn
+RUN yarn global add electron
+RUN yarn
 
 CMD npm run build:prod
 CMD electron ./dist/
