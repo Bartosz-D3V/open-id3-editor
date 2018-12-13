@@ -1,5 +1,6 @@
 import { RouteComponentProps } from 'react-router';
+import { UploadFile } from 'antd/lib/upload/interface';
 
 export interface IDragAndDropProps extends RouteComponentProps {
-  addFiles: <T extends File>(files: Array<T>) => void;
+  addFiles: (files: Array<UploadFile>) => void;
 }

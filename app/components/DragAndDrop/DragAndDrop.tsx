@@ -1,25 +1,14 @@
 import * as React from 'react';
 import { withRouter } from 'react-router';
-import ReactDropzone from 'react-dropzone';
 import styled from 'styled-components';
+import { Upload, Icon, message } from 'antd';
+import { UploadChangeParam } from 'antd/lib/upload';
 import { IDragAndDropProps } from './IDragAndDropProps';
+import { UploadFile } from 'antd/lib/upload/interface';
 
-const DropzoneWrapper = styled.div`
-  height: 400px;
-  width: 90%;
-`;
-const Dropzone = styled(ReactDropzone)`
-  border: 2px dashed rgb(102, 102, 02);
-  height: 100%;
-  margin-left: 4%;
-  margin-top: 10%;
-  width: 100%;
-`;
-const Guidance = styled.h2`
-  font-family: 'Open Sans', sans-serif;
-  font-size: 1.5em;
-  margin-top: 20%;
-  text-align: center;
+const Dragger = Upload.Dragger;
+const DraggerWrapper = styled.div`
+  height: 100vh;
 `;
 
 class DragAndDrop extends React.Component<IDragAndDropProps> {
@@ -28,18 +17,26 @@ class DragAndDrop extends React.Component<IDragAndDropProps> {
     this.onDrop = this.onDrop.bind(this);
   }
 
-  public onDrop<T extends File>(acceptedFiles: Array<T>, rejectedFiles: Array<T>): any {
-    this.props.addFiles(acceptedFiles);
-    this.props.history.push('/file-list');
+  public onDrop(info: UploadChangeParam): void {
+    const acceptedFiles: Array<UploadFile> = info.fileList;
+    if (status === 'done') {
+      this.props.addFiles(acceptedFiles);
+      this.props.history.push('/file-list');
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
   }
 
   public render(): JSX.Element {
     return (
-      <DropzoneWrapper>
-        <Dropzone onDrop={this.onDrop}>
-          <Guidance>Locate, or drop files</Guidance>
-        </Dropzone>
-      </DropzoneWrapper>
+      <DraggerWrapper>
+        <Dragger multiple={true} onChange={this.onDrop}>
+          <p className="ant-upload-drag-icon">
+            <Icon type="inbox" />
+          </p>
+          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        </Dragger>
+      </DraggerWrapper>
     );
   }
 }
