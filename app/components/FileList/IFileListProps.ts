@@ -1,3 +1,5 @@
-export interface IFileListProps<T extends File> {
-  files: Array<T>;
+import { UploadFile } from 'antd/lib/upload/interface';
+
+export interface IFileListProps {
+  files: Array<UploadFile>;
 }
