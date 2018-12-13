@@ -33,7 +33,18 @@ module.exports = {
         exclude: /node_modules/,
       },
       { test: /\.js$/, loader: 'source-map-loader' },
-      { test: /\.css$/, loader: 'css-loader' },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          { loader: 'css-loader' },
+        ],
+      },
       { test: /\.html$/, loader: 'html-loader' },
       {
         test: /\.(png|jpg|gif|svg)$/,

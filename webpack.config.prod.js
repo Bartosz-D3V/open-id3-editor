@@ -32,7 +32,10 @@ module.exports = {
         use: [{ loader: 'ts-loader' }],
         exclude: /node_modules/,
       },
-      { test: /\.css$/, loader: 'css-loader' },
+      {
+        test: /\.css$/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+      },
       {
         test: /\.html$/,
         loader: 'html-loader',
