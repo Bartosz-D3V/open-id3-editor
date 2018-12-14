@@ -1,11 +1,12 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import { UploadFile } from 'antd/lib/upload/interface';
 import { FileList } from '@components/FileList/FileList';
 
 describe('FileList component', () => {
-  const mockFile1: File = new File([], 'Mock_track_1.mp3', { type: 'image/pdf' });
-  const mockFile2: File = new File([], 'Mock_track_2.mp3', { type: 'image/pdf' });
-  const mockFileList: Array<File> = [mockFile1, mockFile2];
+  const mockFile1: UploadFile = { uid: 'QW1', size: 100, name: 'Mock_Track_1', type: 'blob/mp3' };
+  const mockFile2: UploadFile = { uid: 'QW2', size: 100, name: 'Mock_Track_2', type: 'blob/mp3' };
+  const mockFileList: Array<UploadFile> = [mockFile1, mockFile2];
   let wrapper: ReactWrapper;
 
   afterEach(() => {
