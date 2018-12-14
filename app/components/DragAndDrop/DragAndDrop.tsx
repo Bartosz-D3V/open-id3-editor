@@ -3,8 +3,8 @@ import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { Upload, Icon, message } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
-import { IDragAndDropProps } from './IDragAndDropProps';
 import { UploadFile } from 'antd/lib/upload/interface';
+import { IDragAndDropProps } from './IDragAndDropProps';
 
 const Dragger = Upload.Dragger;
 const DraggerWrapper = styled.div`
@@ -18,6 +18,7 @@ class DragAndDrop extends React.Component<IDragAndDropProps> {
   }
 
   public onDrop(info: UploadChangeParam): void {
+    const status = info.file.status;
     const acceptedFiles: Array<UploadFile> = info.fileList;
     if (status === 'done') {
       this.props.addFiles(acceptedFiles);
@@ -30,7 +31,7 @@ class DragAndDrop extends React.Component<IDragAndDropProps> {
   public render(): JSX.Element {
     return (
       <DraggerWrapper>
-        <Dragger multiple={true} onChange={this.onDrop}>
+        <Dragger multiple={true} showUploadList={false} onChange={this.onDrop}>
           <p className="ant-upload-drag-icon">
             <Icon type="inbox" />
           </p>
