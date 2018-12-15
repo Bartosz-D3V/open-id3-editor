@@ -1,8 +1,8 @@
 import { Action } from 'redux';
-import { ImageFile } from 'react-dropzone';
+import { UploadFile } from 'antd/lib/upload/interface';
 import { FilesActionTypes } from './filesActionTypes';
 
 export default interface IAddFilesAction extends Action {
   type: FilesActionTypes.ADD_FILES;
-  payload: Array<ImageFile>;
+  payload: Array<UploadFile>;
 }
