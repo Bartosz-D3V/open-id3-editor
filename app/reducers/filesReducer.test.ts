@@ -1,11 +1,11 @@
-import { ImageFile } from 'react-dropzone';
+import { UploadFile } from 'antd/lib/upload/interface';
 import { FilesActionTypes } from '@actions/filesActionTypes';
 import { FilesAction } from '@actions/iFilesAction';
 import { IFilesState } from '@states/iFilesState';
 import filesReducer from './filesReducer';
 
 describe('FilesReducer', () => {
-  const mockFile: ImageFile = new File([], 'mockFileName', { type: 'image/pdf' });
+  const mockFile: UploadFile = { uid: 'QW1', size: 100, name: 'Test 1', type: 'image/pdf' };
   const mockState: IFilesState = {
     files: [mockFile],
   };
