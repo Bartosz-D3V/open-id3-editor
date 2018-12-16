@@ -1,12 +1,10 @@
-FROM alpine:latest
-LABEL <AUTHOR>="Bartosz Wyporkiewicz"
+FROM electronuserland/builder:latest
+LABEL AUTHOR="Bartosz Wyporkiewicz"
 
 WORKDIR /home/node/app
 COPY . .
 
-RUN apk add --update nodejs nodejs-npm yarn
-RUN yarn global add electron
 RUN yarn
+RUN npm run electron-pack:linux
 
-CMD npm run build:prod
-CMD electron ./dist/
+CMD ./dist/dist/linux-unpacked
