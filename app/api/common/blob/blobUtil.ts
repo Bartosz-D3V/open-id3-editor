@@ -99,10 +99,12 @@ export default class BlobUtil {
     const typedArr: TypedArray = new Uint8Array(buffer);
     const dataView: DataView = new DataView(buffer);
     let offset = 0;
-    dataViews.map((val: DataView) => val.buffer).forEach((val: ArrayBuffer) => {
-      typedArr.set(new Uint8Array(val), offset);
-      offset += val.byteLength;
-    });
+    dataViews
+      .map((val: DataView) => val.buffer)
+      .forEach((val: ArrayBuffer) => {
+        typedArr.set(new Uint8Array(val), offset);
+        offset += val.byteLength;
+      });
     return dataView;
   };
 
