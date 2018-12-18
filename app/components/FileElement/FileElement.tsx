@@ -1,10 +1,21 @@
 import * as React from 'react';
+import { Menu } from 'antd';
+import styled from 'styled-components';
 import { IFileElementProps } from './IFileElementProps';
+
+const MenuItem = styled(Menu.Item)`
+  padding: 0;
+  margin: 0;
+`;
 
 export class FileElement extends React.Component<IFileElementProps> {
   public render(): JSX.Element {
-    const { fileName }: { fileName: string } = this.props;
+    const { key, fileName }: { key: string; fileName: string } = this.props;
 
-    return <span>{fileName}</span>;
+    return (
+      <MenuItem key={key} {...this.props}>
+        <span>{fileName}</span>
+      </MenuItem>
+    );
   }
 }
