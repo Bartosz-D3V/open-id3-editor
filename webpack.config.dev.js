@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -61,5 +62,6 @@ module.exports = {
       filename: './index.html',
     }),
     new CopyWebpackPlugin([{ from: './package.json', to: './' }, { from: './main.js', to: './' }]),
+    new WebpackShellPlugin({ onBuildEnd: ['npm run electron-run'] }),
   ],
 };
