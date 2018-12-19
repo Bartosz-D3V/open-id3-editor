@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "baseUrl": "./",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "noImplicitAny": true,
     "module": "es2015",
     "moduleResolution": "node",
@@ -19,6 +19,5 @@
       "@components/*": ["app/components/*"]
     }
   },
-  "include": ["./app/**/*"],
-  "exclude": ["node_modules/"]
+  "exclude": ["node_modules/", "dist/"]
 }
