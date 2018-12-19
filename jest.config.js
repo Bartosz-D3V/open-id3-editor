@@ -1,11 +1,12 @@
 module.exports = {
   roots: ['<rootDir>/app'],
+  verbose: false,
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.ts?$': 'ts-jest',
   },
   testRegex: '((\\.|/)test)\\.(tsx|ts)?$',
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverage: true,
   moduleNameMapper: {
