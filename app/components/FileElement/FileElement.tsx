@@ -10,11 +10,11 @@ const MenuItem = styled(Menu.Item)`
 
 export class FileElement extends React.Component<IFileElementProps> {
   public render(): JSX.Element {
-    const { key, fileName }: { key: string; fileName: string } = this.props;
+    const { key, filename }: { key: string; filename: string } = this.props;
 
     return (
       <MenuItem key={key} {...this.props}>
-        <span>{fileName}</span>
+        <span>{filename}</span>
       </MenuItem>
     );
   }

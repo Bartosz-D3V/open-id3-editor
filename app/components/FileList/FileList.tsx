@@ -24,7 +24,7 @@ export class FileList extends React.Component<IFileListProps> {
           theme="light"
         >
           {files.map((file: UploadFile) => (
-            <FileElement key={file.uid} fileName={file.name} {...this.props} />
+            <FileElement key={file.uid} filename={file.name} />
           ))}
         </Menu>
       </FileListWrapper>
