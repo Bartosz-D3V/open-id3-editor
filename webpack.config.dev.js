@@ -6,7 +6,7 @@ const WebpackShellPlugin = require('webpack-shell-plugin');
 module.exports = {
   entry: './app/index.tsx',
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
   target: 'electron-main',
   watch: true,
   output: {
