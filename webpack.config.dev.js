@@ -4,9 +4,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
   entry: './app/index.tsx',
   mode: 'development',
+  devtool: 'cheap-module-source-map',
   target: 'electron-main',
   watch: true,
   output: {
@@ -19,6 +19,7 @@ module.exports = {
       '@actions': path.resolve(__dirname, 'app/actions'),
       '@reducers': path.resolve(__dirname, 'app/reducers'),
       '@states': path.resolve(__dirname, 'app/states'),
+      '@store': path.resolve(__dirname, 'app/store'),
       '@containers': path.resolve(__dirname, 'app/containers'),
       '@components': path.resolve(__dirname, 'app/components'),
     },
@@ -27,13 +28,9 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: [
-          { loader: 'ts-loader', options: { happyPackMode: true, transpileOnly: true } },
-          { loader: 'source-map-loader' },
-        ],
+        use: [{ loader: 'ts-loader', options: { happyPackMode: true, transpileOnly: true } }],
         exclude: /node_modules/,
       },
-      { test: /\.js$/, loader: 'source-map-loader' },
       {
         test: /\.css$/,
         use: [

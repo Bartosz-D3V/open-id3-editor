@@ -1,11 +1,12 @@
 module.exports = {
   roots: ['<rootDir>/app'],
+  verbose: false,
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.ts?$': 'ts-jest',
   },
   testRegex: '((\\.|/)test)\\.(tsx|ts)?$',
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverage: true,
   moduleNameMapper: {
@@ -13,6 +14,7 @@ module.exports = {
     '^@actions/(.*)': '<rootDir>/app/actions/$1',
     '^@reducers/(.*)': '<rootDir>/app/reducers/$1',
     '^@states/(.*)': '<rootDir>/app/states/$1',
+    '^@store/(.*)': '<rootDir>/app/store/$1',
     '^@containers/(.*)': '<rootDir>/app/containers/$1',
     '^@components/(.*)': '<rootDir>/app/components/$1',
   },

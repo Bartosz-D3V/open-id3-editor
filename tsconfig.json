@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "baseUrl": "./",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "noImplicitAny": true,
     "module": "es2015",
     "moduleResolution": "node",
@@ -15,10 +15,10 @@
       "@actions/*": ["app/actions/*"],
       "@reducers/*": ["app/reducers/*"],
       "@states/*": ["app/states/*"],
+      "@store/*": ["app/store/*"],
       "@containers/*": ["app/containers/*"],
       "@components/*": ["app/components/*"]
     }
   },
-  "include": ["./app/**/*"],
-  "exclude": ["node_modules/"]
+  "exclude": ["node_modules/", "dist/"]
 }
