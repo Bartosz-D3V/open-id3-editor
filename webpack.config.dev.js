@@ -19,6 +19,7 @@ module.exports = {
       '@actions': path.resolve(__dirname, 'app/actions'),
       '@reducers': path.resolve(__dirname, 'app/reducers'),
       '@states': path.resolve(__dirname, 'app/states'),
+      '@store': path.resolve(__dirname, 'app/store'),
       '@containers': path.resolve(__dirname, 'app/containers'),
       '@components': path.resolve(__dirname, 'app/components'),
     },
