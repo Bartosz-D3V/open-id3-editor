@@ -15,6 +15,7 @@
       "@actions/*": ["app/actions/*"],
       "@reducers/*": ["app/reducers/*"],
       "@states/*": ["app/states/*"],
+      "@store/*": ["app/store/*"],
       "@containers/*": ["app/containers/*"],
       "@components/*": ["app/components/*"]
     }

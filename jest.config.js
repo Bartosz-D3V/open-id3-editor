@@ -14,6 +14,7 @@ module.exports = {
     '^@actions/(.*)': '<rootDir>/app/actions/$1',
     '^@reducers/(.*)': '<rootDir>/app/reducers/$1',
     '^@states/(.*)': '<rootDir>/app/states/$1',
+    '^@store/(.*)': '<rootDir>/app/store/$1',
     '^@containers/(.*)': '<rootDir>/app/containers/$1',
     '^@components/(.*)': '<rootDir>/app/components/$1',
   },

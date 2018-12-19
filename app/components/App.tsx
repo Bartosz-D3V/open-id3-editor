@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { createStore } from 'redux';
+import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import { HashRouter, Route } from 'react-router-dom';
-import FilesReducer from '@reducers/filesReducer';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Persistor } from 'redux-persist/es/types';
 import DragAndDrop from '@containers/DragAndDrop';
 import FileList from '@containers/FileList';
+import configureStore from '@store/configureStore';
 
-const store = createStore(FilesReducer);
+const { store, persistor }: { store: Store; persistor: Persistor } = configureStore();
 
 export class App extends React.Component {
   public render(): JSX.Element {
     return (
       <Provider store={store}>
-        <HashRouter>
-          <main>
-            <Route exact={true} path="/" component={DragAndDrop} />
-            <Route path="/file-list" component={FileList} />
-          </main>
-        </HashRouter>
+        <PersistGate persistor={persistor}>
+          <HashRouter>
+            <main>
+              <Route exact={true} path="/" component={DragAndDrop} />
+              <Route path="/file-list" component={FileList} />
+            </main>
+          </HashRouter>
+        </PersistGate>
       </Provider>
     );
   }
