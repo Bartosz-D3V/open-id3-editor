@@ -12,6 +12,7 @@
     "preprod": "npm run clean",
     "prod": "npm run build:prod && npm run electron-pack",
     "electron-run": "electron ./dist",
+    "electron-pack": "electron-builder --projectDir=./dist -wl --x64 --publish=never",
     "electron-pack:win": "electron-builder --projectDir=./dist -w --x64 --publish=never",
     "electron-pack:linux": "electron-builder --projectDir=./dist -l --publish=never",
     "stylelint": "stylelint --config .stylelintrc --color **/*.{css,tsx}",
