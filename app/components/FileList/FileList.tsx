@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Menu } from 'antd';
-import { UploadFile } from 'antd/lib/upload/interface';
 import styled from 'styled-components';
+import { UploadFile } from 'antd/lib/upload/interface';
 import { FileElement } from '@components/FileElement/FileElement';
 import { IFileListProps } from './IFileListProps';
 
 const FileListWrapper = styled.div`
   padding: 0;
   margin: 0;
-  width: 180px;
+  width: 200px;
 `;
 
 export class FileList extends React.Component<IFileListProps> {

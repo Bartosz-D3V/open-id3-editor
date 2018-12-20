@@ -5,15 +5,15 @@ import { IFileElementProps } from './IFileElementProps';
 
 const MenuItem = styled(Menu.Item)`
   padding: 0;
-  margin: 0;
+  margin: 0 !important;
 `;
 
 export class FileElement extends React.Component<IFileElementProps> {
   public render(): JSX.Element {
-    const { key, filename }: { key: string; filename: string } = this.props;
+    const { filename }: { filename: string } = this.props;
 
     return (
-      <MenuItem key={key} {...this.props}>
+      <MenuItem {...this.props}>
         <span>{filename}</span>
       </MenuItem>
     );
