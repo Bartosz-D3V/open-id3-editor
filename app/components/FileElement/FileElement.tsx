@@ -5,8 +5,8 @@ import { IFileElementProps } from './IFileElementProps';
 
 const MenuItem = styled(Menu.Item)`
   &.ant-menu-item {
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 `;
 
