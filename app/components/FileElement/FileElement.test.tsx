@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import { ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 import { FileElement } from '@components/FileElement/FileElement';
 
 describe('FileElement component', () => {
@@ -11,14 +11,14 @@ describe('FileElement component', () => {
   });
 
   it('should render', () => {
-    wrapper = mount(<FileElement fileName={mockFileName} />);
+    wrapper = shallow(<FileElement filename={mockFileName} />);
 
-    expect(wrapper.find('FileElement')).toBeTruthy();
+    expect(wrapper.find(FileElement)).toBeTruthy();
   });
 
   it('should render file name', () => {
-    wrapper = shallow(<FileElement fileName={mockFileName} />);
+    wrapper = shallow(<FileElement filename={mockFileName} />);
 
-    expect(wrapper.text()).toEqual(mockFileName);
+    expect(wrapper.childAt(0).text()).toEqual(mockFileName);
   });
 });

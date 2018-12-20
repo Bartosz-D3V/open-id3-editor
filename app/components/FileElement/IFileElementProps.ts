@@ -1,3 +1,3 @@
 export interface IFileElementProps {
-  fileName: string;
+  filename: string;
 }
