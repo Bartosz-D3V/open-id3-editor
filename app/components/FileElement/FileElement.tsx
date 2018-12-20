@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import { IFileElementProps } from './IFileElementProps';
 
 const MenuItem = styled(Menu.Item)`
-  padding: 0;
-  margin: 0 !important;
+  &.ant-menu-item {
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 export class FileElement extends React.Component<IFileElementProps> {
