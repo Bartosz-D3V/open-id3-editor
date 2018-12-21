@@ -19,7 +19,7 @@ describe('FileList component', () => {
   });
 
   it('should render', () => {
-    expect(wrapper.find('FileList')).toBeTruthy();
+    expect(wrapper.find(FileList)).toBeTruthy();
   });
 
   it('should render elements with file names', () => {

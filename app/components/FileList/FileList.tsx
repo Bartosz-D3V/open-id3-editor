@@ -6,6 +6,8 @@ import { FileElement } from '@components/FileElement/FileElement';
 import { IFileListProps } from './IFileListProps';
 
 const FileListWrapper = styled.div`
+  background-color: white;
+  height: 100vh;
   margin: 0;
   padding: 0;
   width: 200px;
