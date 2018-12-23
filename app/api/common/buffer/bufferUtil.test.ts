@@ -20,7 +20,7 @@ describe('BufferUtil class', () => {
       expect(actualText).toEqual(mockText + String.fromCharCode(0).repeat(12));
     });
 
-    it('should create array buffer from number and fill to specified length', () => {
+    it('should create array buffer from num and fill to specified length', () => {
       const mockNumber = 100;
       const actualData: ArrayBuffer = BufferUtil.createArrayBuffer(mockNumber);
       const actualNumber: number = BufferUtil.decodeArrayBufferFromNum(actualData);
