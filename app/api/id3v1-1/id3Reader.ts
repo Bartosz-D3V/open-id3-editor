@@ -1,8 +1,8 @@
-import ID3V1 from './id3V1';
+import ID3 from './id3';
 import BlobUtil from '../common/blob/blobUtil';
 
-export default class Id3V1Reader {
-  public static readID3V1(dataView: DataView): ID3V1 {
+export default class Id3Reader {
+  public static readID3V11(dataView: DataView): ID3 {
     const offset: number = dataView.byteLength - 128;
     const title: string = BlobUtil.dataViewToString(dataView, offset + 3, 30);
     const artist: string = BlobUtil.dataViewToString(dataView, offset + 33, 30);
@@ -12,6 +12,6 @@ export default class Id3V1Reader {
     const zeroByte: boolean = !!BlobUtil.dataViewToString(dataView, offset + 125, 1);
     const track: number = BlobUtil.dataViewToNum(dataView, offset + 126);
     const genre: number = BlobUtil.dataViewToNum(dataView, offset + 127);
-    return new ID3V1(title, artist, album, year, comment, zeroByte, track, genre);
+    return new ID3(title, artist, album, year, comment, zeroByte, track, genre);
   }
 }
