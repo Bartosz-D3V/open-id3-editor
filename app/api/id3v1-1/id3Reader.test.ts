@@ -1,8 +1,8 @@
 import BufferUtil from '../common/buffer/bufferUtil';
 import BlobUtil from '../common/blob/blobUtil';
-import ID3 from './id3';
-import ID3Reader from './ID3Reader';
 import FsUtil from '../common/fs/fsUtil';
+import ID3 from './id3';
+import ID3Reader from './id3Reader';
 
 describe('id3V1Reader', () => {
   describe('readID3V11 function', () => {
