@@ -1,17 +1,9 @@
 import * as React from 'react';
 import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
-import styled from 'styled-components';
 import { genres } from '@api/id3v1-1/genres';
 import Genre from '@api/id3v1-1/genre';
 
 const TextArea = Input.TextArea;
-
-const FormWrapper = styled(Form)`
-  background-color: white;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-`;
 
 const Option = AutoComplete.Option;
 
@@ -24,7 +16,7 @@ const twoInCol = {
 export class TagFormV11 extends React.Component {
   public render(): JSX.Element {
     return (
-      <FormWrapper>
+      <Form>
         <Row gutter={5} justify="space-around">
           <Col {...twoInCol}>
             <Form.Item label="Title">
@@ -72,7 +64,7 @@ export class TagFormV11 extends React.Component {
             </Form.Item>
           </Col>
         </Row>
-      </FormWrapper>
+      </Form>
     );
   }
 }

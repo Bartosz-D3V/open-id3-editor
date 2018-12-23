@@ -17,7 +17,8 @@
       "@states/*": ["app/states/*"],
       "@store/*": ["app/store/*"],
       "@containers/*": ["app/containers/*"],
-      "@components/*": ["app/components/*"]
+      "@components/*": ["app/components/*"],
+      "@hoc/*": ["app/HOC/*"]
     }
   },
   "exclude": ["node_modules/", "dist/"]
