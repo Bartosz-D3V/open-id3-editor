@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
-import { genres } from '@api/id3v1-1/genres';
-import Genre from '@api/id3v1-1/genre';
+import { genres } from '@api/id3v1/domain/genres';
+import Genre from '@api/id3v1/domain/genre';
 
 const TextArea = Input.TextArea;
 
@@ -13,7 +13,7 @@ const twoInCol = {
   md: { span: 10, offset: 1 },
 };
 
-export class TagFormV11 extends React.Component {
+export class TagFormV10 extends React.Component {
   public render(): JSX.Element {
     return (
       <Form>
@@ -44,16 +44,11 @@ export class TagFormV11 extends React.Component {
         <Row gutter={5} justify="space-around">
           <Col span={21} offset={1}>
             <Form.Item label="Comment">
-              <TextArea maxLength={28} />
+              <TextArea maxLength={30} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
-          <Col {...twoInCol}>
-            <Form.Item label="Track">
-              <InputNumber min={0} max={2 ** 8 - 1} />
-            </Form.Item>
-          </Col>
           <Col {...twoInCol}>
             <Form.Item label="Genre">
               <AutoComplete placeholder="Genre">

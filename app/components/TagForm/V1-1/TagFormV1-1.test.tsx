@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
-import { TagFormV11 } from '@components/TagForm/TagFormV1-1';
+import { TagFormV11 } from './TagFormV1-1';
 
 const TextArea = Input.TextArea;
 
