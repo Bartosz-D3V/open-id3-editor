@@ -20,6 +20,7 @@ module.exports = {
       '@store': path.resolve(__dirname, 'app/store'),
       '@containers': path.resolve(__dirname, 'app/containers'),
       '@components': path.resolve(__dirname, 'app/components'),
+      '@hoc': path.resolve(__dirname, 'app/HOC'),
     },
   },
   node: {

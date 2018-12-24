@@ -2,12 +2,17 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Menu } from 'antd';
 import { TagMenu } from '@components/TagMenu/TagMenu';
+import { HashRouter } from 'react-router-dom';
 
 describe('TagMenu component', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<TagMenu />);
+    wrapper = mount(
+      <HashRouter>
+        <TagMenu />
+      </HashRouter>
+    );
   });
 
   afterEach(() => {
@@ -24,7 +29,7 @@ describe('TagMenu component', () => {
         .find(Menu.Item)
         .at(0)
         .text()
-    ).toEqual('ID3v1');
+    ).toEqual('ID3v1.0');
     expect(
       wrapper
         .find(Menu.Item)

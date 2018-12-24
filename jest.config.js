@@ -17,6 +17,7 @@ module.exports = {
     '^@store/(.*)': '<rootDir>/app/store/$1',
     '^@containers/(.*)': '<rootDir>/app/containers/$1',
     '^@components/(.*)': '<rootDir>/app/components/$1',
+    '^@hoc/(.*)': '<rootDir>/app/HOC/$1',
   },
   setupTestFrameworkScriptFile: '<rootDir>/enzyme/enzyme.config.js',
 };
