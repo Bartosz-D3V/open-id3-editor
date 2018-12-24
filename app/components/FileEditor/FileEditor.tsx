@@ -4,7 +4,8 @@ import { Layout } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { FileList } from '@components/FileList/FileList';
 import { TagMenu } from '@components/TagMenu/TagMenu';
-import { TagFormV11 } from '@components/TagForm/TagFormV1-1';
+import { TagFormV11 } from '@components/TagForm/V1-1/TagFormV1-1';
+import { TagFormV10 } from '@components/TagForm/V1-0/TagFormV1-0';
 import { standardContainer } from '@hoc/StandardContainer/StandardContainer';
 import { IFileEditorProps } from './IFileEditorProps';
 
@@ -30,6 +31,7 @@ export class FileEditor extends React.Component<IFileEditorProps> {
             <TagMenu />
           </HeaderWrapper>
           <ContentWrapper>
+            <Route path="/file-list/edit/ID3v1.0" component={TagFormV10} />
             <Route path="/file-list/edit/ID3v1.1" component={TagFormV11} />
           </ContentWrapper>
         </Layout>

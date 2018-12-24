@@ -1,4 +1,4 @@
-import Genre from '@api/id3v1-1/genre';
+import Genre from './genre';
 
 export const genres: Array<Genre> = [
   'Blues',
@@ -130,6 +130,6 @@ export const genres: Array<Genre> = [
 ].map((genre: string, i: number) => {
   return {
     genre,
-    num: i < 10 ? `0${i}` : i.toString(10),
+    num: i.toString(10),
   };
 });
