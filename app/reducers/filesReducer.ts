@@ -1,10 +1,10 @@
 import { FilesActionTypes } from '@actions/filesActionTypes';
 import { IFilesState } from '@states/iFilesState';
 import { FilesAction } from '@actions/iFilesAction';
-import { UploadFile } from 'antd/lib/upload/interface';
 
 const initialState: IFilesState = {
   files: [],
+  selectedFile: null,
 };
 
 export default (state = initialState, action: FilesAction): IFilesState => {
@@ -15,12 +15,17 @@ export default (state = initialState, action: FilesAction): IFilesState => {
     case FilesActionTypes.ADD_FILES:
       return {
         ...state,
-        files: action.payload,
+        files: state.files.concat(action.payload),
       };
     case FilesActionTypes.GET_FILE:
       return {
         ...state,
-        files: state.files.filter((uploadFile: UploadFile) => uploadFile.uid === action.payload),
+        files: state.files.filter(uploadFile => uploadFile.uid === action.payload),
+      };
+    case FilesActionTypes.SELECT_FILE:
+      return {
+        ...state,
+        selectedFile: state.files.find(uploadFile => uploadFile.uid === action.payload),
       };
   }
 };

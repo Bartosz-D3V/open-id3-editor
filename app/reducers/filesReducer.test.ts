@@ -8,7 +8,8 @@ describe('FilesReducer', () => {
   const mockFile1: UploadFile = { uid: 'QW1', size: 100, name: 'Test 1', type: 'image/pdf' };
   const mockFile2: UploadFile = { uid: 'QW2', size: 200, name: 'Test 2', type: 'image/pdf' };
   const mockState: IFilesState = {
-    files: [mockFile1, mockFile2],
+    files: [mockFile2],
+    selectedFile: null,
   };
 
   it('should return passed state for GET_FILES action', () => {
@@ -26,11 +27,15 @@ describe('FilesReducer', () => {
       payload: [mockFile1],
     };
     const newState: IFilesState = filesReducer(mockState, action);
+    const expectedState: IFilesState = {
+      files: [mockFile2, mockFile1],
+      selectedFile: null,
+    };
 
-    expect(newState.files).toEqual(mockState.files);
+    expect(newState).toEqual(expectedState);
   });
 
-  it('should return new state with selected file for GET_FILE action', () => {
+  it('should return new state with single file for GET_FILE action', () => {
     const action: FilesAction = {
       type: FilesActionTypes.GET_FILE,
       payload: 'QW2',
@@ -38,5 +43,16 @@ describe('FilesReducer', () => {
     const newState: IFilesState = filesReducer(mockState, action);
 
     expect(newState.files).toEqual([mockFile2]);
+  });
+
+  it('should return new state with selected file for SELECT_FILE action', () => {
+    const action: FilesAction = {
+      type: FilesActionTypes.SELECT_FILE,
+      payload: 'QW2',
+    };
+    const newState: IFilesState = filesReducer(mockState, action);
+
+    expect(newState.files).toEqual(mockState.files);
+    expect(newState.selectedFile).toEqual(mockFile2);
   });
 });

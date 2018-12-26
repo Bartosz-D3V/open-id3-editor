@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 import { Layout } from 'antd';
-import { UploadFile } from 'antd/lib/upload/interface';
 import { FileList } from '@components/FileList/FileList';
 import { TagMenu } from '@components/TagMenu/TagMenu';
 import { TagFormV11 } from '@components/TagForm/V1-1/TagFormV1-1';
@@ -19,7 +18,7 @@ const ContentWrapper = standardContainer(Layout.Content);
 
 export class FileEditor extends React.Component<IFileEditorProps> {
   public render(): JSX.Element {
-    const { files }: { files: Array<UploadFile> } = this.props;
+    const { files } = this.props;
 
     return (
       <LayoutWrapper>
