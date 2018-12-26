@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from 'antd';
 import { FileList } from '@components/FileList/FileList';
@@ -16,7 +16,7 @@ const SiderWrapper = standardContainer(Layout.Sider);
 
 const ContentWrapper = standardContainer(Layout.Content);
 
-export class FileEditor extends React.Component<IFileEditorProps> {
+export class FileEditor extends Component<IFileEditorProps> {
   public render(): JSX.Element {
     const { files } = this.props;
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { ClickParam } from 'antd/lib/menu';
@@ -11,7 +11,7 @@ const MenuItem = styled(Menu.Item)`
   }
 `;
 
-export class FileElement extends React.Component<IFileElementProps> {
+export class FileElement extends Component<IFileElementProps> {
   constructor(props: IFileElementProps) {
     super(props);
     this.onClick = this.onClick.bind(this);
