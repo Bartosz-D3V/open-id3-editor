@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { FileElement } from '@components/FileElement/FileElement';
 import { IFileListProps } from './IFileListProps';
+import FileElement from '@containers/FileElement';
 
 const FileListWrapper = styled.div`
   background-color: white;
@@ -25,7 +25,7 @@ export class FileList extends React.Component<IFileListProps> {
           theme="light"
         >
           {files.map((file: UploadFile) => (
-            <FileElement key={file.uid} filename={file.name} />
+            <FileElement key={file.uid} filename={file.name} uid={file.uid} />
           ))}
         </Menu>
       </FileListWrapper>

@@ -8,7 +8,6 @@
     "callable-types": true,
     "class-name": true,
     "comment-format": [true, "check-space"],
-    "curly": true,
     "deprecation": {
       "severity": "warn"
     },
@@ -80,14 +79,7 @@
       }
     ],
     "triple-equals": [true, "allow-null-check"],
-    "typedef": [
-      true,
-      "call-signature",
-      "parameter",
-      "property-declaration",
-      "object-destructuring",
-      "array-destructuring"
-    ],
+    "typedef": [true, "call-signature", "parameter", "property-declaration"],
     "typedef-whitespace": [
       true,
       {

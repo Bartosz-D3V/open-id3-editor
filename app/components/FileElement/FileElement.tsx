@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
+import { ClickParam } from 'antd/lib/menu';
 import { IFileElementProps } from './IFileElementProps';
 
 const MenuItem = styled(Menu.Item)`
@@ -11,11 +12,22 @@ const MenuItem = styled(Menu.Item)`
 `;
 
 export class FileElement extends React.Component<IFileElementProps> {
+  constructor(props: IFileElementProps) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  public onClick(clickParam: ClickParam): string {
+    const { selectFile } = this.props;
+    const uid: string = clickParam.item.props.uid;
+    return selectFile(uid).payload;
+  }
+
   public render(): JSX.Element {
-    const { filename }: { filename: string } = this.props;
+    const { filename, selectFile, ...props } = this.props;
 
     return (
-      <MenuItem {...this.props}>
+      <MenuItem {...props} onClick={this.onClick}>
         <span>{filename}</span>
       </MenuItem>
     );
