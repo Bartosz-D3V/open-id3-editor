@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
 import { genres } from '@api/id3v1/domain/genres';
 import Genre from '@api/id3v1/domain/genre';
@@ -13,7 +13,7 @@ const twoInCol = {
   md: { span: 10, offset: 1 },
 };
 
-export class TagFormV11 extends React.Component {
+export class TagFormV11 extends Component {
   public render(): JSX.Element {
     return (
       <Form>

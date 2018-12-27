@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import { HashRouter, Route } from 'react-router-dom';
@@ -10,7 +10,7 @@ import configureStore from '@store/configureStore';
 
 const { store, persistor }: { store: Store; persistor: Persistor } = configureStore();
 
-export class App extends React.Component {
+export class App extends Component {
   public render(): JSX.Element {
     return (
       <Provider store={store}>
