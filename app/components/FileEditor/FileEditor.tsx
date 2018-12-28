@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, RouteComponentProps } from 'react-router';
 import { Layout } from 'antd';
 import { FileList } from '@components/FileList/FileList';
 import { TagMenu } from '@components/TagMenu/TagMenu';
@@ -17,6 +17,16 @@ const SiderWrapper = standardContainer(Layout.Sider);
 const ContentWrapper = standardContainer(Layout.Content);
 
 export class FileEditor extends Component<IFileEditorProps> {
+  constructor(props: IFileEditorProps) {
+    super(props);
+    this.renderTagFormV10 = this.renderTagFormV10.bind(this);
+  }
+
+  public renderTagFormV10(props: RouteComponentProps): JSX.Element {
+    const { selectedFile } = this.props;
+    return <TagFormV10 {...props} selectedFile={selectedFile} />;
+  }
+
   public render(): JSX.Element {
     const { files } = this.props;
 
@@ -30,7 +40,7 @@ export class FileEditor extends Component<IFileEditorProps> {
             <TagMenu />
           </HeaderWrapper>
           <ContentWrapper>
-            <Route path="/file-list/edit/ID3v1.0" component={TagFormV10} />
+            <Route path="/file-list/edit/ID3v1.0" render={this.renderTagFormV10} />
             <Route path="/file-list/edit/ID3v1.1" component={TagFormV11} />
           </ContentWrapper>
         </Layout>

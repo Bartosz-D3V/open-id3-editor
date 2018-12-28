@@ -45,6 +45,16 @@ describe('FilesReducer', () => {
     expect(newState.files).toEqual([mockFile2]);
   });
 
+  it('should return new state with files for SET_FILE action', () => {
+    const action: FilesAction = {
+      type: FilesActionTypes.SET_FILES,
+      payload: [mockFile1, mockFile2],
+    };
+    const newState: IFilesState = filesReducer(null, action);
+
+    expect(newState.files).toEqual([mockFile1, mockFile2]);
+  });
+
   it('should return new state with selected file for SELECT_FILE action', () => {
     const action: FilesAction = {
       type: FilesActionTypes.SELECT_FILE,

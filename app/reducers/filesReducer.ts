@@ -22,6 +22,11 @@ export default (state = initialState, action: FilesAction): IFilesState => {
         ...state,
         files: state.files.filter(uploadFile => uploadFile.uid === action.payload),
       };
+    case FilesActionTypes.SET_FILES:
+      return {
+        ...state,
+        files: action.payload,
+      };
     case FilesActionTypes.SELECT_FILE:
       return {
         ...state,
