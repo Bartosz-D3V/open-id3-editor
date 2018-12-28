@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
+import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { genres } from '@api/id3v1/domain/genres';
 import Genre from '@api/id3v1/domain/genre';
+import Mp3Util from '@api/common/mp3/mp3Util';
+import BlobUtil from '@api/common/blob/blobUtil';
 
 const TextArea = Input.TextArea;
 
@@ -13,7 +16,14 @@ const twoInCol = {
   md: { span: 10, offset: 1 },
 };
 
-export class TagFormV10 extends Component {
+export class TagFormV10 extends Component<ITagFormV10Props> {
+  public async componentDidMount(): Promise<void> {
+    const { selectedFile } = this.props;
+    const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
+    if (Mp3Util.hasID3V1(dataView)) {
+    }
+  }
+
   public render(): JSX.Element {
     return (
       <Form>

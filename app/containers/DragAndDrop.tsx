@@ -9,7 +9,7 @@ const mapStateToProps = (state: IFilesState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getFiles: bindActionCreators(FilesActions, dispatch).getFiles,
+  setFiles: bindActionCreators(FilesActions, dispatch).setFiles,
   addFiles: bindActionCreators(FilesActions, dispatch).addFiles,
 });
 
