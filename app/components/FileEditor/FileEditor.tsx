@@ -27,6 +27,11 @@ export class FileEditor extends Component<IFileEditorProps> {
     return <TagFormV10 {...props} selectedFile={selectedFile} />;
   }
 
+  public componentDidMount(): void {
+    const { files, selectFile } = this.props;
+    selectFile(files[0].uid);
+  }
+
   public render(): JSX.Element {
     const { files } = this.props;
 
