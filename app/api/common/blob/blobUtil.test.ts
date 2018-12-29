@@ -85,7 +85,7 @@ describe('blobConverter class', () => {
       expect(BlobUtil.dataViewToString(updatedView, 0, 10)).toEqual('');
     });
 
-    it('should write num to dataView', () => {
+    it('should write index to dataView', () => {
       const buff: ArrayBuffer = new ArrayBuffer(20);
       const view: DataView = new DataView(buff);
       let updatedView: DataView = BlobUtil.writeToDataView(view, 100, 0);
@@ -111,7 +111,7 @@ describe('blobConverter class', () => {
   });
 
   describe('dataViewToNum function', () => {
-    it('should convert dataView to num', () => {
+    it('should convert dataView to index', () => {
       const buff: ArrayBuffer = new ArrayBuffer(16);
       const mockView: DataView = new DataView(buff);
       mockView.setInt8(0, 123);
