@@ -58,7 +58,7 @@ export class TagFormV11 extends Component {
             <Form.Item label="Genre">
               <AutoComplete placeholder="Genre">
                 {genres.map((genre: Genre) => (
-                  <Option key={genre.num}>{genre.genre}</Option>
+                  <Option key={genre.index.toString(10)}>{genre.genre}</Option>
                 ))}
               </AutoComplete>
             </Form.Item>

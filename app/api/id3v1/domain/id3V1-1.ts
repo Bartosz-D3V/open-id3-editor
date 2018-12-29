@@ -1,3 +1,5 @@
+import Genre from '@api/id3v1/domain/genre';
+
 export default class {
   public readonly header = 'TAG';
   public title: string;
@@ -7,7 +9,7 @@ export default class {
   public comment: string;
   public zeroByte: boolean;
   public track: number;
-  public genre: number;
+  public genre: Genre;
 
   constructor(
     title: string,
@@ -17,7 +19,7 @@ export default class {
     comment: string,
     zeroByte: boolean,
     track: number,
-    genre: number
+    genre: Genre
   ) {
     this.title = title;
     this.artist = artist;
