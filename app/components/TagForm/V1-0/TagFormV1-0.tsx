@@ -8,7 +8,6 @@ import Mp3Util from '@api/common/mp3/mp3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Id3Reader from '@api/id3v1/id3Reader';
-import { SelectValue } from 'antd/lib/select';
 
 const TextArea = Input.TextArea;
 
@@ -120,6 +119,18 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     );
   }
 
+  public async constructID3(props: ITagFormV10Props = this.props): Promise<void> {
+    const { selectedFile } = props;
+    const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
+    let id3: ID3V10;
+    if (Mp3Util.hasID3V1(dataView)) {
+      id3 = Id3Reader.readID3V10(dataView);
+    } else {
+      id3 = new ID3V10();
+    }
+    this.setState({ id3 });
+  }
+
   private onTextInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void {
@@ -138,18 +149,6 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   private onGenreInputChange(value: string): void {
     const { id3 } = this.state;
     id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
-    this.setState({ id3 });
-  }
-
-  private async constructID3(props: ITagFormV10Props = this.props): Promise<void> {
-    const { selectedFile } = props;
-    const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
-    let id3: ID3V10;
-    if (Mp3Util.hasID3V1(dataView)) {
-      id3 = Id3Reader.readID3V10(dataView);
-    } else {
-      id3 = new ID3V10();
-    }
     this.setState({ id3 });
   }
 }
