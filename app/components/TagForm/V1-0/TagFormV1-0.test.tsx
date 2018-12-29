@@ -1,15 +1,33 @@
+import path from 'path';
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
+import { UploadFile } from 'antd/lib/upload/interface';
+import FsUtil from '@api/common/fs/fsUtil';
 import { TagFormV10 } from './TagFormV1-0';
 
 const TextArea = Input.TextArea;
 
-describe('TagFormV1-1 component', () => {
+const mocksDir: string = path.resolve('./mocks');
+
+xdescribe('TagFormV1-0 component', () => {
   let wrapper: ReactWrapper;
+  let data: Buffer;
+  let mockUploadFile: UploadFile;
+
+  beforeAll(async () => {
+    data = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_004_basic.mp3`);
+    mockUploadFile = {
+      uid: '',
+      size: 2000,
+      name: 'mock.mp3',
+      type: 'audio/mp3',
+      originFileObj: new File([data], 'mock.mp3'),
+    };
+  });
 
   beforeEach(() => {
-    wrapper = mount(<TagFormV10 />);
+    wrapper = mount(<TagFormV10 selectedFile={mockUploadFile} />);
   });
 
   afterEach(() => {
