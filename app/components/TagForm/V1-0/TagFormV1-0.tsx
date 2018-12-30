@@ -28,12 +28,14 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     this.onGenreInputChange = this.onGenreInputChange.bind(this);
   }
 
-  public componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>, nextContext: any): void {
-    this.constructID3(nextProps);
+  public async componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>): Promise<void> {
+    const id3: ID3V10 = await this.constructID3(nextProps);
+    this.setState({ id3 });
   }
 
   public async componentDidMount(): Promise<void> {
-    this.constructID3();
+    const id3: ID3V10 = await this.constructID3();
+    this.setState({ id3 });
   }
 
   public render(): JSX.Element {
@@ -119,7 +121,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     );
   }
 
-  public async constructID3(props: ITagFormV10Props = this.props): Promise<void> {
+  public async constructID3(props: ITagFormV10Props = this.props): Promise<ID3V10> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V10;
@@ -128,7 +130,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     } else {
       id3 = new ID3V10();
     }
-    this.setState({ id3 });
+    return id3;
   }
 
   private onTextInputChange(
