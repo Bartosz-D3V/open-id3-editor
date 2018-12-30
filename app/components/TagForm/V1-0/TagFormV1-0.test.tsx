@@ -1,36 +1,24 @@
-import path from 'path';
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
-import { UploadFile } from 'antd/lib/upload/interface';
-import FsUtil from '@api/common/fs/fsUtil';
+import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import { TagFormV10 } from './TagFormV1-0';
 
 const TextArea = Input.TextArea;
 
-const mocksDir: string = path.resolve('./mocks');
-
-xdescribe('TagFormV1-0 component', () => {
+describe('TagFormV1-0 component', () => {
+  const mockUploadFile = { uid: 'QW1', size: 100, name: 'Mock_Track_1', type: 'blob/mp3' };
   let wrapper: ReactWrapper;
-  let data: Buffer;
-  let mockUploadFile: UploadFile;
 
-  beforeAll(async () => {
-    data = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_004_basic.mp3`);
-    mockUploadFile = {
-      uid: '',
-      size: 2000,
-      name: 'mock.mp3',
-      type: 'audio/mp3',
-      originFileObj: new File([data], 'mock.mp3'),
-    };
-  });
-
-  beforeEach(() => {
+  beforeAll(() => {
+    const id3: ID3V10 = new ID3V10();
+    spyOn(TagFormV10.prototype, 'constructID3').and.returnValue(Promise.resolve(id3));
     wrapper = mount(<TagFormV10 selectedFile={mockUploadFile} />);
+    wrapper.setState({ id3 });
+    wrapper.update();
   });
 
-  afterEach(() => {
+  afterAll(() => {
     wrapper.unmount();
   });
 
