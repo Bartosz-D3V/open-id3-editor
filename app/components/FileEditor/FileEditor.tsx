@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { Route } from 'react-router';
+import React, { Component } from 'react';
+import { Route, RouteComponentProps } from 'react-router';
 import { Layout } from 'antd';
-import { UploadFile } from 'antd/lib/upload/interface';
 import { FileList } from '@components/FileList/FileList';
 import { TagMenu } from '@components/TagMenu/TagMenu';
 import { TagFormV11 } from '@components/TagForm/V1-1/TagFormV1-1';
@@ -17,9 +16,24 @@ const SiderWrapper = standardContainer(Layout.Sider);
 
 const ContentWrapper = standardContainer(Layout.Content);
 
-export class FileEditor extends React.Component<IFileEditorProps> {
+export class FileEditor extends Component<IFileEditorProps> {
+  constructor(props: IFileEditorProps) {
+    super(props);
+    this.renderTagFormV10 = this.renderTagFormV10.bind(this);
+  }
+
+  public renderTagFormV10(props: RouteComponentProps): JSX.Element {
+    const { selectedFile } = this.props;
+    return <TagFormV10 {...props} selectedFile={selectedFile} />;
+  }
+
+  public componentDidMount(): void {
+    const { files, selectFile } = this.props;
+    selectFile(files[0].uid);
+  }
+
   public render(): JSX.Element {
-    const { files }: { files: Array<UploadFile> } = this.props;
+    const { files } = this.props;
 
     return (
       <LayoutWrapper>
@@ -31,7 +45,7 @@ export class FileEditor extends React.Component<IFileEditorProps> {
             <TagMenu />
           </HeaderWrapper>
           <ContentWrapper>
-            <Route path="/file-list/edit/ID3v1.0" component={TagFormV10} />
+            <Route path="/file-list/edit/ID3v1.0" render={this.renderTagFormV10} />
             <Route path="/file-list/edit/ID3v1.1" component={TagFormV11} />
           </ContentWrapper>
         </Layout>

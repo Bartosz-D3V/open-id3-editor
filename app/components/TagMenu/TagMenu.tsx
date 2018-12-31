@@ -1,5 +1,5 @@
+import React from 'react';
 import { Menu } from 'antd';
-import * as React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +16,9 @@ export const TagMenu = () => (
     {supportedTags.map((tag: string) => {
       return (
         <Menu.Item key={tag}>
-          <Link to={`/file-list/edit/${tag}`}>{tag}</Link>
+          <Link to={`/file-list/edit/${tag}`} replace={true}>
+            {tag}
+          </Link>
         </Menu.Item>
       );
     })}

@@ -127,9 +127,9 @@ export const genres: Array<Genre> = [
   'Acapella',
   'Euro-House',
   'Dance Hall',
-].map((genre: string, i: number) => {
+].map((description: string, index: number) => {
   return {
-    genre,
-    num: i.toString(10),
+    description,
+    index,
   };
 });

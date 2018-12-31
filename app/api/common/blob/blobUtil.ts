@@ -4,7 +4,7 @@ export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
   private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
 
-  public static blobToArrayBuffer = async (blob: Blob): Promise<ArrayBuffer> => {
+  public static blobToArrayBuffer = async <T extends Blob>(blob: T): Promise<ArrayBuffer> => {
     const fileReader: FileReader = new FileReader();
     let arrayBuffer: ArrayBuffer;
     fileReader.readAsArrayBuffer(blob);
@@ -21,7 +21,7 @@ export default class BlobUtil {
     });
   };
 
-  public static blobToDataView = async (blob: Blob): Promise<DataView> => {
+  public static blobToDataView = async <T extends Blob>(blob: T): Promise<DataView> => {
     const fileReader: FileReader = new FileReader();
     let dataView: DataView;
     fileReader.readAsArrayBuffer(blob);
@@ -108,7 +108,7 @@ export default class BlobUtil {
     return dataView;
   };
 
-  public static blobToDataURL = async (blob: Blob): Promise<string> => {
+  public static blobToDataURL = async <T extends Blob>(blob: T): Promise<string> => {
     const fileReader: FileReader = new FileReader();
     let dataURL: string;
     fileReader.readAsDataURL(blob);

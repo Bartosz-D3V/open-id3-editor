@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { Upload, Icon, message } from 'antd';
@@ -11,7 +11,7 @@ const DraggerWrapper = styled.div`
   height: 100vh;
 `;
 
-class DragAndDrop extends React.Component<IDragAndDropProps> {
+class DragAndDrop extends Component<IDragAndDropProps> {
   constructor(props: IDragAndDropProps) {
     super(props);
     this.onDrop = this.onDrop.bind(this);
@@ -21,7 +21,7 @@ class DragAndDrop extends React.Component<IDragAndDropProps> {
     const status = info.file.status;
     const acceptedFiles: Array<UploadFile> = info.fileList;
     if (status === 'done') {
-      this.props.addFiles(acceptedFiles);
+      this.props.setFiles(acceptedFiles);
       this.props.history.push('/file-list');
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
