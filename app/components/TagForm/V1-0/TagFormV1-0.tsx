@@ -111,7 +111,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
                 onChange={this.onGenreInputChange}
               >
                 {genres.map((genre: Genre) => (
-                  <Option key={genre.index.toString(10)}>{genre.genre}</Option>
+                  <Option key={genre.index.toString(10)}>{genre.description}</Option>
                 ))}
               </AutoComplete>
             </Form.Item>

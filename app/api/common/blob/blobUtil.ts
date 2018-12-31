@@ -1,5 +1,4 @@
 import BufferUtil from '../buffer/bufferUtil';
-import { instanceOf } from 'prop-types';
 
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';

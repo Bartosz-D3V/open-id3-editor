@@ -10,7 +10,6 @@ describe('FileEditor component', () => {
     size: 2000,
     name: 'mock.mp3',
     type: 'audio/mp3',
-    originFileObj: new File([''], 'mock.mp3'),
   };
 
   beforeEach(() => {

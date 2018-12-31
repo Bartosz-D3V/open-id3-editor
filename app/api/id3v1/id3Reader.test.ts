@@ -6,7 +6,7 @@ import ID3V10 from './domain/id3V1-0';
 import ID3V11 from './domain/id3V1-1';
 import ID3Reader from './id3Reader';
 
-const mocksDir: string = path.resolve('./mocks');
+const mocksDir: string = path.resolve('./example_mp3');
 
 describe('id3V1Reader', () => {
   describe('readID3V11 function', () => {
@@ -36,7 +36,7 @@ describe('id3V1Reader', () => {
       expect(id3.year).toEqual(1997);
       expect(id3.comment).toContain('Example Comment');
       expect(id3.genre.index).toEqual(7);
-      expect(id3.genre.genre).toEqual('Hip-Hop');
+      expect(id3.genre.description).toEqual('Hip-Hop');
     });
 
     it('should create ID3V1.0 object from DataView from real MP3 file', async () => {
@@ -47,7 +47,7 @@ describe('id3V1Reader', () => {
       expect(id31.header).toEqual('TAG');
       expect(id31.year).toEqual(2003);
       expect(id31.genre.index).toEqual(0);
-      expect(id31.genre.genre).toEqual('Blues');
+      expect(id31.genre.description).toEqual('Blues');
 
       const data2: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_018_genre.mp3`);
       const dataView2: DataView = new DataView(data2.buffer);
@@ -57,7 +57,7 @@ describe('id3V1Reader', () => {
       expect(id32.title).toEqual('Dance');
       expect(id32.year).toEqual(2003);
       expect(id32.genre.index).toEqual(3);
-      expect(id32.genre.genre).toEqual('Dance');
+      expect(id32.genre.description).toEqual('Dance');
     });
   });
 
@@ -94,7 +94,7 @@ describe('id3V1Reader', () => {
       expect(id3.zeroByte).toBeTruthy();
       expect(id3.track).toEqual(12);
       expect(id3.genre.index).toEqual(7);
-      expect(id3.genre.genre).toEqual('Hip-Hop');
+      expect(id3.genre.description).toEqual('Hip-Hop');
     });
 
     it('should create ID3V1.1 object from DataView from real MP3 file', async () => {
@@ -105,7 +105,7 @@ describe('id3V1Reader', () => {
       expect(id31.header).toEqual('TAG');
       expect(id31.year).toEqual(2003);
       expect(id31.genre.index).toEqual(0);
-      expect(id31.genre.genre).toEqual('Blues');
+      expect(id31.genre.description).toEqual('Blues');
 
       const data2: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_018_genre.mp3`);
       const dataView2: DataView = new DataView(data2.buffer);
@@ -115,7 +115,7 @@ describe('id3V1Reader', () => {
       expect(id32.title).toEqual('Dance');
       expect(id32.year).toEqual(2003);
       expect(id32.genre.index).toEqual(3);
-      expect(id32.genre.genre).toEqual('Dance');
+      expect(id32.genre.description).toEqual('Dance');
     });
   });
 });

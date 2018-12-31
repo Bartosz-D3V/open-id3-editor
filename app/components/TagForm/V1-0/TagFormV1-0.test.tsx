@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
+import { UploadFile } from 'antd/lib/upload/interface';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Genre from '@api/id3v1/domain/genre';
 import { TagFormV10 } from './TagFormV1-0';
@@ -8,7 +9,12 @@ import { TagFormV10 } from './TagFormV1-0';
 const TextArea = Input.TextArea;
 
 describe('TagFormV1-0 component', () => {
-  const mockUploadFile = { uid: 'QW1', size: 100, name: 'Mock_Track_1', type: 'blob/mp3' };
+  const mockUploadFile: UploadFile = {
+    uid: 'QW1',
+    size: 100,
+    name: 'Mock_Track_1',
+    type: 'blob/mp3',
+  };
   let wrapper: ReactWrapper;
 
   beforeAll(() => {
@@ -77,6 +83,43 @@ describe('TagFormV1-0 component', () => {
       expect(wrapper.find(Form.Item).get(5).props).toHaveProperty('label', 'Genre');
       expect(wrapper.find(Input).get(3).props).toHaveProperty('value', 'Blues');
       expect(wrapper.find(AutoComplete).get(0).props).toHaveProperty('placeholder', 'Genre');
+    });
+
+    it('should update the state when changing values', () => {
+      wrapper
+        .find(Input)
+        .at(0)
+        .simulate('change', { target: { name: 'title', value: 'New title' } });
+      wrapper
+        .find(Input)
+        .at(1)
+        .simulate('change', { target: { name: 'artist', value: 'New artist' } });
+      wrapper
+        .find(Input)
+        .at(2)
+        .simulate('change', { target: { name: 'album', value: 'New album' } });
+      wrapper
+        .find(InputNumber)
+        .at(0)
+        .prop('onChange')(2002);
+      wrapper
+        .find(Input)
+        .at(2)
+        .simulate('change', { target: { name: 'comment', value: 'New comment' } });
+      wrapper
+        .find(AutoComplete)
+        .at(0)
+        .prop('onChange')('1');
+
+      expect(wrapper.state('id3')).toHaveProperty('title', 'New title');
+      expect(wrapper.state('id3')).toHaveProperty('artist', 'New artist');
+      expect(wrapper.state('id3')).toHaveProperty('album', 'New album');
+      expect(wrapper.state('id3')).toHaveProperty('year', 2002);
+      expect(wrapper.state('id3')).toHaveProperty('comment', 'New comment');
+      expect(wrapper.state('id3')).toHaveProperty('genre', {
+        index: 1,
+        description: 'Classic Rock',
+      });
     });
   });
 });
