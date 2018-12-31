@@ -1,9 +1,9 @@
 export default class Genre {
   public index: number;
-  public genre: string;
+  public description: string;
 
-  constructor(index: number, genre: string) {
+  constructor(index: number, description: string) {
     this.index = index;
-    this.genre = genre;
+    this.description = description;
   }
 }

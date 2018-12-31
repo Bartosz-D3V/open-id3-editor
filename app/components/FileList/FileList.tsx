@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { IFileListProps } from './IFileListProps';
 import FileElement from '@containers/FileElement';
+import { IFileListProps } from './IFileListProps';
 
 const FileListWrapper = styled.div`
   background-color: white;
