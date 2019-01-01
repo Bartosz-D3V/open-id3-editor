@@ -70,4 +70,13 @@ export default class BufferUtil {
       .map((val: TypedArray) => val.byteLength)
       .reduce((prev: number, next: number) => prev + next, 0);
   }
+
+  public static arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
+    const buffer: Buffer = new Buffer(arrayBuffer.byteLength);
+    const view: Uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < buffer.length; ++i) {
+      buffer[i] = view[i];
+    }
+    return buffer;
+  }
 }

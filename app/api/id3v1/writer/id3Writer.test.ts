@@ -23,7 +23,7 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToString(dataView, 63, 30)).toEqual('album');
       expect(BlobUtil.dataViewToString(dataView, 93, 4)).toEqual('2000');
       expect(BlobUtil.dataViewToString(dataView, 97, 30)).toEqual('comment');
-      expect(BlobUtil.dataViewToString(dataView, 127, 1)).toEqual('0');
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(0);
     });
 
     it('should convert partial ID3V10 to DataView', () => {
@@ -36,7 +36,7 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToString(dataView, 63, 30)).toEqual('album');
       expect(BlobUtil.dataViewToString(dataView, 93, 4)).toEqual('2000');
       expect(BlobUtil.dataViewToString(dataView, 97, 30)).toEqual('');
-      expect(BlobUtil.dataViewToString(dataView, 127, 1)).toEqual('');
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(0);
     });
   });
 
@@ -50,7 +50,7 @@ describe('ID3Writer', () => {
         'comment',
         true,
         16,
-        new Genre(0, 'Blues')
+        new Genre(70, 'Darkwave')
       );
       const dataView: DataView = Id3Writer.convertID3V11ToDataView(id3);
 
@@ -62,7 +62,7 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToString(dataView, 97, 28)).toEqual('comment');
       expect(BlobUtil.dataViewToString(dataView, 125, 1)).toBeTruthy();
       expect(BlobUtil.dataViewToNum(dataView, 126)).toEqual(16);
-      expect(BlobUtil.dataViewToString(dataView, 127, 1)).toEqual('0');
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(70);
     });
   });
 });

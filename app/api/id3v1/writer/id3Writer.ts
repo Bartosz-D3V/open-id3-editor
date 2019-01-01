@@ -1,7 +1,7 @@
-import ID3V10 from '../domain/id3V1-0';
-import ID3V11 from '../domain/id3V1-1';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
+import ID3V10 from '../domain/id3V1-0';
+import ID3V11 from '../domain/id3V1-1';
 
 export default class Id3Writer {
   public static convertID3V10ToDataView(id3: ID3V10): DataView {
@@ -11,7 +11,7 @@ export default class Id3Writer {
     const album: DataView = new DataView(BufferUtil.createArrayBuffer(id3.album, 30));
     const year: DataView = new DataView(BufferUtil.createArrayBuffer(id3.year.toString(10)));
     const comment: DataView = new DataView(BufferUtil.createArrayBuffer(id3.comment, 30));
-    const genreIndex: string = id3.genre ? id3.genre.index.toString(2) : null;
+    const genreIndex: number = id3.genre ? id3.genre.index : null;
     const genre: DataView = new DataView(BufferUtil.createArrayBuffer(genreIndex, 1));
     return BlobUtil.concatDataViews(header, title, artist, album, year, comment, genre);
   }
@@ -27,7 +27,7 @@ export default class Id3Writer {
       BufferUtil.createArrayBuffer(Id3Writer.boolToChar(id3.zeroByte), 1)
     );
     const track: DataView = new DataView(BufferUtil.createArrayBuffer(id3.track, 1));
-    const genreIndex: string = id3.genre ? id3.genre.index.toString(2) : null;
+    const genreIndex: number = id3.genre ? id3.genre.index : null;
     const genre: DataView = new DataView(BufferUtil.createArrayBuffer(genreIndex, 1));
     return BlobUtil.concatDataViews(
       header,

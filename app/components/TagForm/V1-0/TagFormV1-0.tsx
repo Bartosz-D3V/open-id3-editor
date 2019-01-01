@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3v1/domain/genres';
@@ -8,6 +8,8 @@ import Mp3Util from '@api/common/mp3/mp3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
+import Id3Writer from '@api/id3v1/writer/id3Writer';
+import fsUtil from '@api/common/fs/fsUtil';
 
 const TextArea = Input.TextArea;
 
@@ -23,6 +25,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   constructor(props: ITagFormV10Props) {
     super(props);
     this.state = { id3: null };
+    this.saveFile = this.saveFile.bind(this);
     this.onTextInputChange = this.onTextInputChange.bind(this);
     this.onYearInputChange = this.onYearInputChange.bind(this);
     this.onGenreInputChange = this.onGenreInputChange.bind(this);
@@ -44,6 +47,11 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
 
     return (
       <Form>
+        <Row gutter={5} justify="space-around">
+          <Button type="primary" htmlType="button" onClick={this.saveFile}>
+            Save tag
+          </Button>
+        </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInCol}>
             <Form.Item label="Title">
@@ -131,6 +139,14 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
       id3 = new ID3V10();
     }
     return id3;
+  }
+
+  private async saveFile(): void {
+    const { selectedFile } = this.props;
+    const { id3 } = this.state;
+    const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
+    await fsUtil.truncate(selectedFile.originFileObj.path, 128);
+    await fsUtil.writeToFile(selectedFile.originFileObj.path, dataView);
   }
 
   private onTextInputChange(
