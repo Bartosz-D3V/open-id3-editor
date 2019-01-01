@@ -7,7 +7,7 @@ import Genre from '@api/id3v1/domain/genre';
 import Mp3Util from '@api/common/mp3/mp3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
-import Id3Reader from '@api/id3v1/id3Reader';
+import Id3Reader from '@api/id3v1/reader/id3Reader';
 
 const TextArea = Input.TextArea;
 
