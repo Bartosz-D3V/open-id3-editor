@@ -1,4 +1,4 @@
-import Genre from '@api/id3v1/domain/genre';
+import Genre from './genre';
 
 export default class {
   public readonly header = 'TAG';
@@ -12,14 +12,14 @@ export default class {
   public genre: Genre;
 
   constructor(
-    title: string,
-    artist: string,
-    album: string,
-    year: number,
-    comment: string,
-    zeroByte: boolean,
-    track: number,
-    genre: Genre
+    title?: string,
+    artist?: string,
+    album?: string,
+    year?: number,
+    comment?: string,
+    zeroByte?: boolean,
+    track?: number,
+    genre?: Genre
   ) {
     this.title = title;
     this.artist = artist;

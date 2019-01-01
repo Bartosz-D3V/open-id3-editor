@@ -1,5 +1,6 @@
 export default class BufferUtil {
   public static createArrayBuffer<T>(data: T, bufferSize?: number): ArrayBuffer {
+    if (data === null) return new ArrayBuffer(bufferSize);
     switch (typeof data) {
       case 'string':
         return BufferUtil.createArrayBufferFromString(data, bufferSize);

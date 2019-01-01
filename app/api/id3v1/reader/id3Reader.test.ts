@@ -1,9 +1,9 @@
 import path from 'path';
-import BufferUtil from '../common/buffer/bufferUtil';
-import BlobUtil from '../common/blob/blobUtil';
-import FsUtil from '../common/fs/fsUtil';
-import ID3V10 from './domain/id3V1-0';
-import ID3V11 from './domain/id3V1-1';
+import BufferUtil from '@api/common/buffer/bufferUtil';
+import BlobUtil from '@api/common/blob/blobUtil';
+import FsUtil from '@api/common/fs/fsUtil';
+import ID3V11 from '../domain/id3V1-1';
+import ID3V10 from '../domain/id3V1-0';
 import ID3Reader from './id3Reader';
 
 const mocksDir: string = path.resolve('./example_mp3');
