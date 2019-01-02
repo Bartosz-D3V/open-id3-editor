@@ -64,5 +64,20 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToNum(dataView, 126)).toEqual(16);
       expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(70);
     });
+
+    it('should convert partial ID3V11 to DataView', () => {
+      const id3: ID3V11 = new ID3V11(null, null, 'album', 2000, 'comment', true, 16, null);
+      const dataView: DataView = Id3Writer.convertID3V11ToDataView(id3);
+
+      expect(BlobUtil.dataViewToString(dataView, 0, 3)).toEqual('TAG');
+      expect(BlobUtil.dataViewToString(dataView, 3, 30)).toEqual('');
+      expect(BlobUtil.dataViewToString(dataView, 33, 30)).toEqual('');
+      expect(BlobUtil.dataViewToString(dataView, 63, 30)).toEqual('album');
+      expect(BlobUtil.dataViewToString(dataView, 93, 4)).toEqual('2000');
+      expect(BlobUtil.dataViewToString(dataView, 97, 28)).toEqual('comment');
+      expect(BlobUtil.dataViewToString(dataView, 125, 1)).toBeTruthy();
+      expect(BlobUtil.dataViewToNum(dataView, 126)).toEqual(16);
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(0);
+    });
   });
 });

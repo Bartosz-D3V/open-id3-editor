@@ -42,10 +42,10 @@ describe('TagFormV1-0 component', () => {
 
   describe('form', () => {
     it('should have Title input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(0)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(0).props).toHaveProperty('label', 'Title');
-      expect(wrapper.find(Input).get(0).props).toHaveProperty('value', 'title');
-      expect(wrapper.find(Input).get(0).props).toHaveProperty('maxLength', 30);
+      expect(wrapper.find(Form.Item).get(2)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(2).props).toHaveProperty('label', 'Title');
+      expect(wrapper.find(Input).get(2).props).toHaveProperty('value', 'title');
+      expect(wrapper.find(Input).get(2).props).toHaveProperty('maxLength', 30);
     });
 
     it('should have Artist input with read ID3 property', () => {

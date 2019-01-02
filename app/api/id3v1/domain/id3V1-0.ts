@@ -18,11 +18,11 @@ export default class {
     comment?: string,
     genre?: Genre
   ) {
-    this.title = title;
-    this.artist = artist;
-    this.album = album;
-    this.year = year;
-    this.comment = comment;
-    this.genre = genre;
+    this.title = title ? title : '';
+    this.artist = artist ? artist : '';
+    this.album = album ? album : '';
+    this.year = year ? year : null;
+    this.comment = comment ? comment : '';
+    this.genre = genre ? genre : new Genre(-1, '');
   }
 }
