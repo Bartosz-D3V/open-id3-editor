@@ -2,8 +2,6 @@ import BlobUtil from '@api/common/blob/blobUtil';
 
 export default class Mp3Util {
   public static hasID3V1 = (dataView: DataView): boolean => {
-    console.log(BlobUtil.dataViewToString(dataView, dataView.byteLength - 128, 3));
-    console.log(BlobUtil.dataViewToString(dataView, 0, dataView.byteLength));
     return dataView.byteLength < 128
       ? false
       : BlobUtil.dataViewToString(dataView, dataView.byteLength - 128, 3) === 'TAG';

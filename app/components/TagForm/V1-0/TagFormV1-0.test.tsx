@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
@@ -44,27 +44,27 @@ describe('TagFormV1-0 component', () => {
     it('should have Title input with read ID3 property', () => {
       expect(wrapper.find(Form.Item).get(2)).toBeTruthy();
       expect(wrapper.find(Form.Item).get(2).props).toHaveProperty('label', 'Title');
-      expect(wrapper.find(Input).get(2).props).toHaveProperty('value', 'title');
-      expect(wrapper.find(Input).get(2).props).toHaveProperty('maxLength', 30);
+      expect(wrapper.find(Input).get(0).props).toHaveProperty('value', 'title');
+      expect(wrapper.find(Input).get(0).props).toHaveProperty('maxLength', 30);
     });
 
     it('should have Artist input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(1)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(1).props).toHaveProperty('label', 'Artist');
+      expect(wrapper.find(Form.Item).get(3)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(3).props).toHaveProperty('label', 'Artist');
       expect(wrapper.find(Input).get(1).props).toHaveProperty('value', 'artist');
       expect(wrapper.find(Input).get(1).props).toHaveProperty('maxLength', 30);
     });
 
     it('should have Album input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(2)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(2).props).toHaveProperty('label', 'Album');
+      expect(wrapper.find(Form.Item).get(4)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(4).props).toHaveProperty('label', 'Album');
       expect(wrapper.find(Input).get(2).props).toHaveProperty('value', 'album');
       expect(wrapper.find(Input).get(2).props).toHaveProperty('maxLength', 30);
     });
 
     it('should have Year input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(3)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(3).props).toHaveProperty('label', 'Year');
+      expect(wrapper.find(Form.Item).get(5)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(5).props).toHaveProperty('label', 'Year');
       expect(wrapper.find(InputNumber).get(0).props).toHaveProperty('value', 2000);
       expect(wrapper.find(InputNumber).get(0).props).toHaveProperty('min', 0);
       expect(wrapper.find(InputNumber).get(0).props).toHaveProperty('precision', 0);
@@ -72,15 +72,15 @@ describe('TagFormV1-0 component', () => {
     });
 
     it('should have Comment input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(4)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(4).props).toHaveProperty('label', 'Comment');
+      expect(wrapper.find(Form.Item).get(6)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(6).props).toHaveProperty('label', 'Comment');
       expect(wrapper.find(TextArea).get(0).props).toHaveProperty('value', 'comment');
       expect(wrapper.find(TextArea).get(0).props).toHaveProperty('maxLength', 30);
     });
 
     it('should have Genre input with read ID3 property', () => {
-      expect(wrapper.find(Form.Item).get(5)).toBeTruthy();
-      expect(wrapper.find(Form.Item).get(5).props).toHaveProperty('label', 'Genre');
+      expect(wrapper.find(Form.Item).get(7)).toBeTruthy();
+      expect(wrapper.find(Form.Item).get(7).props).toHaveProperty('label', 'Genre');
       expect(wrapper.find(Input).get(3).props).toHaveProperty('value', 'Blues');
       expect(wrapper.find(AutoComplete).get(0).props).toHaveProperty('placeholder', 'Genre');
     });
