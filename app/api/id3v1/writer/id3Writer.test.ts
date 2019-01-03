@@ -36,7 +36,7 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToString(dataView, 63, 30)).toEqual('album');
       expect(BlobUtil.dataViewToString(dataView, 93, 4)).toEqual('2000');
       expect(BlobUtil.dataViewToString(dataView, 97, 30)).toEqual('');
-      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(0);
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(-1);
     });
   });
 
@@ -77,7 +77,7 @@ describe('ID3Writer', () => {
       expect(BlobUtil.dataViewToString(dataView, 97, 28)).toEqual('comment');
       expect(BlobUtil.dataViewToString(dataView, 125, 1)).toBeTruthy();
       expect(BlobUtil.dataViewToNum(dataView, 126)).toEqual(16);
-      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(0);
+      expect(BlobUtil.dataViewToNum(dataView, 127)).toEqual(-1);
     });
   });
 });
