@@ -1,5 +1,5 @@
-import fs, { Stats } from 'fs';
 import util from 'util';
+import fs, { Stats } from 'fs';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 
 export default class FsUtil {
