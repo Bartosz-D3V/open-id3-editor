@@ -29,7 +29,13 @@
   "build": {
     "appId": "org.open-id3-editor",
     "win": {
-      "target": "NSIS"
+      "target": "portable"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "portable": {
+      "artifactName": "OpenID3Editor.exe"
     }
   },
   "devDependencies": {
