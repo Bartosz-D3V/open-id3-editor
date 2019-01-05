@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AutoComplete, Col, Form, Input, InputNumber, Row } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3v1/domain/genres';
@@ -8,6 +8,8 @@ import Mp3Util from '@api/common/mp3/mp3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
+import Id3Writer from '@api/id3v1/writer/id3Writer';
+import fsUtil from '@api/common/fs/fsUtil';
 
 const TextArea = Input.TextArea;
 
@@ -18,11 +20,18 @@ const twoInCol = {
   sm: { span: 22, offset: 1 },
   md: { span: 10, offset: 1 },
 };
+const oneInCol = {
+  xs: { span: 22, offset: 1 },
+  sm: { span: 8, offset: 4 },
+  md: { span: 8, offset: 4 },
+};
 
 export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   constructor(props: ITagFormV10Props) {
     super(props);
-    this.state = { id3: null };
+    this.state = { id3: new ID3V10() };
+    this.saveFile = this.saveFile.bind(this);
+    this.deleteTag = this.deleteTag.bind(this);
     this.onTextInputChange = this.onTextInputChange.bind(this);
     this.onYearInputChange = this.onYearInputChange.bind(this);
     this.onGenreInputChange = this.onGenreInputChange.bind(this);
@@ -40,10 +49,24 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
 
   public render(): JSX.Element {
     const { id3 } = this.state;
-    if (id3 === null) return <div />;
-
     return (
       <Form>
+        <Row gutter={5} justify="center">
+          <Col {...oneInCol}>
+            <Form.Item>
+              <Button type="primary" htmlType="button" onClick={this.saveFile}>
+                Save tag
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col {...oneInCol}>
+            <Form.Item>
+              <Button type="danger" htmlType="button" onClick={this.deleteTag}>
+                Delete tag
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInCol}>
             <Form.Item label="Title">
@@ -107,7 +130,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
             <Form.Item label="Genre">
               <AutoComplete
                 placeholder="Genre"
-                value={id3.genre ? id3.genre.index.toString(10) : ''}
+                value={id3.genre && id3.genre.index > -1 ? id3.genre.index.toString(10) : ''}
                 onChange={this.onGenreInputChange}
               >
                 {genres.map((genre: Genre) => (
@@ -131,6 +154,27 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
       id3 = new ID3V10();
     }
     return id3;
+  }
+
+  private async saveFile(): Promise<void> {
+    const { selectedFile } = this.props;
+    const { id3 } = this.state;
+    const electronFile: any = selectedFile.originFileObj;
+    const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
+    await fsUtil.truncate(electronFile.path, 128);
+    await fsUtil.writeToFile(electronFile.path, dataView);
+  }
+
+  private async deleteTag(): Promise<void> {
+    const { selectedFile } = this.props;
+    let { id3 } = this.state;
+    const electronFile: any = selectedFile.originFileObj;
+    const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
+    if (Mp3Util.hasID3V1(dataView)) {
+      await fsUtil.truncate(electronFile.path, 128);
+    }
+    id3 = new ID3V10();
+    this.setState({ id3 });
   }
 
   private onTextInputChange(
