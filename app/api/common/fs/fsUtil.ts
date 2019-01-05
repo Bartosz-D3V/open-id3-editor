@@ -1,5 +1,5 @@
-import fs, { Stats } from 'fs';
 import util from 'util';
+import fs, { Stats } from 'fs';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 
 export default class FsUtil {
@@ -23,8 +23,7 @@ export default class FsUtil {
   public static truncate = async (path: string, length: number): Promise<void> => {
     try {
       const stats: Stats = await util.promisify(fs.stat)(path);
-      const fileSize: number = stats.size;
-      const newFileSize = fileSize - length;
+      const newFileSize = stats.size - length;
       await util.promisify(fs.truncate)(path, newFileSize);
     } catch (error) {
       throw error;
