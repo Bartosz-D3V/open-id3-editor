@@ -6,7 +6,7 @@ import ID3V11 from '../domain/id3V1-1';
 import ID3V10 from '../domain/id3V1-0';
 import ID3Reader from './id3Reader';
 
-const mocksDir: string = path.resolve('./example_mp3');
+const mp3Dir: string = path.resolve('./example_mp3');
 
 describe('id3V1Reader', () => {
   describe('readID3V11 function', () => {
@@ -40,7 +40,7 @@ describe('id3V1Reader', () => {
     });
 
     it('should create ID3V1.0 object from DataView from real MP3 file', async () => {
-      const data1: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_004_basic.mp3`);
+      const data1: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V10/id3v1_004_basic.mp3`);
       const dataView1: DataView = new DataView(data1.buffer);
       const id31: ID3V10 = ID3Reader.readID3V10(dataView1);
 
@@ -49,7 +49,7 @@ describe('id3V1Reader', () => {
       expect(id31.genre.index).toEqual(0);
       expect(id31.genre.description).toEqual('Blues');
 
-      const data2: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_018_genre.mp3`);
+      const data2: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V10/id3v1_018_genre.mp3`);
       const dataView2: DataView = new DataView(data2.buffer);
       const id32: ID3V11 = ID3Reader.readID3V11(dataView2);
 
@@ -98,7 +98,7 @@ describe('id3V1Reader', () => {
     });
 
     it('should create ID3V1.1 object from DataView from real MP3 file', async () => {
-      const data1: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_004_basic.mp3`);
+      const data1: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V10/id3v1_004_basic.mp3`);
       const dataView1: DataView = new DataView(data1.buffer);
       const id31: ID3V11 = ID3Reader.readID3V11(dataView1);
 
@@ -107,7 +107,7 @@ describe('id3V1Reader', () => {
       expect(id31.genre.index).toEqual(0);
       expect(id31.genre.description).toEqual('Blues');
 
-      const data2: Buffer = await FsUtil.readFile(`${mocksDir}/ID3V10/id3v1_018_genre.mp3`);
+      const data2: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V10/id3v1_018_genre.mp3`);
       const dataView2: DataView = new DataView(data2.buffer);
       const id32: ID3V11 = ID3Reader.readID3V11(dataView2);
 

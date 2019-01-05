@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import FsUtil from './fsUtil';
 
-const mocksDir: string = path.resolve('./example_mp3');
+const mp3Dir: string = path.resolve('./example_mp3');
 
 describe('fsUtil class', () => {
-  const mockPath = `${mocksDir}/ID3V10/id3v1_004_basic.mp3`;
+  const mockPath = `${mp3Dir}/ID3V10/id3v1_004_basic.mp3`;
 
   describe('readFile function', () => {
     it('should return a promise with file as a buffer', async () => {
@@ -16,9 +16,14 @@ describe('fsUtil class', () => {
 
     it('should re-throw error in case of error', async () => {
       spyOn(fs, 'readFile').and.throwError('ERR');
-      const err = FsUtil.readFile(mockPath);
+      let err;
+      try {
+        await FsUtil.readFile(mockPath);
+      } catch (e) {
+        err = e;
+      }
 
-      expect(err).rejects.toThrow('ERR');
+      expect(err).toEqual(new Error('ERR'));
     });
   });
 
@@ -34,9 +39,14 @@ describe('fsUtil class', () => {
 
     it('should re-throw error in case of error', async () => {
       spyOn(fs, 'appendFile').and.throwError('ERR');
-      const err = FsUtil.writeToFile(mockPath, mockData);
+      let err;
+      try {
+        await FsUtil.writeToFile(mockPath, mockData);
+      } catch (e) {
+        err = e;
+      }
 
-      expect(err).rejects.toThrow('ERR');
+      expect(err).toEqual(new Error('ERR'));
     });
   });
 
@@ -50,9 +60,14 @@ describe('fsUtil class', () => {
 
     it('should re-throw error in case of error', async () => {
       spyOn(fs, 'truncate').and.throwError('ERR');
-      const err = FsUtil.truncate(mockPath, 2);
+      let err;
+      try {
+        await FsUtil.truncate(mockPath, 2);
+      } catch (e) {
+        err = e;
+      }
 
-      expect(err).rejects.toThrow('ERR');
+      expect(err).toEqual(new Error('ERR'));
     });
   });
 });
