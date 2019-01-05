@@ -5,7 +5,7 @@ import FsUtil from './fsUtil';
 const mocksDir: string = path.resolve('./example_mp3');
 
 describe('fsUtil class', () => {
-  const mockPath: string = `${mocksDir}/ID3V10/id3v1_004_basic.mp3`;
+  const mockPath = `${mocksDir}/ID3V10/id3v1_004_basic.mp3`;
 
   describe('readFile function', () => {
     it('should return a promise with file as a buffer', async () => {
