@@ -40,10 +40,10 @@ describe('fsUtil class', () => {
     });
   });
 
-  xdescribe('truncate function', () => {
-    it('should truncate a file', () => {
-      spyOn(fs, 'truncate');
-      FsUtil.truncate(mockPath, 2);
+  describe('truncate function', () => {
+    it('should truncate a file', async () => {
+      spyOn(fs, 'truncate').and.callFake((...args) => args[2]());
+      await FsUtil.truncate(mockPath, 2);
 
       expect(fs.truncate).toHaveBeenCalled();
     });

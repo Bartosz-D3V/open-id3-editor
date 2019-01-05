@@ -72,7 +72,7 @@ export default class BufferUtil {
   }
 
   public static arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
-    const buffer: Buffer = new Buffer(arrayBuffer.byteLength);
+    const buffer: Buffer = Buffer.alloc(arrayBuffer.byteLength);
     const view: Uint8Array = new Uint8Array(arrayBuffer);
     for (let i = 0; i < buffer.length; ++i) {
       buffer[i] = view[i];
