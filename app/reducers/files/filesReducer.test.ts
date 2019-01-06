@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/lib/upload/interface';
-import { FilesActionTypes } from '@actions/filesActionTypes';
-import { FilesAction } from '@actions/iFilesAction';
+import { FilesActionTypes } from '@actions/files/filesActionTypes';
+import { FilesAction } from '@actions/files/iFilesAction';
 import { IFilesState } from '@states/iFilesState';
 import filesReducer from './filesReducer';
 

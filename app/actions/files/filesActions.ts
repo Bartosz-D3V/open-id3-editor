@@ -1,7 +1,7 @@
 import { ActionCreator } from 'redux';
 import { UploadFile } from 'antd/lib/upload/interface';
-import ISetFilesAction from '@actions/iSetFilesAction';
 import { FilesActionTypes } from './filesActionTypes';
+import ISetFilesAction from './iSetFilesAction';
 import IAddFilesAction from './iAddFilesAction';
 import IGetFilesAction from './iGetFilesAction';
 import ISelectFileAction from './iSelectFileAction';

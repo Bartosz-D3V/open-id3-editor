@@ -31,7 +31,7 @@ class DragAndDrop extends Component<IDragAndDropProps> {
   public render(): JSX.Element {
     return (
       <DraggerWrapper>
-        <Dragger multiple={true} showUploadList={false} onChange={this.onDrop}>
+        <Dragger accept=".mp3" multiple={true} showUploadList={false} onChange={this.onDrop}>
           <p className="ant-upload-drag-icon">
             <Icon type="inbox" />
           </p>

@@ -1,6 +1,6 @@
-import { FilesActionTypes } from '@actions/filesActionTypes';
 import { IFilesState } from '@states/iFilesState';
-import { FilesAction } from '@actions/iFilesAction';
+import { FilesAction } from '@actions/files/iFilesAction';
+import { FilesActionTypes } from '@actions/files/filesActionTypes';
 
 const initialState: IFilesState = {
   files: [],

@@ -2,7 +2,7 @@ import { createStore, Store } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { PersistConfig, Persistor } from 'redux-persist/es/types';
-import rootReducer from '@reducers/filesReducer';
+import rootReducer from '@reducers/reducer';
 
 const persistConfig: PersistConfig = {
   storage,
