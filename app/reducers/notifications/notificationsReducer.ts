@@ -18,14 +18,14 @@ export default (state = initialState, action: NotificationsAction): INotificatio
       return {
         ...state,
         notifications:
-          state.notifications.length > 2
-            ? state.notifications.splice(0).concat(action.payload)
+          state.notifications.length >= 2
+            ? state.notifications.filter((value, index) => index !== 0).concat(action.payload)
             : state.notifications.concat(action.payload),
       };
     case NotificationsActionTypes.REMOVE_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.splice(action.payload),
+        notifications: state.notifications.filter((value, index) => index !== action.payload),
       };
   }
 };
