@@ -1,5 +1,5 @@
 import { UploadFile } from 'antd/lib/upload/interface';
-import { selectFile } from '@actions/filesActions';
+import { selectFile } from '@actions/files/filesActions';
 
 export interface IFileEditorProps {
   files: Array<UploadFile>;

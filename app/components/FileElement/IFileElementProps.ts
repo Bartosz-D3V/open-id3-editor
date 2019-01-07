@@ -1,4 +1,4 @@
-import { selectFile } from '@actions/filesActions';
+import { selectFile } from '@actions/files/filesActions';
 
 export interface IFileElementProps {
   filename: string;
