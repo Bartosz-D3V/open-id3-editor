@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, InputNumber, notification, Row } from 'antd';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3v1/domain/genres';
@@ -29,7 +29,7 @@ const oneInCol = {
 export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   constructor(props: ITagFormV10Props) {
     super(props);
-    this.state = { id3: new ID3V10() };
+    this.state = { id3: new ID3V10(), saving: false };
     this.saveFile = this.saveFile.bind(this);
     this.deleteTag = this.deleteTag.bind(this);
     this.onTextInputChange = this.onTextInputChange.bind(this);
@@ -48,20 +48,20 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   }
 
   public render(): JSX.Element {
-    const { id3 } = this.state;
+    const { id3, saving } = this.state;
     return (
       <Form>
         <Row gutter={5} justify="center">
           <Col {...oneInCol}>
             <Form.Item>
-              <Button type="primary" htmlType="button" onClick={this.saveFile}>
+              <Button type="primary" htmlType="button" disabled={saving} onClick={this.saveFile}>
                 Save tag
               </Button>
             </Form.Item>
           </Col>
           <Col {...oneInCol}>
             <Form.Item>
-              <Button type="danger" htmlType="button" onClick={this.deleteTag}>
+              <Button type="danger" htmlType="button" disabled={saving} onClick={this.deleteTag}>
                 Delete tag
               </Button>
             </Form.Item>
@@ -145,6 +145,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   }
 
   public async constructID3(props: ITagFormV10Props = this.props): Promise<ID3V10> {
+    this.setSaving();
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V10;
@@ -153,16 +154,20 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     } else {
       id3 = new ID3V10();
     }
+    this.setSaving(false);
     return id3;
   }
 
   private async saveFile(): Promise<void> {
+    this.setSaving();
     const { selectedFile } = this.props;
     const { id3 } = this.state;
     const electronFile: any = selectedFile.originFileObj;
     const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
     await fsUtil.truncate(electronFile.path, 128);
     await fsUtil.writeToFile(electronFile.path, dataView);
+    this.setSaving(false);
+    TagFormV10.openNotification('Tag has been saved');
   }
 
   private async deleteTag(): Promise<void> {
@@ -175,6 +180,14 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     }
     id3 = new ID3V10();
     this.setState({ id3 });
+    TagFormV10.openNotification('Tag has been deleted');
+  }
+
+  private static openNotification(description: string): void {
+    notification.open({
+      description,
+      message: 'ID3 Editor',
+    });
   }
 
   private onTextInputChange(
@@ -196,5 +209,9 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const { id3 } = this.state;
     id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
     this.setState({ id3 });
+  }
+
+  private setSaving(saving: boolean = true): void {
+    this.setState({ saving });
   }
 }
