@@ -18,7 +18,8 @@
       "@store/*": ["app/store/*"],
       "@containers/*": ["app/containers/*"],
       "@components/*": ["app/components/*"],
-      "@hoc/*": ["app/HOC/*"]
+      "@hoc/*": ["app/HOC/*"],
+      "@layout/*": ["app/layout/*"]
     }
   },
   "exclude": ["node_modules/", "dist/"]
