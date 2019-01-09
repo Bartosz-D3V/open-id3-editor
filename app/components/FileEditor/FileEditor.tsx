@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Route, RouteComponentProps } from 'react-router';
-import { Layout } from 'antd';
+import { Icon, Layout } from 'antd';
 import { FileList } from '@components/FileList/FileList';
 import { TagMenu } from '@components/TagMenu/TagMenu';
 import { TagFormV11 } from '@components/TagForm/V1-1/TagFormV1-1';
 import { TagFormV10 } from '@components/TagForm/V1-0/TagFormV1-0';
 import { standardContainer } from '@hoc/StandardContainer/StandardContainer';
 import { IFileEditorProps } from './IFileEditorProps';
+import { Link } from 'react-router-dom';
 
 const LayoutWrapper = standardContainer(Layout);
 
