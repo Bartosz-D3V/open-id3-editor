@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { Menu } from 'antd';
+import { Icon, Menu } from 'antd';
 import { TagMenu } from '@components/TagMenu/TagMenu';
 import { HashRouter } from 'react-router-dom';
 
@@ -54,5 +54,14 @@ describe('TagMenu component', () => {
         .at(4)
         .text()
     ).toEqual('ID3v2.3');
+  });
+
+  it('should have home button', () => {
+    expect(
+      wrapper
+        .find(Menu.Item)
+        .at(5)
+        .text()
+    ).toEqual('Home');
   });
 });

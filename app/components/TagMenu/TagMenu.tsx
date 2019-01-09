@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Icon, Menu } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -22,5 +22,11 @@ export const TagMenu = () => (
         </Menu.Item>
       );
     })}
+    <Menu.Item>
+      <Link to={'/'} replace={true}>
+        <Icon type="home" theme="outlined" />
+        Home
+      </Link>
+    </Menu.Item>
   </MenuWrapper>
 );
