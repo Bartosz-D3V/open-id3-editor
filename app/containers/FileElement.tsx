@@ -1,9 +1,9 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { IFilesState } from '@states/iFilesState';
-import * as FilesActions from '@actions/filesActions';
 import { FileElement } from '@components/FileElement/FileElement';
 import { IFileElementProps } from '@components/FileElement/IFileElementProps';
+import * as FilesActions from '@actions/filesActions';
 
 const mapStateToProps = (state: IFilesState, ownProps: IFileElementProps) => ({
   filename: ownProps.filename,

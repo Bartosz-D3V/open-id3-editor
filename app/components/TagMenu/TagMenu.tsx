@@ -16,14 +16,14 @@ export const TagMenu = () => (
     {supportedTags.map((tag: string) => {
       return (
         <Menu.Item key={tag}>
-          <Link to={`/file-list/edit/${tag}`} replace={true}>
+          <Link to={`/file-list/edit/${tag}`} replace>
             {tag}
           </Link>
         </Menu.Item>
       );
     })}
     <Menu.Item>
-      <Link to={'/'} replace={true}>
+      <Link to={'/'} replace>
         <Icon type="home" theme="outlined" />
         Home
       </Link>

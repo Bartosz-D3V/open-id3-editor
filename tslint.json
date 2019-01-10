@@ -17,6 +17,7 @@
     "import-spacing": true,
     "indent": [true, "spaces"],
     "interface-over-type-literal": true,
+    "jsx-boolean-value": ["never"],
     "label-position": true,
     "max-line-length": [true, 100],
     "member-access": true,
