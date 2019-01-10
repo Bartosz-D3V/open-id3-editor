@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import * as FilesActions from '@actions/filesActions';
 import { IFilesState } from '@states/iFilesState';
 import { FileEditor } from '@components/FileEditor/FileEditor';
+import * as FilesActions from '@actions/filesActions';
 
 const mapStateToProps = (state: IFilesState) => ({
   files: state.files,

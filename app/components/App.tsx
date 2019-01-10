@@ -17,7 +17,7 @@ export class App extends Component {
         <PersistGate persistor={persistor}>
           <HashRouter>
             <main>
-              <Route exact={true} path="/" component={DragAndDrop} />
+              <Route exact path="/" component={DragAndDrop} />
               <Route path="/file-list" component={FileEditor} />
             </main>
           </HashRouter>

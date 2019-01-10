@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { Icon, Menu } from 'antd';
+import { Menu } from 'antd';
 import { TagMenu } from '@components/TagMenu/TagMenu';
 import { HashRouter } from 'react-router-dom';
 

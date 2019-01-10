@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { standardContainer } from '@hoc/StandardContainer/StandardContainer';
 
 const MockComponent = () => {
-  return <div style={{ backgroundColor: 'red' }} aria-busy={true} />;
+  return <div style={{ backgroundColor: 'red' }} aria-busy />;
 };
 
 describe('StandardContainer HOC', () => {
