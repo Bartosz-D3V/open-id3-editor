@@ -5,7 +5,8 @@ export const twoInCol = {
 };
 
 export const oneInCol = {
-  xs: { span: 22, offset: 1 },
-  sm: { span: 8, offset: 4 },
-  md: { span: 8, offset: 4 },
+  xs: { span: 21, offset: 1 },
+  sm: { span: 8, offset: 2 },
+  md: { span: 8, offset: 2 },
+  lg: { span: 6, offset: 4 },
 };

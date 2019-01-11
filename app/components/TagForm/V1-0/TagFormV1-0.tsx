@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
+import File from 'electron';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3v1/domain/genres';
@@ -45,14 +46,14 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
         <Row gutter={5} justify="center">
           <Col {...oneInCol}>
             <Form.Item>
-              <Button type="primary" htmlType="button" onClick={this.saveFile}>
+              <Button block type="primary" htmlType="button" onClick={this.saveFile}>
                 Save tag
               </Button>
             </Form.Item>
           </Col>
           <Col {...oneInCol}>
             <Form.Item>
-              <Button type="danger" htmlType="button" onClick={this.deleteTag}>
+              <Button block type="danger" htmlType="button" onClick={this.deleteTag}>
                 Delete tag
               </Button>
             </Form.Item>
@@ -151,8 +152,8 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const {
       selectedFile: { originFileObj },
     } = this.props;
-    const electronFile: any = originFileObj;
     const { id3 } = this.state;
+    const electronFile: File = originFileObj;
     await Mp3Util.deleteID3V10(originFileObj);
     await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V10ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
