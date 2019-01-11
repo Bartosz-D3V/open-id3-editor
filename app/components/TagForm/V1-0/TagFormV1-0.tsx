@@ -148,25 +148,21 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   }
 
   private async saveFile(): Promise<void> {
-    const { selectedFile } = this.props;
+    const {
+      selectedFile: { originFileObj },
+    } = this.props;
+    const electronFile: any = originFileObj;
     const { id3 } = this.state;
-    const electronFile: any = selectedFile.originFileObj;
-    const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
-    await FsUtil.truncate(electronFile.path, 128);
-    await FsUtil.writeToFile(electronFile.path, dataView);
+    await Mp3Util.deleteID3V10(originFileObj);
+    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V10ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 
   private async deleteTag(): Promise<void> {
-    const { selectedFile } = this.props;
-    let { id3 } = this.state;
-    const electronFile: any = selectedFile.originFileObj;
-    const dataView: DataView = Id3Writer.convertID3V10ToDataView(id3);
-    if (Mp3Util.hasID3V1(dataView)) {
-      await FsUtil.truncate(electronFile.path, 128);
-    }
-    id3 = new ID3V10();
-    this.setState({ id3 });
+    const {
+      selectedFile: { originFileObj },
+    } = this.props;
+    this.setState({ id3: await Mp3Util.deleteID3V10(originFileObj) });
     ComponentUtil.openNotification('Tag has been deleted');
   }
 
