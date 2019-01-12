@@ -4,7 +4,7 @@ import File from 'electron';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3v1/domain/genres';
-import { oneInCol, twoInCol } from '@layout/grid';
+import { oneInRow, twoInRow } from '@layout/grid';
 import Mp3Util from '@api/common/mp3/mp3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import FsUtil from '@api/common/fs/fsUtil';
@@ -44,14 +44,14 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     return (
       <Form>
         <Row gutter={5} justify="center">
-          <Col {...oneInCol}>
+          <Col {...oneInRow}>
             <Form.Item>
               <Button block type="primary" htmlType="button" onClick={this.saveFile}>
                 Save tag
               </Button>
             </Form.Item>
           </Col>
-          <Col {...oneInCol}>
+          <Col {...oneInRow}>
             <Form.Item>
               <Button block type="danger" htmlType="button" onClick={this.deleteTag}>
                 Delete tag
@@ -60,7 +60,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
-          <Col {...twoInCol}>
+          <Col {...twoInRow}>
             <Form.Item label="Title">
               <Input
                 name="title"
@@ -70,7 +70,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
               />
             </Form.Item>
           </Col>
-          <Col {...twoInCol}>
+          <Col {...twoInRow}>
             <Form.Item label="Artist">
               <Input
                 name="artist"
@@ -82,7 +82,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
-          <Col {...twoInCol}>
+          <Col {...twoInRow}>
             <Form.Item label="Album">
               <Input
                 name="album"
@@ -92,7 +92,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
               />
             </Form.Item>
           </Col>
-          <Col {...twoInCol}>
+          <Col {...twoInRow}>
             <Form.Item label="Year">
               <InputNumber
                 name="year"
@@ -118,7 +118,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
-          <Col {...twoInCol}>
+          <Col {...twoInRow}>
             <Form.Item label="Genre">
               <AutoComplete
                 placeholder="Genre"
