@@ -4,6 +4,7 @@ import Mp3Util from './mp3Util';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
+import ID3V11 from '@api/id3v1/domain/id3V1-1';
 
 const mp3Dir: string = path.resolve('./example_mp3');
 const mockPath = `${mp3Dir}/ID3V10/id3v1_004_basic.mp3`;
@@ -63,6 +64,28 @@ describe('mp3Util', () => {
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V10());
+    });
+  });
+
+  describe('deleteID3V11 function', () => {
+    beforeEach(() => {
+      spyOn(fs, 'truncate').and.callFake((...args) => args[2]());
+    });
+
+    it('should return empty ID3V11 object and delete tag if it exists', async () => {
+      spyOn(Mp3Util, 'hasID3V1').and.returnValue(true);
+      const id3: ID3V11 = await Mp3Util.deleteID3V11({ path: mockPath });
+
+      expect(fs.truncate).toHaveBeenCalled();
+      expect(id3).toEqual(new ID3V11());
+    });
+
+    it('should return empty ID3V11 object, but not delete tag if it does not exist', async () => {
+      spyOn(Mp3Util, 'hasID3V1').and.returnValue(false);
+      const id3: ID3V11 = await Mp3Util.deleteID3V11({ path: mockPath });
+
+      expect(fs.truncate).not.toHaveBeenCalled();
+      expect(id3).toEqual(new ID3V11());
     });
   });
 });
