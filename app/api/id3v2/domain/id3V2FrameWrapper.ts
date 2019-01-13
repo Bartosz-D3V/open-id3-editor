@@ -1,6 +1,6 @@
 import ID3V2Frame from './id3V2Frame';
 
-export default class {
+export default class ID3V2FrameWrapper {
   public frame: ID3V2Frame;
   public data: any;
 

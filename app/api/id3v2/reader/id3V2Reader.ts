@@ -1,20 +1,20 @@
-import BlobUtil from '../common/blob/blobUtil';
-import ID3V2 from './domain/id3V2';
-import ID3V2Header from './domain/id3V2Header';
-import ID3V2Frame from './domain/id3V2Frame';
-import ID3V2FrameWrapper from './domain/id3V2FrameWrapper';
-import { FrameID } from './domain/frameID';
+import BlobUtil from '@api/common/blob/blobUtil';
+import ID3V2 from '../domain/id3V2';
+import ID3V2Header from '../domain/id3V2Header';
+import ID3V2Frame from '../domain/id3V2Frame';
+import ID3V2FrameWrapper from '../domain/id3V2FrameWrapper';
+import { FrameID } from '../domain/frameID';
 
 export default class ID3V2Reader {
-  public static readID3V2(dataView: DataView): ID3V2 {
+  public static readID3V20(dataView: DataView): ID3V2 {
     const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
     const flags: string = BlobUtil.dataViewToString(dataView, offset + 6, 1);
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(version, flags, size);
-
     const data: Array<ID3V2FrameWrapper> = [];
     let i = 10;
+
     while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = ID3V2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);

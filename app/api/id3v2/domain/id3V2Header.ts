@@ -1,6 +1,6 @@
 export default class {
   public readonly tagId = 'ID3';
-  public version: string;
+  public readonly version: string;
   public flags: string;
   public size: number;
 
