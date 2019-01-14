@@ -26,12 +26,9 @@ export default class ID3V2Reader {
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
       const unsynchronizationFrame = !!BlobUtil.dataViewToString(dataView, i + 8, 1);
       const compressionFrame = !!BlobUtil.dataViewToString(dataView, i + 9, 1);
+      const frameFlags = new Id3v2Flags(unsynchronizationFrame, compressionFrame);
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
-      const frame: ID3V2Frame = new ID3V2Frame(
-        frameId,
-        frameSize,
-        new Id3v2Flags(unsynchronization, compression)
-      );
+      const frame: ID3V2Frame = new ID3V2Frame(frameId, frameSize, frameFlags);
       const frameWrapper: ID3V2FrameWrapper = new ID3V2FrameWrapper(frame, frameData);
       data.push(frameWrapper);
       i += frameSize + 10;
