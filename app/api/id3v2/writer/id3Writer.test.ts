@@ -26,4 +26,16 @@ describe('ID3Writer', () => {
       expect(id31.body[0].data).toEqual('Example comment');
     });
   });
+
+  describe('encodeFrameSize function', () => {
+    it('should return 0000 if size is zero or less', () => {
+      expect(Id3Writer.encodeFrameSize(-10)).toEqual('0000');
+      expect(Id3Writer.encodeFrameSize(0)).toEqual('0000');
+    });
+
+    it('should encode number to format used by ID3', () => {
+      expect(Id3Writer.encodeFrameSize(0)).toEqual('0000');
+      expect(Id3Writer.encodeFrameSize(257)).toEqual('0021');
+    });
+  });
 });
