@@ -34,8 +34,10 @@ describe('ID3Writer', () => {
     });
 
     it('should encode number to format used by ID3', () => {
-      expect(Id3Writer.encodeFrameSize(0)).toEqual('0000');
+      expect(Id3Writer.encodeFrameSize(1)).toEqual('0001');
       expect(Id3Writer.encodeFrameSize(257)).toEqual('0021');
+      expect(Id3Writer.encodeFrameSize(530772)).toEqual('0325084');
+      expect(Id3Writer.encodeFrameSize(306004)).toEqual('0188684');
     });
   });
 });

@@ -25,11 +25,11 @@ export default class Id3Writer {
   public static encodeFrameSize(size: number): string {
     if (size < 1) return '0000';
     const encodedSize1: number = size >> 21;
-    let reminder: number = size - encodedSize1 ** 21;
+    let reminder: number = size - (encodedSize1 << 21);
     const encodedSize2: number = reminder >> 14;
-    reminder -= encodedSize2 * encodedSize2 ** 14;
+    reminder -= encodedSize2 << 14;
     const encodedSize3: number = reminder >> 7;
-    reminder -= encodedSize3 * encodedSize3 ** 7;
+    reminder -= encodedSize3 << 7;
     return `${encodedSize1}${encodedSize2}${encodedSize3}${reminder}`;
   }
 }
