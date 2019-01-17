@@ -7,25 +7,24 @@ import ID3V2Reader from '@api/id3v2/reader/id3V2Reader';
 import ID3V2Header from '../domain/id3V2Header';
 import ID3V2Frame from '../domain/id3V2Frame';
 import ID3V20 from '../domain/id3V2';
+import Id3v2Flags from '@api/id3v2/domain/id3v2Flags';
 
 describe('ID3Writer', () => {
-  // describe('convertID3V20ToDataView function', () => {
-  //   it('should convert full ID3V20 to DataView', () => {
-  //     const frame1Data: ArrayBuffer = BufferUtil.createArrayBuffer('Example comment');
-  //     const frame1Size: number = BufferUtil.getBufferSize(frame1Data);
-  //     const frame1: ID3V2Frame = new ID3V2Frame(FrameID.COMM, frame1Size, '000000');
-  //     const id3Header: ID3V2Header = new ID3V2Header('20', '00', frame1Size);
-  //     const id3FrameWrapper1: ID3V2FrameWrapper = new ID3V2FrameWrapper(frame1, 'Example Comment');
-  //     const body: Array<ID3V2FrameWrapper> = [id3FrameWrapper1];
-  //     const id3v20: ID3V20 = new ID3V20(id3Header, body);
-
-  //     const dataView: DataView = Id3Writer.convertID3V20ToDataView(id3v20);
-  //     const id31: ID3V2 = ID3V2Reader.readID3V20(dataView);
-
-  //     expect(id31.body[0].frame.frameID).toEqual(FrameID.COMM);
-  //     expect(id31.body[0].data).toEqual('Example comment');
-  //   });
-  // });
+  describe('convertID3V20ToDataView function', () => {
+    it('should convert full ID3V20 to DataView', () => {
+      const frame1Data: ArrayBuffer = BufferUtil.createArrayBuffer('Example comment');
+      const frame1Size: number = BufferUtil.getBufferSize(frame1Data);
+      const frame1: ID3V2Frame = new ID3V2Frame('COMM', frame1Size, new Id3v2Flags());
+      const id3Header: ID3V2Header = new ID3V2Header('20', new Id3v2Flags(), frame1Size);
+      const id3FrameWrapper1: ID3V2FrameWrapper = new ID3V2FrameWrapper(frame1, 'Example Comment');
+      const body: Array<ID3V2FrameWrapper> = [id3FrameWrapper1];
+      const id3v20: ID3V20 = new ID3V20(id3Header, body);
+      const dataView: DataView = Id3Writer.convertID3V20ToDataView(id3v20);
+      const id31: ID3V2 = ID3V2Reader.readID3V20(dataView);
+      expect(id31.body[0].frame.frameID).toEqual(FrameID.COMM);
+      expect(id31.body[0].data).toEqual('Example comment');
+    });
+  });
 
   describe('encodeFrameSize function', () => {
     it('should return 0000 if size is zero or less', () => {
