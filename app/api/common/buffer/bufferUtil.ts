@@ -6,6 +6,8 @@ export default class BufferUtil {
         return BufferUtil.createArrayBufferFromString(data, bufferSize);
       case 'number':
         return BufferUtil.createArrayBufferFromNum(data, bufferSize);
+      case 'boolean':
+        return BufferUtil.createArrayBufferFromBoolean(data, bufferSize);
     }
   }
 
@@ -26,6 +28,16 @@ export default class BufferUtil {
       const byte = tmpNum & 0xff;
       bufView[i] = byte;
       tmpNum = (num - byte) / 256;
+    }
+    return buffer;
+  }
+
+  private static createArrayBufferFromBoolean(bool: boolean, bufferSize?: number): ArrayBuffer {
+    const charBool: string = bool ? '1' : '0';
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || charBool.length);
+    const bufView: Uint8Array = new Uint8Array(buffer);
+    for (let i = 0, strLen = charBool.length; i < strLen; i++) {
+      bufView[i] = charBool.charCodeAt(i);
     }
     return buffer;
   }

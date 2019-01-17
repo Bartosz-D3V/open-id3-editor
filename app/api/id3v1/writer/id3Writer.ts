@@ -27,9 +27,7 @@ export default class Id3Writer {
     const yearAsString: string = id3.year ? id3.year.toString(10) : '';
     const year: DataView = new DataView(BufferUtil.createArrayBuffer(yearAsString, 4));
     const comment: DataView = new DataView(BufferUtil.createArrayBuffer(id3.comment, 28));
-    const zeroByte: DataView = new DataView(
-      BufferUtil.createArrayBuffer(Id3Writer.boolToBitChar(id3.zeroByte), 1)
-    );
+    const zeroByte: DataView = new DataView(BufferUtil.createArrayBuffer(id3.zeroByte, 1));
     const track: DataView = new DataView(BufferUtil.createArrayBuffer(id3.track, 1));
     const genreIndex: number = id3.genre ? id3.genre.index : null;
     const genre: DataView = new DataView(BufferUtil.createArrayBuffer(genreIndex, 1));
@@ -45,6 +43,4 @@ export default class Id3Writer {
       genre
     );
   }
-
-  private static boolToBitChar = (bool: boolean): string => (bool ? '1' : '0');
 }
