@@ -1,27 +1,29 @@
-import ID3V2FrameWrapper from '@api/id3v2/domain/id3V2FrameWrapper';
+import ID3V2FrameWrapper from '@api/id3v2/domain/2.3/id3V2FrameWrapper';
 import BufferUtil from '@api/common/buffer/bufferUtil';
-import { FrameID } from '@api/id3v2/domain/frameID';
+import { FrameID as FrameV23ID } from '@api/id3v2/domain/2.2/frameID';
 import Id3Writer from '@api/id3v2/writer/id3Writer';
-import ID3V2 from '@api/id3v2/domain/id3V2';
+import ID3V22 from '@api/id3v2/domain/2.2/id3V2';
+import ID3V23 from '@api/id3v2/domain/2.3/id3V2';
 import ID3V2Reader from '@api/id3v2/reader/id3V2Reader';
-import ID3V2Header from '../domain/id3V2Header';
-import ID3V2Frame from '../domain/id3V2Frame';
-import ID3V20 from '../domain/id3V2';
-import Id3v2Flags from '@api/id3v2/domain/id3v2Flags';
+import ID3V2Header from '../domain/2.3/id3V2Header';
+import ID3V2Frame from '../domain/2.3/id3V2Frame';
+import Id3v22 from '../domain/2.2/id3V2';
+import Id3v2Flags from '@api/id3v2/domain/2.3/id3v2Flags';
 
 describe('ID3Writer', () => {
-  describe('convertID3V20ToDataView function', () => {
-    it('should convert full ID3V20 to DataView', () => {
+  describe('convertID3V22ToDataView function', () => {
+    it('should convert full id3v23 to DataView', () => {
       const frame1Data: ArrayBuffer = BufferUtil.createArrayBuffer('Example comment');
       const frame1Size: number = BufferUtil.getBufferSize(frame1Data);
-      const frame1: ID3V2Frame = new ID3V2Frame('COMM', frame1Size, new Id3v2Flags());
+      const frame1: ID3V2Frame = new ID3V2Frame('WCM', frame1Size, new Id3v2Flags());
       const id3Header: ID3V2Header = new ID3V2Header('20', new Id3v2Flags(), frame1Size);
       const id3FrameWrapper1: ID3V2FrameWrapper = new ID3V2FrameWrapper(frame1, 'Example Comment');
       const body: Array<ID3V2FrameWrapper> = [id3FrameWrapper1];
-      const id3v20: ID3V20 = new ID3V20(id3Header, body);
-      const dataView: DataView = Id3Writer.convertID3V20ToDataView(id3v20);
-      const id31: ID3V2 = ID3V2Reader.readID3V20(dataView);
-      expect(id31.body[0].frame.frameID).toEqual(FrameID.COMM);
+      const id3v22: Id3v22 = new Id3v22(id3Header, body);
+      const dataView: DataView = Id3Writer.convertID3V22ToDataView(id3v22);
+      const id31: ID3V22 = ID3V2Reader.readID3V22(dataView);
+
+      expect(id31.body[0].frame.frameID).toEqual(FrameV23ID.WCM);
       expect(id31.body[0].data).toEqual('Example comment');
     });
   });

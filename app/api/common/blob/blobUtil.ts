@@ -40,7 +40,7 @@ export default class BlobUtil {
 
   public static dataViewToString = (dataView: DataView, offset: number, length: number): string => {
     let data = '';
-    for (let i = offset; i < length; i++) {
+    for (let i = offset; i < length + offset; i++) {
       const charCode: number = dataView.getInt8(i);
       if (charCode > 31) {
         data += String.fromCharCode(charCode);
