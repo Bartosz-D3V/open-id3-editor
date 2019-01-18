@@ -1,13 +1,14 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import ID3V2FrameWrapper from '@api/id3v2/domain/id3V2FrameWrapper';
-import ID3V20 from '../domain/id3V2';
-import { FrameID } from '@api/id3v2/domain/frameID';
+import ID3V22FrameWrapper from '@api/id3v2/domain/2.2/id3V2FrameWrapper';
+import ID3V23FrameWrapper from '@api/id3v2/domain/2.3/id3V2FrameWrapper';
+import ID3V22 from '../domain/2.2/id3V2';
+import ID3V23 from '../domain/2.3/id3V2';
 
 export default class Id3Writer {
   private static readonly TAG = 'ID3';
 
-  public static convertID3V20ToDataView({ header, body }: ID3V20): DataView {
+  public static convertID3V22ToDataView({ header, body }: ID3V22): DataView {
     const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3Writer.TAG, 3));
     const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
     const unsynchronisationFlag: DataView = new DataView(
@@ -21,7 +22,7 @@ export default class Id3Writer {
     );
     const bodyView: Array<DataView> = [];
     for (let i = 0; i < body.length; i++) {
-      bodyView.push(Id3Writer.writeFrame(body[i]));
+      bodyView.push(Id3Writer.writeV22Frame(body[i]));
     }
     return BlobUtil.concatDataViews(
       tag,
@@ -33,25 +34,13 @@ export default class Id3Writer {
     );
   }
 
-  private static writeFrame(body: ID3V2FrameWrapper): DataView {
+  private static writeV22Frame(body: ID3V22FrameWrapper): DataView {
     const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(body.frame.frameID));
     const frameSize: DataView = new DataView(
       BufferUtil.createArrayBuffer(Id3Writer.encodeFrameSize(body.frame.size))
     );
-    const unsynchronisationFrameFlag: DataView = new DataView(
-      BufferUtil.createArrayBuffer(body.frame.flags.unsynchronisation, 1)
-    );
-    const compressionFrameFlag: DataView = new DataView(
-      BufferUtil.createArrayBuffer(body.frame.flags.compression, 1)
-    );
     const data: DataView = new DataView(BufferUtil.createArrayBuffer(body.data));
-    return BlobUtil.concatDataViews(
-      frameId,
-      frameSize,
-      unsynchronisationFrameFlag,
-      compressionFrameFlag,
-      data
-    );
+    return BlobUtil.concatDataViews(frameId, frameSize, data);
   }
 
   public static encodeFrameSize(size: number): string {
