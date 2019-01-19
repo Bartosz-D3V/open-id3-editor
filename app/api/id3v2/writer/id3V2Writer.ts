@@ -1,8 +1,7 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import ID3V22FrameWrapper from '@api/id3v2/domain/2.2/id3V2FrameWrapper';
 import ID3V22 from '../domain/2.2/id3V2';
-import { FrameID } from '@api/id3v2/domain/2.2/frameID';
+import ID3V22Frame from '../domain/2.2/id3V2Frame';
 
 export default class Id3V2Writer {
   private static readonly TAG = 'ID3';
@@ -35,12 +34,12 @@ export default class Id3V2Writer {
     );
   }
 
-  private static writeV22Frame(body: ID3V22FrameWrapper): DataView {
-    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(body.frame.frameID));
+  private static writeV22Frame(frame: ID3V22Frame): DataView {
+    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
     const frameSize: DataView = new DataView(
-      BufferUtil.createArrayBuffer(Id3V2Writer.encodeFrameSize(body.frame.size), 4)
+      BufferUtil.createArrayBuffer(Id3V2Writer.encodeFrameSize(frame.size), 4)
     );
-    const data: DataView = new DataView(BufferUtil.createArrayBuffer(body.data));
+    const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
     return BlobUtil.concatDataViews(frameId, frameSize, data);
   }
 
