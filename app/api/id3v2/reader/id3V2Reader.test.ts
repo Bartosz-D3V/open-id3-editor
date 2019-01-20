@@ -7,7 +7,7 @@ import { FrameID } from '../domain/2.3/frameID';
 const mp3Dir: string = path.resolve('./example_mp3');
 
 describe('ID3V23Reader', () => {
-  describe('readID3V233 function', () => {
+  describe('readID3V23 function', () => {
     xit('should create ID3V23 object from DataView from real MP3 file', async () => {
       const data1: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V20/id3v2_001_basic.mp3`);
       const dataView1: DataView = new DataView(data1.buffer);

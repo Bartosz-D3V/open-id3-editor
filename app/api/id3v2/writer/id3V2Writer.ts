@@ -2,6 +2,7 @@ import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3V2';
 import ID3V22Frame from '../domain/2.2/id3V2Frame';
+import { FrameID } from '@api/id3v2/domain/2.2/frameID';
 
 export default class Id3V2Writer {
   private static readonly TAG = 'ID3';
@@ -23,7 +24,6 @@ export default class Id3V2Writer {
     for (let i = 0; i < body.length; i++) {
       bodyView.push(Id3V2Writer.writeV22Frame(body[i]));
     }
-
     return BlobUtil.concatDataViews(
       tag,
       version,

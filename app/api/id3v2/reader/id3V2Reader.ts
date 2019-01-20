@@ -5,7 +5,7 @@ import ID3V2Header from '../domain/2.3/id3V2Header';
 import ID3V22Frame from '../domain/2.2/id3V2Frame';
 import ID3V23Frame from '../domain/2.3/id3V2Frame';
 import ID3V23FrameWrapper from '../domain/2.3/id3V2FrameWrapper';
-import Id3v2Flags from '../domain/2.3/id3v2Flags';
+import Id3v23Flags from '../domain/2.3/id3v2Flags';
 import { FrameID } from '../domain/2.3/frameID';
 
 export default class ID3V2Reader {
@@ -17,18 +17,18 @@ export default class ID3V2Reader {
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(
       version,
-      new Id3v2Flags(unsynchronization, compression),
+      new Id3v23Flags(unsynchronization, compression),
       size
     );
 
     const data: Array<ID3V22Frame> = [];
     let i = 11;
-    while (i < size - 10) {
+    while (i < size) {
       const frameId = BlobUtil.dataViewToString(dataView, i, 3);
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 3);
       const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
       data.push(new ID3V22Frame(frameId, frameData));
-      i += frameSize + 10;
+      i += frameSize + 7;
     }
     return new ID3V22(header, data);
   }
@@ -41,7 +41,7 @@ export default class ID3V2Reader {
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(
       version,
-      new Id3v2Flags(unsynchronization, compression),
+      new Id3v23Flags(unsynchronization, compression),
       size
     );
     const data: Array<ID3V23FrameWrapper> = [];
@@ -52,7 +52,7 @@ export default class ID3V2Reader {
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
       const unsynchronizationFrame = !!BlobUtil.dataViewToString(dataView, i + 8, 1);
       const compressionFrame = !!BlobUtil.dataViewToString(dataView, i + 9, 1);
-      const frameFlags = new Id3v2Flags(unsynchronizationFrame, compressionFrame);
+      const frameFlags = new Id3v23Flags(unsynchronizationFrame, compressionFrame);
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
       const frame: ID3V23Frame = new ID3V23Frame(frameId, frameSize);
       const frameWrapper: ID3V23FrameWrapper = new ID3V23FrameWrapper(frame, frameData);
