@@ -3,11 +3,9 @@ import { FrameID } from './frameID';
 export default class {
   public frameID: FrameID | string;
   public size: number;
-  public flags: string;
 
-  constructor(frameID: FrameID | string, size: number, flags: string) {
+  constructor(frameID: FrameID | string, size?: number) {
     this.frameID = frameID;
     this.size = size;
-    this.flags = flags;
   }
 }
