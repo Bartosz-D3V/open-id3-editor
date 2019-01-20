@@ -1,12 +1,12 @@
-import Id3v2Flags from './id3v2Flags';
+import ID3V2Flags from './id3v2Flags';
 
 export default class {
   public readonly tagId = 'ID3';
   public readonly version: string;
-  public flags: Id3v2Flags;
+  public flags: ID3V2Flags;
   public size: number;
 
-  constructor(version: string, flags: Id3v2Flags, size: number) {
+  constructor(version: string, flags: ID3V2Flags, size: number) {
     this.version = version;
     this.flags = flags;
     this.size = size;

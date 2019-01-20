@@ -1,4 +1,4 @@
-export default class Id3v2Flags {
+export default class ID3V2Flags {
   public unsynchronisation: boolean;
   public compression: boolean;
 
