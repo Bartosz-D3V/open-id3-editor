@@ -5,7 +5,8 @@ import ID3V2Header from '../domain/2.3/id3V2Header';
 import ID3V22Frame from '../domain/2.2/id3V2Frame';
 import ID3V23Frame from '../domain/2.3/id3V2Frame';
 import ID3V23FrameWrapper from '../domain/2.3/id3V2FrameWrapper';
-import Id3v23Flags from '../domain/2.3/id3v2Flags';
+import ID3V22Flags from '../domain/2.2/id3v2Flags';
+import ID3V23Flags from '../domain/2.3/id3v2Flags';
 import { FrameID } from '../domain/2.3/frameID';
 
 export default class ID3V2Reader {
@@ -17,7 +18,7 @@ export default class ID3V2Reader {
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(
       version,
-      new Id3v23Flags(unsynchronization, compression),
+      new ID3V22Flags(unsynchronization, compression),
       size
     );
 
@@ -41,7 +42,7 @@ export default class ID3V2Reader {
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V2Header = new ID3V2Header(
       version,
-      new Id3v23Flags(unsynchronization, compression),
+      new ID3V23Flags(unsynchronization, compression),
       size
     );
     const data: Array<ID3V23FrameWrapper> = [];
@@ -52,7 +53,7 @@ export default class ID3V2Reader {
       const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
       const unsynchronizationFrame = !!BlobUtil.dataViewToString(dataView, i + 8, 1);
       const compressionFrame = !!BlobUtil.dataViewToString(dataView, i + 9, 1);
-      const frameFlags = new Id3v23Flags(unsynchronizationFrame, compressionFrame);
+      const frameFlags = new ID3V23Flags(unsynchronizationFrame, compressionFrame);
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
       const frame: ID3V23Frame = new ID3V23Frame(frameId, frameSize);
       const frameWrapper: ID3V23FrameWrapper = new ID3V23FrameWrapper(frame, frameData);
