@@ -2,15 +2,15 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { IFilesState } from '@states/iFilesState';
 import DragAndDrop from '@components/DragAndDrop/DragAndDrop';
-import * as FilesActions from '@actions/filesActions';
+import { addFiles, setFiles } from '@actions/filesActions';
 
 const mapStateToProps = (state: IFilesState) => ({
   files: state.files,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setFiles: bindActionCreators(FilesActions, dispatch).setFiles,
-  addFiles: bindActionCreators(FilesActions, dispatch).addFiles,
+  setFiles: bindActionCreators(setFiles, dispatch),
+  addFiles: bindActionCreators(addFiles, dispatch),
 });
 
 export default connect(

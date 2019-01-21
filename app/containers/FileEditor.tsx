@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { IFilesState } from '@states/iFilesState';
 import { FileEditor } from '@components/FileEditor/FileEditor';
-import * as FilesActions from '@actions/filesActions';
+import { selectFile } from '@actions/filesActions';
 
 const mapStateToProps = (state: IFilesState) => ({
   files: state.files,
@@ -10,7 +10,7 @@ const mapStateToProps = (state: IFilesState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  selectFile: bindActionCreators(FilesActions, dispatch).selectFile,
+  selectFile: bindActionCreators(selectFile, dispatch),
 });
 
 export default connect(

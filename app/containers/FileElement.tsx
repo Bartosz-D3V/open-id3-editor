@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { IFilesState } from '@states/iFilesState';
 import { FileElement } from '@components/FileElement/FileElement';
 import { IFileElementProps } from '@components/FileElement/IFileElementProps';
-import * as FilesActions from '@actions/filesActions';
+import { selectFile } from '@actions/filesActions';
 
 const mapStateToProps = (state: IFilesState, ownProps: IFileElementProps) => ({
   filename: ownProps.filename,
@@ -11,7 +11,7 @@ const mapStateToProps = (state: IFilesState, ownProps: IFileElementProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  selectFile: bindActionCreators(FilesActions, dispatch).selectFile,
+  selectFile: bindActionCreators(selectFile, dispatch),
 });
 
 export default connect(
