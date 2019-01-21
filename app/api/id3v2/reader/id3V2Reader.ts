@@ -1,7 +1,7 @@
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3V2';
 import ID3V23 from '../domain/2.3/id3V2';
-import ID3V2Header from '../domain/2.3/id3V2Header';
+import ID3V22Header from '../domain/2.2/id3V2Header';
 import ID3V22Frame from '../domain/2.2/id3V2Frame';
 import ID3V23Frame from '../domain/2.3/id3V2Frame';
 import ID3V23FrameWrapper from '../domain/2.3/id3V2FrameWrapper';
@@ -16,7 +16,7 @@ export default class ID3V2Reader {
     const unsynchronization: boolean = !BlobUtil.dataViewToString(dataView, offset + 5, 1);
     const compression: boolean = !BlobUtil.dataViewToString(dataView, offset + 6, 1);
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
-    const header: ID3V2Header = new ID3V2Header(
+    const header: ID3V22Header = new ID3V22Header(
       version,
       new ID3V22Flags(unsynchronization, compression),
       size
@@ -40,7 +40,7 @@ export default class ID3V2Reader {
     const unsynchronization: boolean = !!BlobUtil.dataViewToString(dataView, offset + 6, 1);
     const compression: boolean = !!BlobUtil.dataViewToString(dataView, offset + 7, 1);
     const size: number = ID3V2Reader.readFrameSize(dataView, 7);
-    const header: ID3V2Header = new ID3V2Header(
+    const header: ID3V22Header = new ID3V22Header(
       version,
       new ID3V23Flags(unsynchronization, compression),
       size

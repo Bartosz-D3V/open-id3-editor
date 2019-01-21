@@ -1,9 +1,15 @@
 export default class Id3v2Flags {
   public unsynchronisation: boolean;
-  public compression: boolean;
+  public extendedHeader: boolean;
+  public experimental: boolean;
 
-  constructor(unsynchronisation: boolean = false, compression: boolean = false) {
+  constructor(
+    unsynchronisation: boolean = false,
+    extendedHeader: boolean = false,
+    experimental: boolean = false
+  ) {
     this.unsynchronisation = unsynchronisation;
-    this.compression = compression;
+    this.extendedHeader = extendedHeader;
+    this.experimental = experimental;
   }
 }
