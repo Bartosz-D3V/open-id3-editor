@@ -1,8 +1,8 @@
 import React from 'react';
+import { HashRouter } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { Menu } from 'antd';
 import { TagMenu } from '@components/TagMenu/TagMenu';
-import { HashRouter } from 'react-router-dom';
 
 describe('TagMenu component', () => {
   let wrapper: ReactWrapper;
@@ -41,17 +41,11 @@ describe('TagMenu component', () => {
         .find(Menu.Item)
         .at(2)
         .text()
-    ).toEqual('ID3v2.0');
-    expect(
-      wrapper
-        .find(Menu.Item)
-        .at(3)
-        .text()
     ).toEqual('ID3v2.2');
     expect(
       wrapper
         .find(Menu.Item)
-        .at(4)
+        .at(3)
         .text()
     ).toEqual('ID3v2.3');
   });
@@ -60,7 +54,7 @@ describe('TagMenu component', () => {
     expect(
       wrapper
         .find(Menu.Item)
-        .at(5)
+        .at(4)
         .text()
     ).toEqual('Home');
   });
