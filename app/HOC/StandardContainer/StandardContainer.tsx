@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export const standardContainer = <P extends object>(
   Component: React.ComponentType<P>
