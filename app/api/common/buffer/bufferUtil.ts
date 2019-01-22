@@ -89,7 +89,7 @@ export default class BufferUtil {
   }
 
   public static setBitAt(dataView: DataView, offset: number, bitPos: number): DataView {
-    let byte: number = dataView.getUint8(offset);
+    const byte: number = dataView.getUint8(offset);
     dataView.setUint8(offset, byte | (2 ** bitPos));
     return dataView;
   }
