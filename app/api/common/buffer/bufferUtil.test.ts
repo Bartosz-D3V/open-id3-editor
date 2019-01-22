@@ -78,4 +78,43 @@ describe('BufferUtil class', () => {
       expect(BufferUtil.getTypedArrSize(arr1, arr2)).toEqual(45);
     });
   });
+
+  describe('isBitSetAt function', () => {
+    it('should return true if a bit is set at given position', () => {
+      const dataView: DataView = new DataView(new ArrayBuffer(2));
+      dataView.setUint8(0, 0);
+      dataView.setUint8(1, 1);
+
+      expect(BufferUtil.isBitSetAt(dataView, 0, 0)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 1)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 2)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 3)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 4)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 5)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 6)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 7)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 0, 8)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 0)).toBeTruthy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 1)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 2)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 3)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 4)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 5)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 6)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 7)).toBeFalsy();
+      expect(BufferUtil.isBitSetAt(dataView, 1, 8)).toBeFalsy();
+    });
+  });
+
+  describe('setBitAt function', () => {
+    it('should set a bit at given position', () => {
+      let dataView: DataView = new DataView(new ArrayBuffer(2));
+
+      dataView = BufferUtil.setBitAt(dataView, 0, 2);
+      expect(dataView.getUint8(0)).toEqual(4);
+
+      dataView = BufferUtil.setBitAt(dataView, 0, 0);
+      expect(dataView.getUint8(0)).toEqual(5);
+    });
+  });
 });
