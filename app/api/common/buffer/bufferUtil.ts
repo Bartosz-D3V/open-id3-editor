@@ -83,8 +83,14 @@ export default class BufferUtil {
       .reduce((prev: number, next: number) => prev + next, 0);
   }
 
-  public static isBitSetAt(dataView: DataView, offset: number): boolean {
+  public static isBitSetAt(dataView: DataView, offset: number, bitPos: number): boolean {
     const byte: number = dataView.getUint8(offset);
-    return (offset & (1 << byte)) !== 0;
+    return (byte & (2 ** bitPos)) !== 0;
+  }
+
+  public static setBitAt(dataView: DataView, offset: number, bitPos: number): DataView {
+    let byte: number = dataView.getUint8(offset);
+    dataView.setUint8(offset, byte | (2 ** bitPos));
+    return dataView;
   }
 }
