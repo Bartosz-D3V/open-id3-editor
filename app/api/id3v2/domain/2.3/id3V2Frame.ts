@@ -1,12 +1,12 @@
 import { FrameID } from './frameID';
-import FrameHeaderFlags from './frameHeaderFlags';
+import ID3V2FrameFlags from './id3v2FrameFlags';
 
 export default class {
   public frameID: FrameID | string;
   public size: number;
-  public flags: FrameHeaderFlags;
+  public flags: ID3V2FrameFlags;
 
-  constructor(frameID: FrameID | string, size?: number, flags?: FrameHeaderFlags) {
+  constructor(frameID: FrameID | string, size?: number, flags?: ID3V2FrameFlags) {
     this.frameID = frameID;
     this.size = size;
     this.flags = flags;

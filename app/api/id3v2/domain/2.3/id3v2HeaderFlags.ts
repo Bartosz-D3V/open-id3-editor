@@ -1,4 +1,4 @@
-export default class Id3v2Flags {
+export default class Id3v2HeaderFlags {
   public unsynchronisation: boolean;
   public extendedHeader: boolean;
   public experimental: boolean;
