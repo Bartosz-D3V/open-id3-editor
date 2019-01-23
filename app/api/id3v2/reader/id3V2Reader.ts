@@ -10,6 +10,7 @@ import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3V2Header';
 import { FrameID } from '../domain/2.3/frameID';
+import BufferUtil from '@api/common/buffer/bufferUtil';
 
 export default class ID3V2Reader {
   public static readID3V22(dataView: DataView): ID3V22 {
@@ -39,10 +40,10 @@ export default class ID3V2Reader {
   public static readID3V23(dataView: DataView): ID3V23 {
     const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
-    const unsynchronization: boolean = !BlobUtil.dataViewToString(dataView, offset + 6, 1);
-    const extenderHeader: boolean = !BlobUtil.dataViewToString(dataView, offset + 7, 1);
-    const experimental: boolean = !BlobUtil.dataViewToString(dataView, offset + 8, 1);
-    const size: number = ID3V2Reader.readFrameSize(dataView, 9);
+    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 8);
+    const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 7);
+    const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 6);
+    const size: number = ID3V2Reader.readFrameSize(dataView, 7);
     const header: ID3V23Header = new ID3V23Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
@@ -51,24 +52,15 @@ export default class ID3V2Reader {
 
     const data: Array<ID3V23FrameWrapper> = [];
     let i = 10;
-    while (i < size) {
-      console.log(BlobUtil.dataViewToString(dataView, 0, dataView.byteLength));
+    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = ID3V2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
-      console.log('frameID' + frameId);
-      const frameSize = ID3V2Reader.readFrameSize(dataView, i + 5);
-      console.log('frameSize' + frameSize);
-      const tagAlter = !BlobUtil.dataViewToString(dataView, i + 8, 1);
-      console.log('tagAlter' + tagAlter);
-      const fileAlter = !BlobUtil.dataViewToString(dataView, i + 9, 1);
-      console.log('fileAlter' + fileAlter);
-      const readonly = !BlobUtil.dataViewToString(dataView, i + 10, 1);
-      console.log('readonly' + readonly);
-      const compression = !BlobUtil.dataViewToString(dataView, i + 11, 1);
-      console.log('compression' + compression);
-      const encryption = !BlobUtil.dataViewToString(dataView, i + 12, 1);
-      console.log('encryption' + encryption);
-      const groupingEntity = !BlobUtil.dataViewToString(dataView, i + 13, 1);
-      console.log('groupingEntity' + groupingEntity);
+      const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
+      const tagAlter = BufferUtil.isBitSetAt(dataView, 9, 8);
+      const fileAlter = BufferUtil.isBitSetAt(dataView, 9, 7);
+      const readonly = BufferUtil.isBitSetAt(dataView, 9, 6);
+      const compression = BufferUtil.isBitSetAt(dataView, 10, 8);
+      const encryption = BufferUtil.isBitSetAt(dataView, 10, 7);
+      const groupingEntity = BufferUtil.isBitSetAt(dataView, 10, 7);
       const frameFlags = new ID3V2FrameFlags(
         tagAlter,
         fileAlter,
@@ -77,7 +69,7 @@ export default class ID3V2Reader {
         encryption,
         groupingEntity
       );
-      const frameData = BlobUtil.dataViewToString(dataView, i + 13, frameSize);
+      const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
       const frame: ID3V23Frame = new ID3V23Frame(frameId, frameSize, frameFlags);
       const frameWrapper: ID3V23FrameWrapper = new ID3V23FrameWrapper(frame, frameData);
       data.push(frameWrapper);
@@ -92,7 +84,7 @@ export default class ID3V2Reader {
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
-    return (size4 << 21) + (size3 << 14) + (size2 << 7) + size1;
+    return size4 + (size1 << 21) + (size2 << 14) + (size3 << 7);
   }
 
   private static getFrameID(tagId: string): FrameID | string {
