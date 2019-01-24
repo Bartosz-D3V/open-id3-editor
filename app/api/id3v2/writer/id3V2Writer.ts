@@ -8,9 +8,7 @@ export default class Id3V2Writer {
 
   private static writeV22Frame(frame: ID3V22Frame): DataView {
     const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
-    const frameSize: DataView = new DataView(
-      BufferUtil.createArrayBuffer(Id3V2Writer.encodeFrameSize(frame.size), 4)
-    );
+    const frameSize: DataView = Id3V2Writer.encodeFrameSize(frame.size);
     const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
     return BlobUtil.concatDataViews(frameId, frameSize, data);
   }
@@ -24,9 +22,7 @@ export default class Id3V2Writer {
     const compressionFlag: DataView = new DataView(
       BufferUtil.createArrayBuffer(header.flags.compression, 1)
     );
-    const size: DataView = new DataView(
-      BufferUtil.createArrayBuffer(Id3V2Writer.encodeFrameSize(header.size), 4)
-    );
+    const size: DataView = Id3V2Writer.encodeFrameSize(header.size);
 
     const bodyView: Array<DataView> = [];
     for (let i = 0; i < body.length; i++) {
@@ -42,15 +38,19 @@ export default class Id3V2Writer {
     );
   }
 
-  public static encodeFrameSize(size: number): number {
-    if (size < 1) return 0;
+  public static encodeFrameSize(size: number): DataView {
+    const dataView: DataView = new DataView(new ArrayBuffer(4));
     const encodedSize1: number = size >> 21;
     let reminder: number = size - (encodedSize1 << 21);
     const encodedSize2: number = reminder >> 14;
     reminder -= encodedSize2 << 14;
     const encodedSize3: number = reminder >> 7;
     reminder -= encodedSize3 << 7;
-    return Number.parseInt(`${encodedSize1}${encodedSize2}${encodedSize3}${reminder}`, 10);
+    dataView.setUint8(0, encodedSize1);
+    dataView.setUint8(1, encodedSize2);
+    dataView.setUint8(2, encodedSize3);
+    dataView.setUint8(3, reminder);
+    return dataView;
   }
 
   public static calcHeaderSize(frames: Array<ID3V22Frame>): number {

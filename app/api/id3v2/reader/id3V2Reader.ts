@@ -1,3 +1,4 @@
+import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3V2';
 import ID3V23 from '../domain/2.3/id3V2';
@@ -10,7 +11,6 @@ import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3V2Header';
 import { FrameID } from '../domain/2.3/frameID';
-import BufferUtil from '@api/common/buffer/bufferUtil';
 
 export default class ID3V2Reader {
   public static readID3V22(dataView: DataView): ID3V22 {
@@ -79,12 +79,12 @@ export default class ID3V2Reader {
     return new ID3V23(header, data);
   }
 
-  public static readFrameSize(dataView: DataView, offset: number): number {
+  public static readFrameSize(dataView: DataView, offset: number = 0): number {
     const size1 = BlobUtil.dataViewToNum(dataView, offset);
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
-    return size4 + (size1 << 21) + (size2 << 14) + (size3 << 7);
+    return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
   }
 
   private static getFrameID(tagId: string): FrameID | string {
