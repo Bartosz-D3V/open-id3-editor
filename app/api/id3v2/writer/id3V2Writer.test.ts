@@ -35,14 +35,14 @@ describe('ID3V2Writer', () => {
   });
 
   describe('encodeFrameSize function', () => {
-    it('should return 0000 if size is zero or less', () => {
+    it('should encode number to format used by ID3 if size is zero or less', () => {
       let frameSize: DataView;
 
       frameSize = ID3V2Writer.encodeFrameSize(-10000);
-      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(0);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-10000);
 
       frameSize = ID3V2Writer.encodeFrameSize(-100);
-      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(0);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-100);
 
       frameSize = ID3V2Writer.encodeFrameSize(0);
       expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(0);

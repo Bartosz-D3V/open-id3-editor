@@ -39,9 +39,7 @@ export default class Id3V2Writer {
   }
 
   public static encodeFrameSize(size: number): DataView {
-    const buff: ArrayBuffer = new ArrayBuffer(4);
-    const dataView: DataView = new DataView(buff);
-    if (size < 1) return dataView;
+    const dataView: DataView = new DataView(new ArrayBuffer(4));
     const encodedSize1: number = size >> 21;
     let reminder: number = size - (encodedSize1 << 21);
     const encodedSize2: number = reminder >> 14;
