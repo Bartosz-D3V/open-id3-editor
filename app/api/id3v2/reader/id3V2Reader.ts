@@ -79,12 +79,12 @@ export default class ID3V2Reader {
     return new ID3V23(header, data);
   }
 
-  public static readFrameSize(dataView: DataView, offset: number): number {
+  public static readFrameSize(dataView: DataView, offset: number = 0): number {
     const size1 = BlobUtil.dataViewToNum(dataView, offset);
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
-    return size4 + (size1 << 21) + (size2 << 14) + (size3 << 7);
+    return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
   }
 
   private static getFrameID(tagId: string): FrameID | string {
