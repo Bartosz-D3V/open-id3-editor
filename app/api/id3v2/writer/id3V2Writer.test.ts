@@ -1,7 +1,7 @@
 import ID3V2Writer from '@api/id3v2/writer/id3V2Writer';
 import ID3V22 from '../domain/2.2/id3V2';
 import ID3V2Reader from '../reader/id3V2Reader';
-import ID3V2Flags from '../domain/2.3/id3v2Flags';
+import ID3V22Flags from '../domain/2.2/id3v2Flags';
 import ID3V22Header from '../domain/2.2/id3V2Header';
 import ID3V22Frame from '../domain/2.2/id3V2Frame';
 
@@ -15,7 +15,7 @@ describe('ID3V2Writer', () => {
       const body: Array<ID3V22Frame> = [frame1, frame2];
       const id3Header: ID3V22Header = new ID3V22Header(
         '20',
-        new ID3V2Flags(),
+        new ID3V22Flags(),
         ID3V2Writer.calcHeaderSize(body)
       );
       const id3v22: ID3V22 = new ID3V22(id3Header, body);
@@ -35,21 +35,45 @@ describe('ID3V2Writer', () => {
   });
 
   describe('encodeFrameSize function', () => {
-    it('should return 0000 if size is zero or less', () => {
-      expect(ID3V2Writer.encodeFrameSize(-10000)).toEqual(0);
-      expect(ID3V2Writer.encodeFrameSize(-10)).toEqual(0);
-      expect(ID3V2Writer.encodeFrameSize(0)).toEqual(0);
+    it('should encode number to format used by ID3 if size is zero or less', () => {
+      let frameSize: DataView;
+
+      frameSize = ID3V2Writer.encodeFrameSize(-10000);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-10000);
+
+      frameSize = ID3V2Writer.encodeFrameSize(-100);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-100);
+
+      frameSize = ID3V2Writer.encodeFrameSize(0);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(0);
     });
 
     it('should encode number to format used by ID3', () => {
-      expect(ID3V2Writer.encodeFrameSize(1)).toEqual(1);
-      expect(ID3V2Writer.encodeFrameSize(14)).toEqual(14);
-      expect(ID3V2Writer.encodeFrameSize(16)).toEqual(16);
-      expect(ID3V2Writer.encodeFrameSize(31)).toEqual(31);
-      expect(ID3V2Writer.encodeFrameSize(257)).toEqual(21);
-      expect(ID3V2Writer.encodeFrameSize(306004)).toEqual(188684);
-      expect(ID3V2Writer.encodeFrameSize(530772)).toEqual(325084);
-      expect(ID3V2Writer.encodeFrameSize(500307721)).toEqual(23872469);
+      let frameSize: DataView;
+
+      frameSize = ID3V2Writer.encodeFrameSize(1);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(1);
+
+      frameSize = ID3V2Writer.encodeFrameSize(14);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(14);
+
+      frameSize = ID3V2Writer.encodeFrameSize(16);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(16);
+
+      frameSize = ID3V2Writer.encodeFrameSize(31);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(31);
+
+      frameSize = ID3V2Writer.encodeFrameSize(257);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(257);
+
+      frameSize = ID3V2Writer.encodeFrameSize(306004);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(306004);
+
+      frameSize = ID3V2Writer.encodeFrameSize(530772);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(530772);
+
+      frameSize = ID3V2Writer.encodeFrameSize(6407721);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(6407721);
     });
   });
 
