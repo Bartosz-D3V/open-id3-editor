@@ -18,7 +18,7 @@ export default class Id3v2Reader {
     const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
     const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 8);
     const compression: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 7);
-    const size: number = Id3v2Reader.readFrameSize(dataView, 7);
+    const size: number = Id3v2Reader.readFrameSize(dataView, offset + 6);
     const header: ID3V22Header = new ID3V22Header(
       version,
       new ID3V22Flags(unsynchronization, compression),
@@ -27,9 +27,10 @@ export default class Id3v2Reader {
 
     const data: Array<ID3V22Frame> = [];
     let i = 10;
-    while (i < size) {
+    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = BlobUtil.dataViewToString(dataView, i, 3);
       const frameSize = Id3v2Reader.readFrameSize(dataView, i + 3);
+      console.log('FRAME SIZE:    ' + frameSize);
       const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
       data.push(new ID3V22Frame(frameId, frameData));
       i += frameSize + 7;

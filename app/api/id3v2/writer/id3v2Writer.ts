@@ -17,8 +17,12 @@ export default class Id3v2Writer {
     const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
     const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
     let flags: DataView = new DataView(new ArrayBuffer(1));
-    flags = BufferUtil.setBitAt(flags, 0, 8);
-    flags = BufferUtil.setBitAt(flags, 0, 7);
+    if (header.flags.compression) {
+      flags = BufferUtil.setBitAt(flags, 0, 8);
+    }
+    if (header.flags.unsynchronisation) {
+      flags = BufferUtil.setBitAt(flags, 0, 7);
+    }
     const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
 
     const bodyView: Array<DataView> = [];

@@ -54,6 +54,9 @@ describe('ID3V2Writer', () => {
       frameSize = ID3V2Writer.encodeFrameSize(1);
       expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(1);
 
+      frameSize = ID3V2Writer.encodeFrameSize(4);
+      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(4);
+
       frameSize = ID3V2Writer.encodeFrameSize(14);
       expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(14);
 
