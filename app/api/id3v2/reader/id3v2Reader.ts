@@ -1,24 +1,24 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import ID3V22 from '../domain/2.2/id3V2';
-import ID3V23 from '../domain/2.3/id3V2';
-import ID3V22Header from '../domain/2.2/id3V2Header';
-import ID3V22Frame from '../domain/2.2/id3V2Frame';
-import ID3V23Frame from '../domain/2.3/id3V2Frame';
-import ID3V23FrameWrapper from '../domain/2.3/id3V2FrameWrapper';
+import ID3V22 from '../domain/2.2/id3v2';
+import ID3V23 from '../domain/2.3/id3v2';
+import ID3V22Header from '../domain/2.2/id3v2Header';
+import ID3V22Frame from '../domain/2.2/id3v2Frame';
+import ID3V23Frame from '../domain/2.3/id3v2Frame';
+import ID3V23FrameWrapper from '../domain/2.3/id3v2FrameWrapper';
 import ID3V22Flags from '../domain/2.2/id3v2Flags';
 import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
-import ID3V23Header from '../domain/2.3/id3V2Header';
+import ID3V23Header from '../domain/2.3/id3v2Header';
 import { FrameID } from '../domain/2.3/frameID';
 
-export default class ID3V2Reader {
+export default class Id3v2Reader {
   public static readID3V22(dataView: DataView): ID3V22 {
     const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
-    const unsynchronization: boolean = !BlobUtil.dataViewToString(dataView, offset + 5, 1);
-    const compression: boolean = !BlobUtil.dataViewToString(dataView, offset + 6, 1);
-    const size: number = ID3V2Reader.readFrameSize(dataView, 7);
+    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 8);
+    const compression: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 7);
+    const size: number = Id3v2Reader.readFrameSize(dataView, 7);
     const header: ID3V22Header = new ID3V22Header(
       version,
       new ID3V22Flags(unsynchronization, compression),
@@ -26,10 +26,10 @@ export default class ID3V2Reader {
     );
 
     const data: Array<ID3V22Frame> = [];
-    let i = 11;
+    let i = 10;
     while (i < size) {
       const frameId = BlobUtil.dataViewToString(dataView, i, 3);
-      const frameSize = ID3V2Reader.readFrameSize(dataView, i + 3);
+      const frameSize = Id3v2Reader.readFrameSize(dataView, i + 3);
       const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
       data.push(new ID3V22Frame(frameId, frameData));
       i += frameSize + 7;
@@ -43,7 +43,7 @@ export default class ID3V2Reader {
     const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 8);
     const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 7);
     const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 6);
-    const size: number = ID3V2Reader.readFrameSize(dataView, 7);
+    const size: number = Id3v2Reader.readFrameSize(dataView, 7);
     const header: ID3V23Header = new ID3V23Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
@@ -53,14 +53,14 @@ export default class ID3V2Reader {
     const data: Array<ID3V23FrameWrapper> = [];
     let i = 10;
     while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
-      const frameId = ID3V2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
-      const frameSize = ID3V2Reader.readFrameSize(dataView, i + 4);
+      const frameId = Id3v2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
+      const frameSize = Id3v2Reader.readFrameSize(dataView, i + 4);
       const tagAlter = BufferUtil.isBitSetAt(dataView, 9, 8);
       const fileAlter = BufferUtil.isBitSetAt(dataView, 9, 7);
       const readonly = BufferUtil.isBitSetAt(dataView, 9, 6);
       const compression = BufferUtil.isBitSetAt(dataView, 10, 8);
       const encryption = BufferUtil.isBitSetAt(dataView, 10, 7);
-      const groupingEntity = BufferUtil.isBitSetAt(dataView, 10, 7);
+      const groupingEntity = BufferUtil.isBitSetAt(dataView, 10, 6);
       const frameFlags = new ID3V2FrameFlags(
         tagAlter,
         fileAlter,
