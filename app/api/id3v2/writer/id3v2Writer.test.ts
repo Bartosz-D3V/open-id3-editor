@@ -10,9 +10,11 @@ describe('ID3V2Writer', () => {
     it('should convert full id3v22 to DataView', () => {
       const wcmData = 'Example comment';
       const torData = '2000';
+      const ufiData = '2819XAXIO';
       const frame1: ID3V22Frame = new ID3V22Frame('WCM', wcmData);
       const frame2: ID3V22Frame = new ID3V22Frame('TOR', torData);
-      const body: Array<ID3V22Frame> = [frame1, frame2];
+      const frame3: ID3V22Frame = new ID3V22Frame('UFI', ufiData);
+      const body: Array<ID3V22Frame> = [frame1, frame2, frame3];
       const id3Header: ID3V22Header = new ID3V22Header(
         '20',
         new ID3V22Flags(),
@@ -23,14 +25,16 @@ describe('ID3V2Writer', () => {
       const id31: ID3V22 = Id3v2Reader.readID3V22(dataView);
 
       expect(id31.header.tagId).toEqual('ID3');
-      // expect(id31.header.size).toEqual(35);
+      expect(id31.header.size).toEqual(56);
       expect(id31.header.version).toEqual('20');
       expect(id31.header.flags.compression).toBeFalsy();
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
       expect(id31.body[0].frameID).toEqual('WCM');
-      expect(id31.body[0].data).toEqual('Example comment');
+      expect(id31.body[0].data).toEqual(wcmData);
       expect(id31.body[1].frameID).toEqual('TOR');
-      expect(id31.body[1].data).toEqual('2000');
+      expect(id31.body[1].data).toEqual(torData);
+      expect(id31.body[2].frameID).toEqual('UFI');
+      expect(id31.body[2].data).toEqual(ufiData);
     });
   });
 
