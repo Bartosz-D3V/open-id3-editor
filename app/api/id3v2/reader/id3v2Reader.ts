@@ -27,10 +27,9 @@ export default class Id3v2Reader {
 
     const data: Array<ID3V22Frame> = [];
     let i = 10;
-    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
+    while (i < size && dataView.getInt8(i) !== 0x00) {
       const frameId = BlobUtil.dataViewToString(dataView, i, 3);
       const frameSize = Id3v2Reader.readFrameSize(dataView, i + 3);
-      console.log('FRAME SIZE:    ' + frameSize);
       const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
       data.push(new ID3V22Frame(frameId, frameData));
       i += frameSize + 7;
