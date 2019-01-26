@@ -2,7 +2,7 @@ import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3v2';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
-import ID3V22Flags from '../domain/2.2/id3v2Flags';
+import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 
 export default class Id3v2Writer {
   private static readonly TAG = 'ID3';
@@ -14,7 +14,7 @@ export default class Id3v2Writer {
     return BlobUtil.concatDataViews(frameId, frameSize, data);
   }
 
-  private static writeV22HeaderFlags(flags: ID3V22Flags): DataView {
+  private static writeV22HeaderFlags(flags: ID3V22HeaderFlags): DataView {
     let dataView: DataView = new DataView(new ArrayBuffer(1));
     if (flags.compression) {
       dataView = BufferUtil.setBitAt(dataView, 0, 8);

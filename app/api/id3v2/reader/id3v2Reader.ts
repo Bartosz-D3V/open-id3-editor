@@ -6,7 +6,7 @@ import ID3V22Header from '../domain/2.2/id3v2Header';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
 import ID3V23FrameWrapper from '../domain/2.3/id3v2FrameWrapper';
-import ID3V22Flags from '../domain/2.2/id3v2Flags';
+import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3v2Header';
@@ -21,7 +21,7 @@ export default class Id3v2Reader {
     const size: number = Id3v2Reader.readFrameSize(dataView, offset + 6);
     const header: ID3V22Header = new ID3V22Header(
       version,
-      new ID3V22Flags(unsynchronization, compression),
+      new ID3V22HeaderFlags(unsynchronization, compression),
       size
     );
 

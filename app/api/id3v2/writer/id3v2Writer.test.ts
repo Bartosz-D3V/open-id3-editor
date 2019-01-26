@@ -1,7 +1,7 @@
 import ID3V2Writer from '@api/id3v2/writer/id3v2Writer';
 import ID3V22 from '../domain/2.2/id3v2';
 import Id3v2Reader from '../reader/id3v2Reader';
-import ID3V22Flags from '../domain/2.2/id3v2Flags';
+import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V22Header from '../domain/2.2/id3v2Header';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 
@@ -17,7 +17,7 @@ describe('ID3V2Writer', () => {
       const body: Array<ID3V22Frame> = [frame1, frame2, frame3];
       const id3Header: ID3V22Header = new ID3V22Header(
         '20',
-        new ID3V22Flags(),
+        new ID3V22HeaderFlags(),
         ID3V2Writer.calcHeaderSize(body, 3)
       );
       const id3v22: ID3V22 = new ID3V22(id3Header, body);
