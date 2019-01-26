@@ -2,6 +2,7 @@ import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3v2';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
+import ID3V22Flags from '../domain/2.2/id3v2Flags';
 
 export default class Id3v2Writer {
   private static readonly TAG = 'ID3';
@@ -13,16 +14,21 @@ export default class Id3v2Writer {
     return BlobUtil.concatDataViews(frameId, frameSize, data);
   }
 
+  private static writeV22HeaderFlags(flags: ID3V22Flags): DataView {
+    let dataView: DataView = new DataView(new ArrayBuffer(1));
+    if (flags.compression) {
+      dataView = BufferUtil.setBitAt(dataView, 0, 8);
+    }
+    if (flags.unsynchronisation) {
+      dataView = BufferUtil.setBitAt(dataView, 0, 7);
+    }
+    return dataView;
+  }
+
   public static convertID3V22ToDataView({ header, body }: ID3V22): DataView {
     const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
     const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
-    let flags: DataView = new DataView(new ArrayBuffer(1));
-    if (header.flags.compression) {
-      flags = BufferUtil.setBitAt(flags, 0, 8);
-    }
-    if (header.flags.unsynchronisation) {
-      flags = BufferUtil.setBitAt(flags, 0, 7);
-    }
+    const flags: DataView = Id3v2Writer.writeV22HeaderFlags(header.flags);
     const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
 
     const bodyView: Array<DataView> = [];
@@ -47,10 +53,10 @@ export default class Id3v2Writer {
     return dataView;
   }
 
-  public static calcHeaderSize(frames: Array<ID3V22Frame>): number {
+  public static calcHeaderSize(frames: Array<ID3V22Frame>, frameSize: number): number {
     return (
       frames
-        .map(value => value.size + 3)
+        .map(value => value.size + frameSize + 3)
         .reduce((previousValue, currentValue) => previousValue + currentValue) + 10
     );
   }
