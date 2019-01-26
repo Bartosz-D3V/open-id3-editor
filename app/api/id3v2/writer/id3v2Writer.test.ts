@@ -1,5 +1,5 @@
-import ID3V2Writer from '@api/id3v2/writer/id3V2Writer';
-import ID3V22 from '../domain/2.2/id3V2';
+import ID3V2Writer from '@api/id3v2/writer/id3v2Writer';
+import ID3V22 from '../domain/2.2/id3v2';
 import Id3v2Reader from '../reader/id3v2Reader';
 import ID3V22Flags from '../domain/2.2/id3v2Flags';
 import ID3V22Header from '../domain/2.2/id3v2Header';
