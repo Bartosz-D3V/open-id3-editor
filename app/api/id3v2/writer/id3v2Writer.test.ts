@@ -4,6 +4,11 @@ import Id3v2Reader from '../reader/id3v2Reader';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V22Header from '../domain/2.2/id3v2Header';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
+import ID3V23 from '../domain/2.3/id3v2';
+import ID3V23Frame from '../domain/2.3/id3v2Frame';
+import ID3V23Header from '../domain/2.3/id3v2Header';
+import ID3V23HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
+import ID3V23FrameFlags from '../domain/2.3/id3v2FrameFlags';
 
 describe('ID3V2Writer', () => {
   describe('convertID3V22ToDataView function', () => {
@@ -16,7 +21,7 @@ describe('ID3V2Writer', () => {
       const frame3: ID3V22Frame = new ID3V22Frame('UFI', ufiData);
       const body: Array<ID3V22Frame> = [frame1, frame2, frame3];
       const id3Header: ID3V22Header = new ID3V22Header(
-        '20',
+        '22',
         new ID3V22HeaderFlags(),
         ID3V2Writer.calcHeaderSize(body, 3)
       );
@@ -26,7 +31,7 @@ describe('ID3V2Writer', () => {
 
       expect(id31.header.tagId).toEqual('ID3');
       expect(id31.header.size).toEqual(56);
-      expect(id31.header.version).toEqual('20');
+      expect(id31.header.version).toEqual('22');
       expect(id31.header.flags.compression).toBeFalsy();
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
       expect(id31.body[0].frameID).toEqual('WCM');
@@ -35,6 +40,39 @@ describe('ID3V2Writer', () => {
       expect(id31.body[1].data).toEqual(torData);
       expect(id31.body[2].frameID).toEqual('UFI');
       expect(id31.body[2].data).toEqual(ufiData);
+    });
+  });
+
+  describe('convertID3V23ToDataView function', () => {
+    it('should convert full id3v23 to DataView', () => {
+      const commData = 'Example comment';
+      const toryData = '2000';
+      const tlanData = 'English';
+      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), commData);
+      const frame2: ID3V23Frame = new ID3V23Frame('TORY', new ID3V23FrameFlags(), toryData);
+      const frame3: ID3V23Frame = new ID3V23Frame('TLAN', new ID3V23FrameFlags(), tlanData);
+      const body: Array<ID3V23Frame> = [frame1, frame2, frame3];
+      const id3Header: ID3V23Header = new ID3V23Header(
+        '23',
+        new ID3V23HeaderFlags(),
+        ID3V2Writer.calcHeaderSize(body, 4)
+      );
+      const id3v23: ID3V23 = new ID3V23(id3Header, body);
+      const dataView: DataView = ID3V2Writer.convertID3V23ToDataView(id3v23);
+      const id31: ID3V23 = Id3v2Reader.readID3V23(dataView);
+
+      expect(id31.header.tagId).toEqual('ID3');
+      // expect(id31.header.size).toEqual(56);
+      expect(id31.header.version).toEqual('23');
+      expect(id31.header.flags.unsynchronisation).toBeFalsy();
+      expect(id31.header.flags.experimental).toBeFalsy();
+      expect(id31.header.flags.extendedHeader).toBeFalsy();
+      expect(id31.body[0].frameID).toEqual('COMM');
+      expect(id31.body[0].data).toEqual(commData);
+      expect(id31.body[1].frameID).toEqual('TORY');
+      expect(id31.body[1].data).toEqual(toryData);
+      expect(id31.body[2].frameID).toEqual('TLAN');
+      expect(id31.body[2].data).toEqual(tlanData);
     });
   });
 
