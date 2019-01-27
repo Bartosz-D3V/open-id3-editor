@@ -5,7 +5,6 @@ import ID3V23 from '../domain/2.3/id3v2';
 import ID3V22Header from '../domain/2.2/id3v2Header';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
-import ID3V23FrameWrapper from '../domain/2.3/id3v2FrameWrapper';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
@@ -50,7 +49,7 @@ export default class Id3v2Reader {
       size
     );
 
-    const data: Array<ID3V23FrameWrapper> = [];
+    const data: Array<ID3V23Frame> = [];
     let i = 10;
     while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
       const frameId = Id3v2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
@@ -70,9 +69,8 @@ export default class Id3v2Reader {
         groupingEntity
       );
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
-      const frame: ID3V23Frame = new ID3V23Frame(frameId, frameSize, frameFlags);
-      const frameWrapper: ID3V23FrameWrapper = new ID3V23FrameWrapper(frame, frameData);
-      data.push(frameWrapper);
+      const frame: ID3V23Frame = new ID3V23Frame(frameId, frameFlags, frameData);
+      data.push(frame);
       i += frameSize + 10;
     }
 

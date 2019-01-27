@@ -3,6 +3,9 @@ import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V22 from '../domain/2.2/id3v2';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
+import ID3V23 from '../domain/2.3/id3v2';
+import ID3V23Frame from '../domain/2.3/id3v2Frame';
+import ID3V23HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 
 export default class Id3v2Writer {
   private static readonly TAG = 'ID3';
@@ -37,6 +40,11 @@ export default class Id3v2Writer {
     }
     return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
   }
+
+  // public static convertID3V23ToDataView({ header, body }: ID3V23): DataView {
+  //   const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
+  //   const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
+  // }
 
   public static encodeFrameSize(size: number): DataView {
     const dataView: DataView = new DataView(new ArrayBuffer(4));
