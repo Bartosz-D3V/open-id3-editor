@@ -38,21 +38,21 @@ export default class Id3v2Reader {
 
   public static readID3V23(dataView: DataView): ID3V23 {
     const offset = 0;
-    const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
-    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 8);
-    const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 7);
-    const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 6);
-    const size: number = Id3v2Reader.readFrameSize(dataView, 7);
+    const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
+    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 8);
+    const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 7);
+    const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 6);
+    const size: number = Id3v2Reader.readFrameSize(dataView, 6);
     const header: ID3V23Header = new ID3V23Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
       size
     );
-
     const data: Array<ID3V23Frame> = [];
     let i = 10;
-    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
-      const frameId = Id3v2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
+    while (i < size && dataView.getInt8(i) !== 0x00) {
+      // const frameId = Id3v2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
+      const frameId = BlobUtil.dataViewToString(dataView, i, 4);
       const frameSize = Id3v2Reader.readFrameSize(dataView, i + 4);
       const tagAlter = BufferUtil.isBitSetAt(dataView, 9, 8);
       const fileAlter = BufferUtil.isBitSetAt(dataView, 9, 7);
