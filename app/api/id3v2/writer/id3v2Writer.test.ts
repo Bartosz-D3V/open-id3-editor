@@ -9,6 +9,8 @@ import ID3V23Frame from '../domain/2.3/id3v2Frame';
 import ID3V23Header from '../domain/2.3/id3v2Header';
 import ID3V23HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V23FrameFlags from '../domain/2.3/id3v2FrameFlags';
+import { FrameID as FrameIDV23 } from '../domain/2.3/frameID';
+import { FrameID as FrameIDV22 } from '../domain/2.2/frameID';
 
 describe('ID3V2Writer', () => {
   describe('convertID3V22ToDataView function', () => {
@@ -34,11 +36,11 @@ describe('ID3V2Writer', () => {
       expect(id31.header.version).toEqual('22');
       expect(id31.header.flags.compression).toBeFalsy();
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
-      expect(id31.body[0].frameID).toEqual('WCM');
+      expect(id31.body[0].frameID).toEqual(FrameIDV22.WCM);
       expect(id31.body[0].data).toEqual(wcmData);
-      expect(id31.body[1].frameID).toEqual('TOR');
+      expect(id31.body[1].frameID).toEqual(FrameIDV22.TOR);
       expect(id31.body[1].data).toEqual(torData);
-      expect(id31.body[2].frameID).toEqual('UFI');
+      expect(id31.body[2].frameID).toEqual(FrameIDV22.UFI);
       expect(id31.body[2].data).toEqual(ufiData);
     });
   });
@@ -62,16 +64,16 @@ describe('ID3V2Writer', () => {
       const id31: ID3V23 = Id3v2Reader.readID3V23(dataView);
 
       expect(id31.header.tagId).toEqual('ID3');
-      // expect(id31.header.size).toEqual(56);
+      expect(id31.header.size).toEqual(57);
       expect(id31.header.version).toEqual('23');
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
       expect(id31.header.flags.experimental).toBeFalsy();
       expect(id31.header.flags.extendedHeader).toBeFalsy();
-      expect(id31.body[0].frameID).toEqual('COMM');
+      expect(id31.body[0].frameID).toEqual(FrameIDV23.COMM);
       expect(id31.body[0].data).toEqual(commData);
-      expect(id31.body[1].frameID).toEqual('TORY');
+      expect(id31.body[1].frameID).toEqual(FrameIDV23.TORY);
       expect(id31.body[1].data).toEqual(toryData);
-      expect(id31.body[2].frameID).toEqual('TLAN');
+      expect(id31.body[2].frameID).toEqual(FrameIDV23.TLAN);
       expect(id31.body[2].data).toEqual(tlanData);
     });
   });
