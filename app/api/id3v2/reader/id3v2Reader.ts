@@ -37,6 +37,11 @@ export default class Id3v2Reader {
     return new ID3V22(header, data);
   }
 
+  private static getFrameIDV22(tagId: string): FrameIDV22 | string {
+    const frameID: any = Object.keys(FrameIDV22).find(key => key === tagId);
+    return frameID ? FrameIDV22[frameID] : tagId;
+  }
+
   public static readID3V23(dataView: DataView): ID3V23 {
     const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
@@ -77,21 +82,15 @@ export default class Id3v2Reader {
     return new ID3V23(header, data);
   }
 
+  private static getFrameIDV23(tagId: string): FrameIDV23 | string {
+    const frameID: any = Object.keys(FrameIDV23).find(key => key === tagId);
+    return frameID ? FrameIDV23[frameID] : tagId;
+  }
   public static readFrameSize(dataView: DataView, offset: number = 0): number {
     const size1 = BlobUtil.dataViewToNum(dataView, offset);
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
-  }
-
-  private static getFrameIDV22(tagId: string): FrameIDV22 | string {
-    const frameID: any = Object.keys(FrameIDV22).find(key => key === tagId);
-    return frameID ? FrameIDV22[frameID] : tagId;
-  }
-
-  private static getFrameIDV23(tagId: string): FrameIDV23 | string {
-    const frameID: any = Object.keys(FrameIDV23).find(key => key === tagId);
-    return frameID ? FrameIDV23[frameID] : tagId;
   }
 }
