@@ -3,36 +3,6 @@ import BlobUtil from './blobUtil';
 import BufferUtil from '../buffer/bufferUtil';
 
 describe('blobConverter class', () => {
-  describe('blobToArrayBuffer function', () => {
-    it('should convert blob to array buffer', async () => {
-      const mockText = 'Hello, World!';
-      const mockBlob: Blob = new Blob([mockText], {
-        type: 'text/plain',
-      });
-      const stringDecoder: NodeStringDecoder = new StringDecoder();
-      const actualArrayBuffer: ArrayBuffer = await BlobUtil.blobToArrayBuffer(mockBlob);
-      const actualText: string = stringDecoder.write(Buffer.from(actualArrayBuffer));
-
-      expect(actualText).toBeDefined();
-      expect(actualText).toEqual(mockText);
-    });
-  });
-
-  describe('blobToDataURL function', async () => {
-    it('should convert blob to data URL', async () => {
-      const mockDataURL = 'data:text/plain;charset=undefined,Hello%2C%20World!';
-      const mockBlob: Blob = new Blob(['Hello, World!'], {
-        type: 'text/plain',
-      });
-      const stringDecoder: NodeStringDecoder = new StringDecoder();
-      const actualDataURL: string = await BlobUtil.blobToDataURL(mockBlob);
-      const actualText: string = stringDecoder.write(Buffer.from(actualDataURL));
-
-      expect(actualText).toBeDefined();
-      expect(actualText).toEqual(mockDataURL);
-    });
-  });
-
   describe('blobToDataView function', async () => {
     it('should convert blob to dataView', async () => {
       const mockBlob: Blob = new Blob(['Hello, World!'], {
@@ -97,17 +67,6 @@ describe('blobConverter class', () => {
       expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(124);
       expect(BlobUtil.dataViewToNum(updatedView, 2)).toEqual(127);
     });
-
-    it('should write boolean to dataView', () => {
-      const buff: ArrayBuffer = new ArrayBuffer(20);
-      const view: DataView = new DataView(buff);
-      let updatedView: DataView = BlobUtil.writeToDataView(view, true, 0);
-      updatedView = BlobUtil.writeToDataView(view, false, 1);
-
-      expect(updatedView.byteLength).toEqual(20);
-      expect(BlobUtil.dataViewToNum(updatedView, 0)).toEqual(1);
-      expect(BlobUtil.dataViewToNum(updatedView, 1)).toEqual(0);
-    });
   });
 
   describe('dataViewToNum function', () => {
@@ -142,26 +101,6 @@ describe('blobConverter class', () => {
       expect(concatDataView.byteLength).toEqual(12);
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 1');
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 2');
-    });
-  });
-
-  describe('decodeDataURL function', () => {
-    it('should decode data URL from Base 64', () => {
-      const encodedDataURL = 'data:text/plain;charset=utf-8;base64,SGVsbG8sIFdvcmxkIQ==';
-      const expectedDataURL = 'Hello, World!';
-
-      const actualDataURL = BlobUtil.decodeDataURL(encodedDataURL);
-
-      expect(actualDataURL).toBeDefined();
-      expect(actualDataURL).toEqual(expectedDataURL);
-    });
-
-    it('should throw an error if contains corrupted Base64 data', () => {
-      const encodedDataURL = 'data:text/plain;charset=utf-8;base64,S%VsbG8sIFdvcmxkIQ==';
-
-      const actualData = () => BlobUtil.decodeDataURL(encodedDataURL);
-
-      expect(actualData).toThrowError('Incorrect Base64 encoding');
     });
   });
 });

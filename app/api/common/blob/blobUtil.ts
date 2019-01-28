@@ -2,24 +2,6 @@ import BufferUtil from '../buffer/bufferUtil';
 
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
-  private static readonly incorrectBase64ErrorMsg = 'Incorrect Base64 encoding';
-
-  public static blobToArrayBuffer = async <T extends Blob>(blob: T): Promise<ArrayBuffer> => {
-    const fileReader: FileReader = new FileReader();
-    let arrayBuffer: ArrayBuffer;
-    fileReader.readAsArrayBuffer(blob);
-    return new Promise<ArrayBuffer>((resolve: Function, reject: Function) => {
-      fileReader.onload = () => {
-        arrayBuffer = <ArrayBuffer>fileReader.result;
-        resolve(arrayBuffer);
-      };
-
-      fileReader.onerror = () => {
-        fileReader.abort();
-        reject(new ReferenceError(BlobUtil.cannotReadFileErrorMsg));
-      };
-    });
-  };
 
   public static blobToDataView = async <T extends Blob>(blob: T): Promise<DataView> => {
     const fileReader: FileReader = new FileReader();
@@ -55,8 +37,6 @@ export default class BlobUtil {
         return BlobUtil.writeStringToDataView(dataView, data, offset);
       case 'number':
         return BlobUtil.writeNumToDataView(dataView, data, offset);
-      case 'boolean':
-        return BlobUtil.writeBoolToDataView(dataView, data, offset);
     }
   }
 
@@ -72,11 +52,6 @@ export default class BlobUtil {
 
   private static writeNumToDataView(dataView: DataView, data: number, offset: number): DataView {
     dataView.setInt8(offset, data);
-    return dataView;
-  }
-
-  private static writeBoolToDataView(dataView: DataView, data: boolean, offset: number): DataView {
-    dataView.setInt8(offset, +data);
     return dataView;
   }
 
@@ -106,34 +81,5 @@ export default class BlobUtil {
         offset += val.byteLength;
       });
     return dataView;
-  };
-
-  public static blobToDataURL = async <T extends Blob>(blob: T): Promise<string> => {
-    const fileReader: FileReader = new FileReader();
-    let dataURL: string;
-    fileReader.readAsDataURL(blob);
-
-    return new Promise<string>((resolve: Function, reject: Function) => {
-      fileReader.onload = () => {
-        dataURL = <string>fileReader.result;
-        resolve(dataURL);
-      };
-
-      fileReader.onerror = () => {
-        fileReader.abort();
-        reject(new ReferenceError(BlobUtil.cannotReadFileErrorMsg));
-      };
-    });
-  };
-
-  public static decodeDataURL = (dataURL: string): string => {
-    const dataNoMIME: string = dataURL.split(',')[1];
-    let decodedData: string;
-    try {
-      decodedData = window.atob(dataNoMIME);
-    } catch (e) {
-      throw new ReferenceError(BlobUtil.incorrectBase64ErrorMsg);
-    }
-    return decodedData;
   };
 }
