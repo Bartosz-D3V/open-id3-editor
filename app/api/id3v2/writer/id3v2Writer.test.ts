@@ -23,7 +23,7 @@ describe('ID3V2Writer', () => {
       const id3Header: ID3V22Header = new ID3V22Header(
         '22',
         new ID3V22HeaderFlags(),
-        ID3V2Writer.calcHeaderSize(body, 3)
+        ID3V2Writer.calcV2HeaderSize(body, 3)
       );
       const id3v22: ID3V22 = new ID3V22(id3Header, body);
       const dataView: DataView = ID3V2Writer.convertID3V22ToDataView(id3v22);
@@ -55,7 +55,7 @@ describe('ID3V2Writer', () => {
       const id3Header: ID3V23Header = new ID3V23Header(
         '23',
         new ID3V23HeaderFlags(),
-        ID3V2Writer.calcHeaderSize(body, 4)
+        ID3V2Writer.calcV2HeaderSize(body, 4)
       );
       const id3v23: ID3V23 = new ID3V23(id3Header, body);
       const dataView: DataView = ID3V2Writer.convertID3V23ToDataView(id3v23);
@@ -122,11 +122,11 @@ describe('ID3V2Writer', () => {
     });
   });
 
-  it('calcHeaderSize should return size of the ID3 tag', () => {
+  it('calcV2HeaderSize should return size of the ID3 tag', () => {
     const frame1: ID3V22Frame = new ID3V22Frame('WCM', 'Test');
     const frame2: ID3V22Frame = new ID3V22Frame('XYZ', 'Test');
     const frame3: ID3V22Frame = new ID3V22Frame('ZYX', 'Test');
 
-    expect(ID3V2Writer.calcHeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
+    expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
   });
 });
