@@ -5,12 +5,12 @@ import ID3V23 from '../domain/2.3/id3v2';
 import ID3V22Header from '../domain/2.2/id3v2Header';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
-import ID3V23FrameWrapper from '../domain/2.3/id3v2FrameWrapper';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3v2Header';
-import { FrameID } from '../domain/2.3/frameID';
+import { FrameID as FrameIDV23 } from '../domain/2.3/frameID';
+import { FrameID as FrameIDV22 } from '../domain/2.2/frameID';
 
 export default class Id3v2Reader {
   public static readID3V22(dataView: DataView): ID3V22 {
@@ -28,7 +28,7 @@ export default class Id3v2Reader {
     const data: Array<ID3V22Frame> = [];
     let i = 10;
     while (i < size && dataView.getInt8(i) !== 0x00) {
-      const frameId = BlobUtil.dataViewToString(dataView, i, 3);
+      const frameId = Id3v2Reader.getFrameIDV22(BlobUtil.dataViewToString(dataView, i, 3));
       const frameSize = Id3v2Reader.readFrameSize(dataView, i + 3);
       const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
       data.push(new ID3V22Frame(frameId, frameData));
@@ -39,21 +39,20 @@ export default class Id3v2Reader {
 
   public static readID3V23(dataView: DataView): ID3V23 {
     const offset = 0;
-    const version: string = BlobUtil.dataViewToString(dataView, offset + 4, 2);
-    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 8);
-    const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 7);
-    const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 6, 6);
-    const size: number = Id3v2Reader.readFrameSize(dataView, 7);
+    const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
+    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 8);
+    const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 7);
+    const experimental: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 6);
+    const size: number = Id3v2Reader.readFrameSize(dataView, 6);
     const header: ID3V23Header = new ID3V23Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
       size
     );
-
-    const data: Array<ID3V23FrameWrapper> = [];
+    const data: Array<ID3V23Frame> = [];
     let i = 10;
-    while (i < size - 10 && dataView.getInt8(i) !== 0x00) {
-      const frameId = Id3v2Reader.getFrameID(BlobUtil.dataViewToString(dataView, i, 4));
+    while (i < size && dataView.getInt8(i) !== 0x00) {
+      const frameId = Id3v2Reader.getFrameIDV23(BlobUtil.dataViewToString(dataView, i, 4));
       const frameSize = Id3v2Reader.readFrameSize(dataView, i + 4);
       const tagAlter = BufferUtil.isBitSetAt(dataView, 9, 8);
       const fileAlter = BufferUtil.isBitSetAt(dataView, 9, 7);
@@ -70,9 +69,8 @@ export default class Id3v2Reader {
         groupingEntity
       );
       const frameData = BlobUtil.dataViewToString(dataView, i + 10, frameSize);
-      const frame: ID3V23Frame = new ID3V23Frame(frameId, frameSize, frameFlags);
-      const frameWrapper: ID3V23FrameWrapper = new ID3V23FrameWrapper(frame, frameData);
-      data.push(frameWrapper);
+      const frame: ID3V23Frame = new ID3V23Frame(frameId, frameFlags, frameData);
+      data.push(frame);
       i += frameSize + 10;
     }
 
@@ -87,8 +85,13 @@ export default class Id3v2Reader {
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
   }
 
-  private static getFrameID(tagId: string): FrameID | string {
-    const frameID: any = Object.keys(FrameID).find(key => key === tagId);
-    return frameID ? FrameID[frameID] : tagId;
+  private static getFrameIDV22(tagId: string): FrameIDV22 | string {
+    const frameID: any = Object.keys(FrameIDV22).find(key => key === tagId);
+    return frameID ? FrameIDV22[frameID] : tagId;
+  }
+
+  private static getFrameIDV23(tagId: string): FrameIDV23 | string {
+    const frameID: any = Object.keys(FrameIDV23).find(key => key === tagId);
+    return frameID ? FrameIDV23[frameID] : tagId;
   }
 }
