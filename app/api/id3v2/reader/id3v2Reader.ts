@@ -86,6 +86,7 @@ export default class Id3v2Reader {
     const frameID: any = Object.keys(FrameIDV23).find(key => key === tagId);
     return frameID ? FrameIDV23[frameID] : tagId;
   }
+
   public static readFrameSize(dataView: DataView, offset: number = 0): number {
     const size1 = BlobUtil.dataViewToNum(dataView, offset);
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
