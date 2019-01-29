@@ -11,11 +11,17 @@ import ID3V23FrameFlags from '../domain/2.3/id3v2FrameFlags';
 export default class Id3v2Writer {
   private static readonly TAG = 'ID3';
 
-  private static writeV22Frame(frame: ID3V22Frame): DataView {
-    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
-    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.size);
-    const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
-    return BlobUtil.concatDataViews(frameId, frameSize, data);
+  public static convertID3V22ToDataView({ header, body }: ID3V22): DataView {
+    const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
+    const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
+    const flags: DataView = Id3v2Writer.writeV22HeaderFlags(header.flags);
+    const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
+
+    const bodyView: Array<DataView> = [];
+    for (let i = 0; i < body.length; i++) {
+      bodyView.push(Id3v2Writer.writeV22Frame(body[i]));
+    }
+    return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
   }
 
   private static writeV22HeaderFlags(flags: ID3V22HeaderFlags): DataView {
@@ -27,6 +33,26 @@ export default class Id3v2Writer {
       dataView = BufferUtil.setBitAt(dataView, 0, 7);
     }
     return dataView;
+  }
+
+  private static writeV22Frame(frame: ID3V22Frame): DataView {
+    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
+    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.size);
+    const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
+    return BlobUtil.concatDataViews(frameId, frameSize, data);
+  }
+
+  public static convertID3V23ToDataView({ header, body }: ID3V23): DataView {
+    const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
+    const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
+    const flags: DataView = Id3v2Writer.writeV23HeaderFlags(header.flags);
+    const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
+
+    const bodyView: Array<DataView> = [];
+    for (let i = 0; i < body.length; i++) {
+      bodyView.push(Id3v2Writer.writeV23Frame(body[i]));
+    }
+    return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
   }
 
   private static writeV23HeaderFlags(flags: ID3V23HeaderFlags): DataView {
@@ -41,6 +67,14 @@ export default class Id3v2Writer {
       dataView = BufferUtil.setBitAt(dataView, 0, 6);
     }
     return dataView;
+  }
+
+  private static writeV23Frame(frame: ID3V23Frame): DataView {
+    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
+    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.size);
+    const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
+    const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
+    return BlobUtil.concatDataViews(frameId, frameSize, frameFlags, data);
   }
 
   private static writeV23FrameFlags(flags: ID3V23FrameFlags): DataView {
@@ -64,40 +98,6 @@ export default class Id3v2Writer {
       dataView = BufferUtil.setBitAt(dataView, 1, 6);
     }
     return dataView;
-  }
-
-  private static writeV23Frame(frame: ID3V23Frame): DataView {
-    const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
-    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.size);
-    const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
-    const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
-    return BlobUtil.concatDataViews(frameId, frameSize, frameFlags, data);
-  }
-
-  public static convertID3V22ToDataView({ header, body }: ID3V22): DataView {
-    const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
-    const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
-    const flags: DataView = Id3v2Writer.writeV22HeaderFlags(header.flags);
-    const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
-
-    const bodyView: Array<DataView> = [];
-    for (let i = 0; i < body.length; i++) {
-      bodyView.push(Id3v2Writer.writeV22Frame(body[i]));
-    }
-    return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
-  }
-
-  public static convertID3V23ToDataView({ header, body }: ID3V23): DataView {
-    const tag: DataView = new DataView(BufferUtil.createArrayBuffer(Id3v2Writer.TAG, 3));
-    const version: DataView = new DataView(BufferUtil.createArrayBuffer(header.version, 2));
-    const flags: DataView = Id3v2Writer.writeV23HeaderFlags(header.flags);
-    const size: DataView = Id3v2Writer.encodeFrameSize(header.size);
-
-    const bodyView: Array<DataView> = [];
-    for (let i = 0; i < body.length; i++) {
-      bodyView.push(Id3v2Writer.writeV23Frame(body[i]));
-    }
-    return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
   }
 
   public static encodeFrameSize(size: number): DataView {

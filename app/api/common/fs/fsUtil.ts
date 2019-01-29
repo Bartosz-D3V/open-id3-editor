@@ -1,6 +1,5 @@
 import util from 'util';
 import fs, { Stats } from 'fs';
-import BufferUtil from '@api/common/buffer/bufferUtil';
 
 export default class FsUtil {
   public static readFile = async (path: fs.PathLike): Promise<Buffer> => {
