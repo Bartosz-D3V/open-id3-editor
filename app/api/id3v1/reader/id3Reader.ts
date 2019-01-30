@@ -1,8 +1,8 @@
-import { genres } from '@api/id3v1/domain/genres';
+import { genres } from '@api/id3/domain/genres';
+import Genre from '@api/id3/domain/genre';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V11 from '../domain/id3V1-1';
 import ID3V10 from '../domain/id3V1-0';
-import Genre from '../domain/genre';
 
 export default class Id3Reader {
   public static readID3V10(dataView: DataView): ID3V10 {

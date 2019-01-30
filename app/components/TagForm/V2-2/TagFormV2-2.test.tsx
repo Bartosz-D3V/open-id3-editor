@@ -3,12 +3,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import ID3V11 from '@api/id3v1/domain/id3V1-1';
-import Genre from '@api/id3v1/domain/genre';
-import { TagFormV22 } from './TagFormV1-1';
+import Genre from '@api/id3/domain/genre';
+import { TagFormV22 } from './TagFormV2-2';
 
 const TextArea = Input.TextArea;
 
-describe('TagFormV1-0 component', () => {
+describe('TagFormV2-2 component', () => {
   const mockUploadFile: UploadFile = {
     uid: 'QW1',
     size: 100,
