@@ -9,7 +9,7 @@ import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import Genre from '@api/id3/domain/genre';
 import ID3V11 from '@api/id3v1/domain/id3V1-1';
 import BlobUtil from '@api/common/blob/blobUtil';
-import Mp3Util from '@api/id3/util/mp3Util';
+import ID3Util from '@api/id3/util/id3Util';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
 import FsUtil from '@api/common/fs/fsUtil';
 import Id3Writer from '@api/id3v1/writer/id3Writer';
@@ -154,7 +154,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V11;
-    if (Mp3Util.hasID3V1(dataView)) {
+    if (ID3Util.hasID3V1(dataView)) {
       id3 = Id3Reader.readID3V11(dataView);
     } else {
       id3 = new ID3V11();
@@ -168,7 +168,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     } = this.props;
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
-    await Mp3Util.deleteID3V11(originFileObj);
+    await ID3Util.deleteID3V11(originFileObj);
     await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V11ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
@@ -177,7 +177,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const {
       selectedFile: { originFileObj },
     } = this.props;
-    this.setState({ id3: await Mp3Util.deleteID3V11(originFileObj) });
+    this.setState({ id3: await ID3Util.deleteID3V11(originFileObj) });
     ComponentUtil.openNotification('Tag has been deleted');
   }
 

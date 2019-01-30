@@ -6,7 +6,7 @@ import FsUtil from '@api/common/fs/fsUtil';
 import ID3V2Header from '@api/id3v2/domain/2.2/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.2/id3v2HeaderFlags';
 
-export default class Mp3Util {
+export default class ID3Util {
   public static hasID3V1 = (dataView: DataView): boolean => {
     return dataView.byteLength < 128
       ? false
@@ -18,28 +18,28 @@ export default class Mp3Util {
   };
 
   public static deleteID3V10 = async (electronFile: any): Promise<ID3V10> => {
-    await Mp3Util.truncateID3V1(electronFile);
+    await ID3Util.truncateID3V1(electronFile);
     return new ID3V10();
   };
 
   public static deleteID3V11 = async (electronFile: any): Promise<ID3V11> => {
-    await Mp3Util.truncateID3V1(electronFile);
+    await ID3Util.truncateID3V1(electronFile);
     return new ID3V11();
   };
 
   private static truncateID3V1 = async (electronFile: any): Promise<void> => {
-    if (Mp3Util.hasID3V1(electronFile)) {
+    if (ID3Util.hasID3V1(electronFile)) {
       await FsUtil.truncate(electronFile.path, 128);
     }
   };
 
   public static deleteID3V22 = async (electronFile: any, length: number): Promise<ID3V22> => {
-    await Mp3Util.truncateID3V2(electronFile, length);
+    await ID3Util.truncateID3V2(electronFile, length);
     return new ID3V22(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []);
   };
 
   private static truncateID3V2 = async (electronFile: any, length: number): Promise<void> => {
-    if (Mp3Util.hasID3V2(electronFile)) {
+    if (ID3Util.hasID3V2(electronFile)) {
       await FsUtil.deleteFromBeginning(electronFile.path, length);
     }
   };

@@ -9,7 +9,7 @@ import ID3V2 from '@api/id3v2/domain/2.2/id3v2';
 import ID3V2Header from '@api/id3v2/domain/2.2/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.2/id3v2HeaderFlags';
 import BlobUtil from '@api/common/blob/blobUtil';
-import Mp3Util from '@api/id3/util/mp3Util';
+import ID3Util from '@api/id3/util/id3Util';
 import Id3Reader from '@api/id3v2/reader/id3v2Reader';
 import FsUtil from '@api/common/fs/fsUtil';
 import Id3Writer from '@api/id3v2/writer/id3v2Writer';
@@ -154,7 +154,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V2;
-    if (Mp3Util.hasID3V2(dataView)) {
+    if (ID3Util.hasID3V2(dataView)) {
       id3 = Id3Reader.readID3V22(dataView);
     } else {
       id3 = new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []);
@@ -168,7 +168,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     } = this.props;
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
-    await Mp3Util.deleteID3V22(originFileObj, id3.header.size);
+    await ID3Util.deleteID3V22(originFileObj, id3.header.size);
     await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V22ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
@@ -178,7 +178,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
       selectedFile: { originFileObj },
     } = this.props;
     const { id3 } = this.state;
-    this.setState({ id3: await Mp3Util.deleteID3V22(originFileObj, id3.header.size) });
+    this.setState({ id3: await ID3Util.deleteID3V22(originFileObj, id3.header.size) });
     ComponentUtil.openNotification('Tag has been deleted');
   }
 
