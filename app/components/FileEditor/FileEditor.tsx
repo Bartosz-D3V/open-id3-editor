@@ -22,6 +22,7 @@ export class FileEditor extends Component<IFileEditorProps> {
     super(props);
     this.renderTagFormV10 = this.renderTagFormV10.bind(this);
     this.renderTagFormV11 = this.renderTagFormV11.bind(this);
+    this.renderTagFormV22 = this.renderTagFormV22.bind(this);
   }
 
   public renderTagFormV10(props: RouteComponentProps): JSX.Element {
