@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
-import { genres } from '@api/id3/domain/genres';
-import { oneInRow, threeInRow, twoInRow } from '@layout/grid';
+import { AutoComplete, Button, Col, Form, Input, Row } from 'antd';
+import { oneInRow, twoInRow } from '@layout/grid';
 import { ITagFormV22Props } from '@components/TagForm/V2-2/ITagFormV2-2Props';
 import { ITagFormV22State } from '@components/TagForm/V2-2/ITagFormV2-2State';
-import Genre from '@api/id3/domain/genre';
 import ID3V2 from '@api/id3v2/domain/2.2/id3v2';
 import ID3V2Header from '@api/id3v2/domain/2.2/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.2/id3v2HeaderFlags';
@@ -14,10 +12,9 @@ import Id3Reader from '@api/id3v2/reader/id3v2Reader';
 import FsUtil from '@api/common/fs/fsUtil';
 import Id3Writer from '@api/id3v2/writer/id3v2Writer';
 import ComponentUtil from '@api/common/component/componentUtil';
-
-const TextArea = Input.TextArea;
-
-const Option = AutoComplete.Option;
+import { FrameID } from '@api/id3v2/domain/2.2/frameID';
+import ID3V2Frame from '@api/id3v2/domain/2.2/id3v2Frame';
+import { bool } from 'prop-types';
 
 export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
   constructor(props: ITagFormV22Props) {
@@ -25,10 +22,11 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     this.state = { id3: new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []) };
     this.saveFile = this.saveFile.bind(this);
     this.deleteTag = this.deleteTag.bind(this);
-    this.onTextInputChange = this.onTextInputChange.bind(this);
-    this.onYearInputChange = this.onYearInputChange.bind(this);
-    this.onTrackNumberChange = this.onTrackNumberChange.bind(this);
-    this.onGenreInputChange = this.onGenreInputChange.bind(this);
+    this.getFrame = this.getFrame.bind(this);
+    this.setFrame = this.setFrame.bind(this);
+    // this.onYearInputChange = this.onYearInputChange.bind(this);
+    // this.onTrackNumberChange = this.onTrackNumberChange.bind(this);
+    // this.onGenreInputChange = this.onGenreInputChange.bind(this);
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV22Props>): Promise<void> {
@@ -42,7 +40,6 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
   }
 
   public render(): JSX.Element {
-    const { id3 } = this.state;
     return (
       <Form>
         <Row gutter={5} justify="center">
@@ -63,91 +60,83 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
         </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
-            <Form.Item label="Title">
+            <Form.Item label={FrameID.TAL}>
               <Input
-                name="title"
-                maxLength={30}
-                value={id3.title}
-                onChange={this.onTextInputChange}
+                id="TAL"
+                name={FrameID.TAL}
+                value={this.getFrame('TAL').data}
+                onChange={this.setFrame}
               />
             </Form.Item>
           </Col>
           <Col {...twoInRow}>
-            <Form.Item label="Artist">
+            <Form.Item label={FrameID.TBP}>
               <Input
-                name="artist"
-                maxLength={30}
-                value={id3.artist}
-                onChange={this.onTextInputChange}
+                name={FrameID.TBP}
+                value={this.getFrame('TBP').data}
+                // onChange={this.onTextInputChange}
               />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
-            <Form.Item label="Album">
+            <Form.Item label={FrameID.TCM}>
               <Input
-                name="album"
-                maxLength={28}
-                value={id3.album}
-                onChange={this.onTextInputChange}
+                name={FrameID.TCM}
+                value={this.getFrame('TCM').data}
+                // onChange={this.onTextInputChange}
               />
             </Form.Item>
           </Col>
-          <Col {...threeInRow}>
-            <Form.Item label="Year">
-              <InputNumber
-                name="year"
-                min={0}
-                precision={0}
-                maxLength={4}
-                value={id3.year}
-                onChange={this.onYearInputChange}
-              />
-            </Form.Item>
-          </Col>
-          <Col {...threeInRow}>
-            <Form.Item label="Track number">
-              <InputNumber
-                name="track"
-                min={1}
-                precision={0}
-                maxLength={2}
-                value={id3.zeroByte ? id3.track : null}
-                onChange={this.onTrackNumberChange}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={5} justify="space-around">
-          <Col span={21} offset={1}>
-            <Form.Item label="Comment">
-              <TextArea
-                name="comment"
-                maxLength={30}
-                value={id3.comment}
-                onChange={this.onTextInputChange}
+          <Col {...twoInRow}>
+            <Form.Item label={FrameID.TCO}>
+              <Input
+                name={FrameID.TCO}
+                value={this.getFrame('TCO').data}
+                // onChange={this.onTextInputChange}
               />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
-            <Form.Item label="Genre">
-              <AutoComplete
-                placeholder="Genre"
-                value={id3.genre && id3.genre.index > -1 ? id3.genre.index.toString(10) : ''}
-                onChange={this.onGenreInputChange}
-              >
-                {genres.map((genre: Genre) => (
-                  <Option key={genre.index.toString(10)}>{genre.description}</Option>
-                ))}
-              </AutoComplete>
+            <Form.Item label={FrameID.TCR}>
+              <Input
+                name={FrameID.TCR}
+                value={this.getFrame('TCR').data}
+                // onChange={this.onTextInputChange}
+              />
+            </Form.Item>
+          </Col>
+          <Col {...twoInRow}>
+            <Form.Item label={FrameID.TDA}>
+              <Input
+                name={FrameID.TDA}
+                value={this.getFrame('TDA').data}
+                // onChange={this.onTextInputChange}
+              />
             </Form.Item>
           </Col>
         </Row>
       </Form>
     );
+  }
+
+  public getFrame(frameID: string): ID3V2Frame {
+    const { id3 } = this.state;
+    const frame: ID3V2Frame = id3.body.find(v => v.frameID === frameID);
+    return frame ? frame : new ID3V2Frame(frameID, '');
+  }
+
+  public setFrame(event: React.ChangeEvent<HTMLInputElement>) {
+    const target = event.target;
+    const { id3 } = this.state;
+    const frameId = target.id;
+    const frame = id3.body.find(v => v.frameID === frameId);
+    id3.body.splice(id3.body.indexOf(frame), 0);
+    id3.body.push(frame);
+    console.log(id3.body);
   }
 
   public async constructID3(props: ITagFormV22Props = this.props): Promise<ID3V2> {
@@ -180,32 +169,5 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     const { id3 } = this.state;
     this.setState({ id3: await ID3Util.deleteID3V22(originFileObj, id3.header.size) });
     ComponentUtil.openNotification('Tag has been deleted');
-  }
-
-  private onTextInputChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void {
-    const target = event.target;
-    const { id3 } = this.state;
-    id3[target.name] = target.value;
-    this.setState({ id3 });
-  }
-
-  private onYearInputChange(value: number): void {
-    const { id3 } = this.state;
-    id3.year = value;
-    this.setState({ id3 });
-  }
-
-  private onTrackNumberChange(value: number): void {
-    const { id3 } = this.state;
-    id3.track = value;
-    this.setState({ id3 });
-  }
-
-  private onGenreInputChange(value: string): void {
-    const { id3 } = this.state;
-    id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
-    this.setState({ id3 });
   }
 }
