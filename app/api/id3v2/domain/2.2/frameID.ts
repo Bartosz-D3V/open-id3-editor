@@ -1,4 +1,6 @@
 export enum FrameID {
+  COM = 'Comments',
+  LNK = 'Linked information',
   TAL = 'Album/Movie/Show title',
   TBP = 'BPM (Beats Per Minute)',
   TCM = 'Composer',
