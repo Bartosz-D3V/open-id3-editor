@@ -187,6 +187,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     }
     frame.data = target.value;
     id3.body.push(frame);
+    id3.recalculateSize();
     this.setState({ id3 });
     return frame;
   }
@@ -204,7 +205,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V2;
-    if (ID3Util.hadID3V22(dataView)) {
+    if (ID3Util.hasID3Version(dataView, '22')) {
       id3 = Id3Reader.readID3V22(dataView);
     } else {
       id3 = new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []);

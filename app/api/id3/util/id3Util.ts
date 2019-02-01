@@ -14,15 +14,11 @@ export default class ID3Util {
   };
 
   public static hasID3V2 = (dataView: DataView): boolean => {
-    return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 0, 3) === 'ID3';
+    return dataView.byteLength < 10 ? false : BlobUtil.dataViewToString(dataView, 0, 3) === 'ID3';
   };
 
-  public static hadID3V22 = (dataView: DataView): boolean => {
-    return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 3, 2) === '22';
-  };
-
-  public static hadID3V23 = (dataView: DataView): boolean => {
-    return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 3, 2) === '23';
+  public static hasID3Version = (dataView: DataView, version: string): boolean => {
+    return dataView.byteLength < 10 ? false : BlobUtil.dataViewToString(dataView, 3, 2) === version;
   };
 
   public static deleteID3V10 = async (electronFile: any): Promise<ID3V10> => {
@@ -47,7 +43,8 @@ export default class ID3Util {
   };
 
   private static truncateID3V2 = async (electronFile: any, length: number): Promise<void> => {
-    if (ID3Util.hasID3V2(electronFile)) {
+    const dataView: DataView = await BlobUtil.blobToDataView(electronFile);
+    if (ID3Util.hasID3V2(dataView)) {
       await FsUtil.deleteFromBeginning(electronFile.path, length);
     }
   };

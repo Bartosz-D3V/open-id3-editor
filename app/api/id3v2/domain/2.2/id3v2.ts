@@ -9,4 +9,12 @@ export default class {
     this.header = header;
     this.body = body;
   }
+
+  public recalculateSize(): void {
+    let size = this.header.size;
+    this.body.forEach(frame => {
+      size += frame.size;
+    });
+    this.header.size = size;
+  }
 }
