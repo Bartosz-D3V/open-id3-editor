@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AutoComplete, Button, Col, Form, Input, Row } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { oneInRow, twoInRow } from '@layout/grid';
 import { ITagFormV22Props } from '@components/TagForm/V2-2/ITagFormV2-2Props';
 import { ITagFormV22State } from '@components/TagForm/V2-2/ITagFormV2-2State';
@@ -15,6 +15,10 @@ import ComponentUtil from '@api/common/component/componentUtil';
 import { FrameID } from '@api/id3v2/domain/2.2/frameID';
 import ID3V2Frame from '@api/id3v2/domain/2.2/id3v2Frame';
 import { bool } from 'prop-types';
+import { genres } from '@api/id3/domain/genres';
+import Genre from '@api/id3/domain/genre';
+
+const TextArea = Input.TextArea;
 
 export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
   constructor(props: ITagFormV22Props) {
@@ -24,7 +28,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     this.deleteTag = this.deleteTag.bind(this);
     this.getFrame = this.getFrame.bind(this);
     this.setFrame = this.setFrame.bind(this);
-    // this.onYearInputChange = this.onYearInputChange.bind(this);
+    this.onYearInputChange = this.onYearInputChange.bind(this);
     // this.onTrackNumberChange = this.onTrackNumberChange.bind(this);
     // this.onGenreInputChange = this.onGenreInputChange.bind(this);
   }
@@ -60,9 +64,29 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
         </Row>
         <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
+            <Form.Item label={FrameID.TOT}>
+              <Input
+                id="TOT"
+                name={FrameID.TOT}
+                value={this.getFrame('TOT').data}
+                onChange={this.setFrame}
+              />
+            </Form.Item>
+          </Col>
+          <Col {...twoInRow}>
+            <Form.Item label={FrameID.TP1}>
+              <Input
+                name={FrameID.TP1}
+                value={this.getFrame('TP1').data}
+                onChange={this.setFrame}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={5} justify="space-around">
+          <Col {...twoInRow}>
             <Form.Item label={FrameID.TAL}>
               <Input
-                id="TAL"
                 name={FrameID.TAL}
                 value={this.getFrame('TAL').data}
                 onChange={this.setFrame}
@@ -70,54 +94,69 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
             </Form.Item>
           </Col>
           <Col {...twoInRow}>
-            <Form.Item label={FrameID.TBP}>
-              <Input
-                name={FrameID.TBP}
-                value={this.getFrame('TBP').data}
-                // onChange={this.onTextInputChange}
+            <Form.Item label={FrameID.TYE}>
+              <InputNumber
+                name="year"
+                min={0}
+                precision={0}
+                maxLength={4}
+                value={Number.parseInt(this.getFrame('TYE').data, 10)}
+                onChange={this.onYearInputChange}
               />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
+          {/*<Col {...twoInRow}>*/}
+          {/*<Form.Item label={FrameID.TCO}>*/}
+          {/*<AutoComplete*/}
+          {/*placeholder="Genre"*/}
+          {/*value={id3.genre && id3.genre.index > -1 ? id3.genre.index.toString(10) : ''}*/}
+          {/*onChange={this.onGenreInputChange}*/}
+          {/*>*/}
+          {/*{genres.map((genre: Genre) => (*/}
+          {/*<Option key={genre.index.toString(10)}>{genre.description}</Option>*/}
+          {/*))}*/}
+          {/*</AutoComplete>*/}
+          {/*</Form.Item>*/}
+          {/*</Col>*/}
           <Col {...twoInRow}>
-            <Form.Item label={FrameID.TCM}>
-              <Input
-                name={FrameID.TCM}
-                value={this.getFrame('TCM').data}
-                // onChange={this.onTextInputChange}
-              />
-            </Form.Item>
-          </Col>
-          <Col {...twoInRow}>
-            <Form.Item label={FrameID.TCO}>
-              <Input
-                name={FrameID.TCO}
-                value={this.getFrame('TCO').data}
-                // onChange={this.onTextInputChange}
-              />
+            <Form.Item label={FrameID.COM}>
+              <TextArea name="comment" value={this.getFrame('COM').data} onChange={this.setFrame} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
+          <Col {...twoInRow}>
+            <Form.Item label={FrameID.TOA}>
+              <Input
+                name={FrameID.TOA}
+                value={this.getFrame('TOA').data}
+                onChange={this.setFrame}
+              />
+            </Form.Item>
+          </Col>
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TCR}>
               <Input
                 name={FrameID.TCR}
                 value={this.getFrame('TCR').data}
-                // onChange={this.onTextInputChange}
+                onChange={this.setFrame}
               />
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
-            <Form.Item label={FrameID.TDA}>
+            <Form.Item label={FrameID.LNK}>
               <Input
-                name={FrameID.TDA}
-                value={this.getFrame('TDA').data}
-                // onChange={this.onTextInputChange}
+                name={FrameID.LNK}
+                value={this.getFrame('LNK').data}
+                onChange={this.setFrame}
               />
             </Form.Item>
           </Col>
+          <Col {...twoInRow} />
         </Row>
       </Form>
     );
@@ -126,17 +165,37 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
   public getFrame(frameID: string): ID3V2Frame {
     const { id3 } = this.state;
     const frame: ID3V2Frame = id3.body.find(v => v.frameID === frameID);
-    return frame ? frame : new ID3V2Frame(frameID, '');
+    if (!frame) {
+      const newFrame: ID3V2Frame = new ID3V2Frame(frameID, '');
+      id3.body.push(newFrame);
+      return newFrame;
+    }
+    console.log(frame);
+    return frame;
   }
 
-  public setFrame(event: React.ChangeEvent<HTMLInputElement>) {
+  public setFrame(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ID3V2Frame {
     const target = event.target;
     const { id3 } = this.state;
     const frameId = target.id;
     const frame = id3.body.find(v => v.frameID === frameId);
-    id3.body.splice(id3.body.indexOf(frame), 0);
+    if (frame) {
+      id3.body.splice(id3.body.indexOf(frame), 1);
+    }
+    frame.data = target.value;
     id3.body.push(frame);
     console.log(id3.body);
+    this.setState({ id3 });
+    return frame;
+  }
+
+  private onYearInputChange(value: number): void {
+    const { id3 } = this.state;
+    const frame = id3.body.find(v => v.frameID === 'TYE');
+    frame.data = value.toString(10);
+    id3.body.splice(id3.body.indexOf(frame), 1);
+    id3.body.push(frame);
+    this.setState({ id3 });
   }
 
   public async constructID3(props: ITagFormV22Props = this.props): Promise<ID3V2> {
