@@ -1,4 +1,5 @@
 import ID3V2Writer from '@api/id3v2/writer/id3v2Writer';
+import Genre from '@api/id3/domain/genre';
 import ID3V22 from '../domain/2.2/id3v2';
 import Id3v2Reader from '../reader/id3v2Reader';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
@@ -130,5 +131,24 @@ describe('ID3V2Writer', () => {
     const frame3: ID3V22Frame = new ID3V22Frame('ZYX', 'Test');
 
     expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
+  });
+
+  describe('writeGenres function', () => {
+    it('should return empty string if there are no genres', () => {
+      expect(ID3V2Writer.writeGenres([])).toEqual('');
+    });
+
+    it('should convert string of ID3V1 genres to array of genres', () => {
+      const expectedGenres = '(1)(2)(21)(30)(51)';
+      const mockGenres: Array<Genre> = [
+        new Genre(1, 'Classic Rock'),
+        new Genre(2, 'Country'),
+        new Genre(21, 'Ska'),
+        new Genre(30, 'Fusion'),
+        new Genre(51, 'Techno-Industrial'),
+      ];
+
+      expect(ID3V2Writer.writeGenres(mockGenres)).toEqual(expectedGenres);
+    });
   });
 });

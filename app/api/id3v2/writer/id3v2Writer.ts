@@ -1,5 +1,6 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
+import Genre from '@api/id3/domain/genre';
 import ID3V22 from '../domain/2.2/id3v2';
 import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
@@ -119,4 +120,12 @@ export default class Id3v2Writer {
     frames
       .map(value => value.size + frameSize + 3)
       .reduce((previousValue, currentValue) => previousValue + currentValue) + 10;
+
+  public static writeGenres(genres: Array<Genre>): string {
+    let contentType = '';
+    genres.forEach((genre: Genre) => {
+      contentType += `(${genre.index})`;
+    });
+    return contentType;
+  }
 }
