@@ -14,9 +14,6 @@ import Id3Writer from '@api/id3v2/writer/id3v2Writer';
 import ComponentUtil from '@api/common/component/componentUtil';
 import { FrameID } from '@api/id3v2/domain/2.2/frameID';
 import ID3V2Frame from '@api/id3v2/domain/2.2/id3v2Frame';
-import { bool } from 'prop-types';
-import { genres } from '@api/id3/domain/genres';
-import Genre from '@api/id3/domain/genre';
 
 const TextArea = Input.TextArea;
 
@@ -29,7 +26,6 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     this.getFrame = this.getFrame.bind(this);
     this.setFrame = this.setFrame.bind(this);
     this.onYearInputChange = this.onYearInputChange.bind(this);
-    // this.onTrackNumberChange = this.onTrackNumberChange.bind(this);
     // this.onGenreInputChange = this.onGenreInputChange.bind(this);
   }
 
@@ -76,6 +72,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TP1}>
               <Input
+                id="TP1"
                 name={FrameID.TP1}
                 value={this.getFrame('TP1').data}
                 onChange={this.setFrame}
@@ -87,6 +84,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TAL}>
               <Input
+                id="TAL"
                 name={FrameID.TAL}
                 value={this.getFrame('TAL').data}
                 onChange={this.setFrame}
@@ -95,13 +93,11 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           </Col>
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TYE}>
-              <InputNumber
-                name="year"
-                min={0}
-                precision={0}
-                maxLength={4}
-                value={Number.parseInt(this.getFrame('TYE').data, 10)}
-                onChange={this.onYearInputChange}
+              <Input
+                id="TYE"
+                name={FrameID.TYE}
+                value={this.getFrame('TYE').data}
+                onChange={this.setFrame}
               />
             </Form.Item>
           </Col>
@@ -122,7 +118,12 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           {/*</Col>*/}
           <Col {...twoInRow}>
             <Form.Item label={FrameID.COM}>
-              <TextArea name="comment" value={this.getFrame('COM').data} onChange={this.setFrame} />
+              <TextArea
+                id="COM"
+                name="comment"
+                value={this.getFrame('COM').data}
+                onChange={this.setFrame}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -130,6 +131,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TOA}>
               <Input
+                id="TOA"
                 name={FrameID.TOA}
                 value={this.getFrame('TOA').data}
                 onChange={this.setFrame}
@@ -139,6 +141,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TCR}>
               <Input
+                id="TCR"
                 name={FrameID.TCR}
                 value={this.getFrame('TCR').data}
                 onChange={this.setFrame}
@@ -150,6 +153,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
           <Col {...twoInRow}>
             <Form.Item label={FrameID.LNK}>
               <Input
+                id="LNK"
                 name={FrameID.LNK}
                 value={this.getFrame('LNK').data}
                 onChange={this.setFrame}
@@ -170,7 +174,6 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
       id3.body.push(newFrame);
       return newFrame;
     }
-    console.log(frame);
     return frame;
   }
 
@@ -184,7 +187,6 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     }
     frame.data = target.value;
     id3.body.push(frame);
-    console.log(id3.body);
     this.setState({ id3 });
     return frame;
   }
@@ -202,7 +204,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V2;
-    if (ID3Util.hasID3V2(dataView)) {
+    if (ID3Util.hadID3V22(dataView)) {
       id3 = Id3Reader.readID3V22(dataView);
     } else {
       id3 = new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []);

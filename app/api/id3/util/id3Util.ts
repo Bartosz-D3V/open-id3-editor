@@ -17,6 +17,14 @@ export default class ID3Util {
     return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 0, 3) === 'ID3';
   };
 
+  public static hadID3V22 = (dataView: DataView): boolean => {
+    return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 3, 2) === '22';
+  };
+
+  public static hadID3V23 = (dataView: DataView): boolean => {
+    return dataView.byteLength < 128 ? false : BlobUtil.dataViewToString(dataView, 3, 2) === '23';
+  };
+
   public static deleteID3V10 = async (electronFile: any): Promise<ID3V10> => {
     await ID3Util.truncateID3V1(electronFile);
     return new ID3V10();
