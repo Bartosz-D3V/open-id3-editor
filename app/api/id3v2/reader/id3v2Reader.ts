@@ -102,7 +102,7 @@ export default class Id3v2Reader {
     const frameArr: Array<string> = frames.match(regex);
     if (!frameArr) return [];
     return frameArr.map((frame: string) => {
-      return Id3Reader.convertIndexToGenre(Number.parseInt(frame));
+      return Id3Reader.convertIndexToGenre(Number.parseInt(frame, 10));
     });
   }
 }
