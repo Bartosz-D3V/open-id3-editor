@@ -3,10 +3,11 @@ import FsUtil from '@api/common/fs/fsUtil';
 import Id3v2Reader from './id3v2Reader';
 import ID3V23 from '../domain/2.3/id3v2';
 import { FrameID } from '../domain/2.3/frameID';
+import Genre from '@api/id3/domain/genre';
 
 const mp3Dir: string = path.resolve('./example_mp3');
 
-describe('ID3V23Reader', () => {
+describe('ID3V2Reader', () => {
   describe('readID3V23 function', () => {
     it('should create ID3V23 object from DataView from real MP3 file', async () => {
       const data1: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V20/id3v2_001_basic.mp3`);
@@ -42,6 +43,39 @@ describe('ID3V23Reader', () => {
       expect(id32.body[8].data).toEqual('12');
       expect(id32.body[9].frameID).toEqual(FrameID.TYER);
       expect(id32.body[9].data).toEqual('2020');
+    });
+  });
+
+  describe('readGenres function', () => {
+    it('should return empty array if there are no genres', () => {
+      expect(Id3v2Reader.readGenres('')).toEqual([]);
+    });
+
+    it('should convert string of ID3V1 genres to array of genres', () => {
+      const mockGenresString = '(1)(2)(21)(30)(51)';
+      const expectedGenres: Array<Genre> = [
+        new Genre(1, 'Classic Rock'),
+        new Genre(2, 'Country'),
+        new Genre(21, 'Ska'),
+        new Genre(30, 'Fusion'),
+        new Genre(51, 'Techno-Industrial'),
+      ];
+
+      expect(Id3v2Reader.readGenres(mockGenresString)).toEqual(expectedGenres);
+    });
+
+    it('should convert string of ID3V1 genres to array of genres for descriptive input', () => {
+      const mockGenresString =
+        '(1)Classic Rock,(2)Country,(21)Ska,(30)Fusion,(51)Techno-Industrial';
+      const expectedGenres: Array<Genre> = [
+        new Genre(1, 'Classic Rock'),
+        new Genre(2, 'Country'),
+        new Genre(21, 'Ska'),
+        new Genre(30, 'Fusion'),
+        new Genre(51, 'Techno-Industrial'),
+      ];
+
+      expect(Id3v2Reader.readGenres(mockGenresString)).toEqual(expectedGenres);
     });
   });
 });

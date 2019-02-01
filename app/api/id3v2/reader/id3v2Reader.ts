@@ -1,5 +1,6 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
+import Genre from '@api/id3/domain/genre';
 import ID3V22 from '../domain/2.2/id3v2';
 import ID3V23 from '../domain/2.3/id3v2';
 import ID3V22Header from '../domain/2.2/id3v2Header';
@@ -11,6 +12,7 @@ import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3v2Header';
 import { FrameID as FrameIDV23 } from '../domain/2.3/frameID';
 import { FrameID as FrameIDV22 } from '../domain/2.2/frameID';
+import Id3Reader from '@api/id3v1/reader/id3Reader';
 
 export default class Id3v2Reader {
   public static readID3V22(dataView: DataView): ID3V22 {
@@ -93,5 +95,14 @@ export default class Id3v2Reader {
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
+  }
+
+  public static readGenres(frames: string): Array<Genre> {
+    const regex: RegExp = new RegExp('([0-9]+)', 'gm');
+    const frameArr: Array<string> = frames.match(regex);
+    if (!frameArr) return [];
+    return frameArr.map((frame: string) => {
+      return Id3Reader.convertIndexToGenre(Number.parseInt(frame));
+    });
   }
 }
