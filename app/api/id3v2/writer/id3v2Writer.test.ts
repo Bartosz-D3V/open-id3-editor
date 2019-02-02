@@ -1,50 +1,14 @@
 import ID3V2Writer from '@api/id3v2/writer/id3v2Writer';
-import ID3V22 from '../domain/2.2/id3v2';
+import Genre from '@api/id3/domain/genre';
 import Id3v2Reader from '../reader/id3v2Reader';
-import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
-import ID3V22Header from '../domain/2.2/id3v2Header';
-import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V23 from '../domain/2.3/id3v2';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
 import ID3V23Header from '../domain/2.3/id3v2Header';
 import ID3V23HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V23FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import { FrameID as FrameIDV23 } from '../domain/2.3/frameID';
-import { FrameID as FrameIDV22 } from '../domain/2.2/frameID';
 
 describe('ID3V2Writer', () => {
-  describe('convertID3V22ToDataView function', () => {
-    it('should convert full id3v22 to DataView', () => {
-      const wcmData = 'Example comment';
-      const torData = '2000';
-      const ufiData = '2819XAXIO';
-      const frame1: ID3V22Frame = new ID3V22Frame('WCM', wcmData);
-      const frame2: ID3V22Frame = new ID3V22Frame('TOR', torData);
-      const frame3: ID3V22Frame = new ID3V22Frame('UFI', ufiData);
-      const body: Array<ID3V22Frame> = [frame1, frame2, frame3];
-      const id3Header: ID3V22Header = new ID3V22Header(
-        '22',
-        new ID3V22HeaderFlags(),
-        ID3V2Writer.calcV2HeaderSize(body, 3)
-      );
-      const id3v22: ID3V22 = new ID3V22(id3Header, body);
-      const dataView: DataView = ID3V2Writer.convertID3V22ToDataView(id3v22);
-      const id31: ID3V22 = Id3v2Reader.readID3V22(dataView);
-
-      expect(id31.header.tagId).toEqual('ID3');
-      expect(id31.header.size).toEqual(56);
-      expect(id31.header.version).toEqual('22');
-      expect(id31.header.flags.compression).toBeFalsy();
-      expect(id31.header.flags.unsynchronisation).toBeFalsy();
-      expect(id31.body[0].frameID).toEqual(FrameIDV22.WCM);
-      expect(id31.body[0].data).toEqual(wcmData);
-      expect(id31.body[1].frameID).toEqual(FrameIDV22.TOR);
-      expect(id31.body[1].data).toEqual(torData);
-      expect(id31.body[2].frameID).toEqual(FrameIDV22.UFI);
-      expect(id31.body[2].data).toEqual(ufiData);
-    });
-  });
-
   describe('convertID3V23ToDataView function', () => {
     it('should convert full id3v23 to DataView', () => {
       const commData = 'Example comment';
@@ -125,10 +89,29 @@ describe('ID3V2Writer', () => {
   });
 
   it('calcV2HeaderSize should return size of the ID3 tag', () => {
-    const frame1: ID3V22Frame = new ID3V22Frame('WCM', 'Test');
-    const frame2: ID3V22Frame = new ID3V22Frame('XYZ', 'Test');
-    const frame3: ID3V22Frame = new ID3V22Frame('ZYX', 'Test');
+    const frame1: ID3V23Frame = new ID3V23Frame('WCM', new ID3V23FrameFlags(), 'Test');
+    const frame2: ID3V23Frame = new ID3V23Frame('XYZ', new ID3V23FrameFlags(), 'Test');
+    const frame3: ID3V23Frame = new ID3V23Frame('ZYX', new ID3V23FrameFlags(), 'Test');
 
     expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
+  });
+
+  describe('writeGenres function', () => {
+    it('should return empty string if there are no genres', () => {
+      expect(ID3V2Writer.writeGenres([])).toEqual('');
+    });
+
+    it('should convert string of ID3V1 genres to array of genres', () => {
+      const expectedGenres = '(1)(2)(21)(30)(51)';
+      const mockGenres: Array<Genre> = [
+        new Genre(1, 'Classic Rock'),
+        new Genre(2, 'Country'),
+        new Genre(21, 'Ska'),
+        new Genre(30, 'Fusion'),
+        new Genre(51, 'Techno-Industrial'),
+      ];
+
+      expect(ID3V2Writer.writeGenres(mockGenres)).toEqual(expectedGenres);
+    });
   });
 });

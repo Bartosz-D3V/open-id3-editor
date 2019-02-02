@@ -1,47 +1,15 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import ID3V22 from '../domain/2.2/id3v2';
+import Id3Reader from '@api/id3v1/reader/id3Reader';
+import Genre from '@api/id3/domain/genre';
 import ID3V23 from '../domain/2.3/id3v2';
-import ID3V22Header from '../domain/2.2/id3v2Header';
-import ID3V22Frame from '../domain/2.2/id3v2Frame';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
-import ID3V22HeaderFlags from '../domain/2.2/id3v2HeaderFlags';
 import ID3V2HeaderFlags from '../domain/2.3/id3v2HeaderFlags';
 import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3v2Header';
 import { FrameID as FrameIDV23 } from '../domain/2.3/frameID';
-import { FrameID as FrameIDV22 } from '../domain/2.2/frameID';
 
 export default class Id3v2Reader {
-  public static readID3V22(dataView: DataView): ID3V22 {
-    const offset = 0;
-    const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
-    const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 8);
-    const compression: boolean = BufferUtil.isBitSetAt(dataView, offset + 5, 7);
-    const size: number = Id3v2Reader.readFrameSize(dataView, offset + 6);
-    const header: ID3V22Header = new ID3V22Header(
-      version,
-      new ID3V22HeaderFlags(unsynchronization, compression),
-      size
-    );
-
-    const data: Array<ID3V22Frame> = [];
-    let i = 10;
-    while (i < size && dataView.getInt8(i) !== 0x00) {
-      const frameId = Id3v2Reader.getFrameIDV22(BlobUtil.dataViewToString(dataView, i, 3));
-      const frameSize = Id3v2Reader.readFrameSize(dataView, i + 3);
-      const frameData = BlobUtil.dataViewToString(dataView, i + 7, frameSize);
-      data.push(new ID3V22Frame(frameId, frameData));
-      i += frameSize + 7;
-    }
-    return new ID3V22(header, data);
-  }
-
-  private static getFrameIDV22(tagId: string): FrameIDV22 | string {
-    const frameID: any = Object.keys(FrameIDV22).find(key => key === tagId);
-    return frameID ? FrameIDV22[frameID] : tagId;
-  }
-
   public static readID3V23(dataView: DataView): ID3V23 {
     const offset = 0;
     const version: string = BlobUtil.dataViewToString(dataView, offset + 3, 2);
@@ -93,5 +61,14 @@ export default class Id3v2Reader {
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
+  }
+
+  public static readGenres(frames: string): Array<Genre> {
+    const regex: RegExp = new RegExp('([0-9]+)', 'gm');
+    const frameArr: Array<string> = frames.match(regex);
+    if (!frameArr) return [];
+    return frameArr.map((frame: string) => {
+      return Id3Reader.convertIndexToGenre(Number.parseInt(frame, 10));
+    });
   }
 }

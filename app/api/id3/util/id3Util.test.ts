@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Mp3Util from './mp3Util';
+import Id3Util from './id3Util';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
@@ -18,14 +18,14 @@ describe('mp3Util', () => {
       const tagView: DataView = new DataView(tag);
       const mockFile: DataView = BlobUtil.concatDataViews(emptyView1, tagView, emptyView2);
 
-      expect(Mp3Util.hasID3V1(mockFile)).toBeTruthy();
+      expect(Id3Util.hasID3V1(mockFile)).toBeTruthy();
     });
 
     it('should return false if file does not contain ID3V1 tag', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('Test');
       const mockFile: DataView = new DataView(tag);
 
-      expect(Mp3Util.hasID3V1(mockFile)).toBeFalsy();
+      expect(Id3Util.hasID3V1(mockFile)).toBeFalsy();
     });
   });
 
@@ -34,14 +34,14 @@ describe('mp3Util', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('ID3', 200);
       const mockFile: DataView = new DataView(tag);
 
-      expect(Mp3Util.hasID3V2(mockFile)).toBeTruthy();
+      expect(Id3Util.hasID3V2(mockFile)).toBeTruthy();
     });
 
     it('should return false if file does not contain ID3V2 tag', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('Test');
       const mockFile: DataView = new DataView(tag);
 
-      expect(Mp3Util.hasID3V2(mockFile)).toBeFalsy();
+      expect(Id3Util.hasID3V2(mockFile)).toBeFalsy();
     });
   });
 
@@ -51,16 +51,16 @@ describe('mp3Util', () => {
     });
 
     it('should return empty ID3V10 object and delete tag if it exists', async () => {
-      spyOn(Mp3Util, 'hasID3V1').and.returnValue(true);
-      const id3: ID3V10 = await Mp3Util.deleteID3V10({ path: mockPath });
+      spyOn(Id3Util, 'hasID3V1').and.returnValue(true);
+      const id3: ID3V10 = await Id3Util.deleteID3V10({ path: mockPath });
 
       expect(fs.truncate).toHaveBeenCalled();
       expect(id3).toEqual(new ID3V10());
     });
 
     it('should return empty ID3V10 object, but not delete tag if it does not exist', async () => {
-      spyOn(Mp3Util, 'hasID3V1').and.returnValue(false);
-      const id3: ID3V10 = await Mp3Util.deleteID3V10({ path: mockPath });
+      spyOn(Id3Util, 'hasID3V1').and.returnValue(false);
+      const id3: ID3V10 = await Id3Util.deleteID3V10({ path: mockPath });
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V10());
@@ -73,16 +73,16 @@ describe('mp3Util', () => {
     });
 
     it('should return empty ID3V11 object and delete tag if it exists', async () => {
-      spyOn(Mp3Util, 'hasID3V1').and.returnValue(true);
-      const id3: ID3V11 = await Mp3Util.deleteID3V11({ path: mockPath });
+      spyOn(Id3Util, 'hasID3V1').and.returnValue(true);
+      const id3: ID3V11 = await Id3Util.deleteID3V11({ path: mockPath });
 
       expect(fs.truncate).toHaveBeenCalled();
       expect(id3).toEqual(new ID3V11());
     });
 
     it('should return empty ID3V11 object, but not delete tag if it does not exist', async () => {
-      spyOn(Mp3Util, 'hasID3V1').and.returnValue(false);
-      const id3: ID3V11 = await Mp3Util.deleteID3V11({ path: mockPath });
+      spyOn(Id3Util, 'hasID3V1').and.returnValue(false);
+      const id3: ID3V11 = await Id3Util.deleteID3V11({ path: mockPath });
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V11());

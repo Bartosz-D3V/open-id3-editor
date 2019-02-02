@@ -41,12 +41,6 @@ describe('TagMenu component', () => {
         .find(Menu.Item)
         .at(2)
         .text()
-    ).toEqual('ID3v2.2');
-    expect(
-      wrapper
-        .find(Menu.Item)
-        .at(3)
-        .text()
     ).toEqual('ID3v2.3');
   });
 
@@ -54,7 +48,7 @@ describe('TagMenu component', () => {
     expect(
       wrapper
         .find(Menu.Item)
-        .at(4)
+        .at(3)
         .text()
     ).toEqual('Home');
   });

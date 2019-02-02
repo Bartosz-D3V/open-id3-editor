@@ -1,4 +1,4 @@
-import Genre from '@api/id3v1/domain/genre';
+import Genre from '@api/id3/domain/genre';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '../domain/id3V1-0';
 import ID3V11 from '../domain/id3V1-1';

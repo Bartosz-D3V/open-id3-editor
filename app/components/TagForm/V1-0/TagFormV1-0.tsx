@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import File from 'electron';
+import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
-import { genres } from '@api/id3v1/domain/genres';
+import { genres } from '@api/id3/domain/genres';
 import { oneInRow, twoInRow } from '@layout/grid';
-import Mp3Util from '@api/common/mp3/mp3Util';
+import Id3Util from '@api/id3/util/id3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import FsUtil from '@api/common/fs/fsUtil';
 import ComponentUtil from '@api/common/component/componentUtil';
-import Genre from '@api/id3v1/domain/genre';
+import Genre from '@api/id3/domain/genre';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
 import Id3Writer from '@api/id3v1/writer/id3Writer';
@@ -140,7 +140,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V10;
-    if (Mp3Util.hasID3V1(dataView)) {
+    if (Id3Util.hasID3V1(dataView)) {
       id3 = Id3Reader.readID3V10(dataView);
     } else {
       id3 = new ID3V10();
@@ -154,7 +154,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     } = this.props;
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
-    await Mp3Util.deleteID3V10(originFileObj);
+    await Id3Util.deleteID3V10(originFileObj);
     await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V10ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
@@ -163,7 +163,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const {
       selectedFile: { originFileObj },
     } = this.props;
-    this.setState({ id3: await Mp3Util.deleteID3V10(originFileObj) });
+    this.setState({ id3: await Id3Util.deleteID3V10(originFileObj) });
     ComponentUtil.openNotification('Tag has been deleted');
   }
 
