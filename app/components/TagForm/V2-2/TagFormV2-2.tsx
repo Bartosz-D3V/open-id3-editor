@@ -14,6 +14,7 @@ import Id3Writer from '@api/id3v2/writer/id3v2Writer';
 import ComponentUtil from '@api/common/component/componentUtil';
 import { FrameID } from '@api/id3v2/domain/2.2/frameID';
 import ID3V2Frame from '@api/id3v2/domain/2.2/id3v2Frame';
+import Id3v2Writer from '@api/id3v2/writer/id3v2Writer';
 
 const TextArea = Input.TextArea;
 
@@ -120,7 +121,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
             <Form.Item label={FrameID.COM}>
               <TextArea
                 id="COM"
-                name="comment"
+                name={FrameID.COM}
                 value={this.getFrame('COM').data}
                 onChange={this.setFrame}
               />
@@ -185,9 +186,11 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     if (frame) {
       id3.body.splice(id3.body.indexOf(frame), 1);
     }
+    frame.frameID = frameId;
     frame.data = target.value;
+    frame.size = target.value.length;
     id3.body.push(frame);
-    id3.recalculateSize();
+    id3.header.size = Id3v2Writer.calcV2HeaderSize(id3.body, 3);
     this.setState({ id3 });
     return frame;
   }
@@ -198,6 +201,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     frame.data = value.toString(10);
     id3.body.splice(id3.body.indexOf(frame), 1);
     id3.body.push(frame);
+    id3.header.size = Id3v2Writer.calcV2HeaderSize(id3.body, 3);
     this.setState({ id3 });
   }
 
@@ -208,7 +212,7 @@ export class TagFormV22 extends Component<ITagFormV22Props, ITagFormV22State> {
     if (ID3Util.hasID3Version(dataView, '22')) {
       id3 = Id3Reader.readID3V22(dataView);
     } else {
-      id3 = new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 0), []);
+      id3 = new ID3V2(new ID3V2Header('22', new ID3V2HeaderFlags(), 10), []);
     }
     return id3;
   }

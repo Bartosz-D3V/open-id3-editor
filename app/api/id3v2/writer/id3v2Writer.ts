@@ -116,9 +116,9 @@ export default class Id3v2Writer {
     return dataView;
   }
 
-  public static calcV2HeaderSize = (frames: Array<ID3V22Frame>, frameSize: number): number =>
+  public static calcV2HeaderSize = (frames: Array<ID3V22Frame>, frameIDSize: number): number =>
     frames
-      .map(value => value.size + frameSize + 3)
+      .map(value => value.size + frameIDSize + 3)
       .reduce((previousValue, currentValue) => previousValue + currentValue) + 10;
 
   public static writeGenres(genres: Array<Genre>): string {
