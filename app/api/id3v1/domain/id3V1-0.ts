@@ -1,4 +1,4 @@
-import Genre from './genre';
+import Genre from '@api/id3/domain/genre';
 
 export default class {
   public readonly header = 'TAG';

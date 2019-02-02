@@ -28,4 +28,14 @@ export default class FsUtil {
       throw error;
     }
   };
+
+  public static deleteFromBeginning = async (path: string, length: number): Promise<void> => {
+    try {
+      const data: Buffer = await util.promisify(fs.readFile)(path);
+      const newData = data.slice(0, length);
+      await util.promisify(fs.writeFile)(path, newData);
+    } catch (error) {
+      throw error;
+    }
+  };
 }

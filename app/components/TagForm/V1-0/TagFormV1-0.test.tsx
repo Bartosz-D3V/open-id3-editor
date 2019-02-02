@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { AutoComplete, Form, Input, InputNumber } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
-import Genre from '@api/id3v1/domain/genre';
+import Genre from '@api/id3/domain/genre';
 import { TagFormV10 } from './TagFormV1-0';
 
 const TextArea = Input.TextArea;
