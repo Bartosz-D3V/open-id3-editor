@@ -17,10 +17,12 @@ export default class Id3v2Reader {
       size,
       flags: { extendedHeader },
     } = header;
+
     let additionalHeader: ID3V23ExtendedHeader;
     if (extendedHeader) {
       additionalHeader = Id3v2Reader.readExtendedHeader(dataView, 10);
     }
+
     const data: Array<ID3V23Frame> = [];
     let i = extendedHeader ? additionalHeader.size + 10 : 10;
     while (i < size) {
