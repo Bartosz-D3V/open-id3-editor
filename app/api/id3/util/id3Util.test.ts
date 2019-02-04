@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import ID3Util from './ID3Util';
+import ID3Util from './id3Util';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
