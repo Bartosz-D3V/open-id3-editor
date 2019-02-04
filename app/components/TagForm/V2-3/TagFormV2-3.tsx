@@ -193,17 +193,18 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     return frame;
   }
 
-  private onGenreInputChange(value: Array<string>): void {
+  private onGenreInputChange(value: Array<string>): ID3V2Frame {
     const { id3 } = this.state;
-    const genreArr: Array<Genre> = value
-      .map(v => Number.parseInt(v, 10))
-      .map(v => ID3Util.convertIndexToGenre(v));
+    const genreArr: Array<Genre> = value.map(v =>
+      ID3Util.convertIndexToGenre(Number.parseInt(v, 10))
+    );
     const encodedGenres = Id3Writer.writeGenres(genreArr);
 
     const frame: ID3V2Frame = ID3Util.findFrame(id3, 'TCON');
     frame.data = encodedGenres;
     frame.size = encodedGenres.length;
     this.setState({ id3: ID3Util.updateFrame(id3, frame) });
+    return frame;
   }
 
   public async constructID3(props: ITagFormV23Props = this.props): Promise<ID3V2> {

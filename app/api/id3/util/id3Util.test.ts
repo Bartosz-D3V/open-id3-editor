@@ -10,8 +10,10 @@ import ID3V23Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V23FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V23HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
+import ID3V23ExtendedHeaderFlags from '@api/id3v2/domain/2.3/id3v2ExtendedHeaderFlags';
 import FsUtil from '@api/common/fs/fsUtil';
 import Genre from '../domain/genre';
+import Id3v2ExtendedHeader from '@api/id3v2/domain/2.3/id3v2ExtendedHeader';
 
 const mp3Dir: string = path.resolve('./example_mp3');
 const mockPath = `${mp3Dir}/ID3V10/id3v1_004_basic.mp3`;
@@ -160,7 +162,11 @@ describe('mp3Util', () => {
     let id3: ID3V23;
 
     beforeEach(() => {
-      id3 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+      id3 = new ID3V23(
+        new ID3V23Header('23', new ID3V23HeaderFlags(), 0),
+        [],
+        new Id3v2ExtendedHeader(20, new ID3V23ExtendedHeaderFlags(), 1)
+      );
     });
 
     it('should update frame if it exists', () => {
