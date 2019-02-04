@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Id3Util from './id3Util';
+import ID3Util from './ID3Util';
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
@@ -11,7 +11,6 @@ import ID3V23FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V23HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
 import FsUtil from '@api/common/fs/fsUtil';
-import ID3Util from './id3Util';
 import Genre from '../domain/genre';
 
 const mp3Dir: string = path.resolve('./example_mp3');
@@ -26,14 +25,14 @@ describe('mp3Util', () => {
       const tagView: DataView = new DataView(tag);
       const mockFile: DataView = BlobUtil.concatDataViews(emptyView1, tagView, emptyView2);
 
-      expect(Id3Util.hasID3V1(mockFile)).toBeTruthy();
+      expect(ID3Util.hasID3V1(mockFile)).toBeTruthy();
     });
 
     it('should return false if file does not contain ID3V1 tag', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('Test');
       const mockFile: DataView = new DataView(tag);
 
-      expect(Id3Util.hasID3V1(mockFile)).toBeFalsy();
+      expect(ID3Util.hasID3V1(mockFile)).toBeFalsy();
     });
   });
 
@@ -42,14 +41,14 @@ describe('mp3Util', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('ID3', 200);
       const mockFile: DataView = new DataView(tag);
 
-      expect(Id3Util.hasID3V2(mockFile)).toBeTruthy();
+      expect(ID3Util.hasID3V2(mockFile)).toBeTruthy();
     });
 
     it('should return false if file does not contain ID3V2 tag', () => {
       const tag: ArrayBuffer = BufferUtil.createArrayBuffer('Test');
       const mockFile: DataView = new DataView(tag);
 
-      expect(Id3Util.hasID3V2(mockFile)).toBeFalsy();
+      expect(ID3Util.hasID3V2(mockFile)).toBeFalsy();
     });
   });
 
@@ -59,16 +58,16 @@ describe('mp3Util', () => {
     });
 
     it('should return empty ID3V10 object and delete tag if it exists', async () => {
-      spyOn(Id3Util, 'hasID3V1').and.returnValue(true);
-      const id3: ID3V10 = await Id3Util.deleteID3V10({ path: mockPath });
+      spyOn(ID3Util, 'hasID3V1').and.returnValue(true);
+      const id3: ID3V10 = await ID3Util.deleteID3V10({ path: mockPath });
 
       expect(fs.truncate).toHaveBeenCalled();
       expect(id3).toEqual(new ID3V10());
     });
 
     it('should return empty ID3V10 object, but not delete tag if it does not exist', async () => {
-      spyOn(Id3Util, 'hasID3V1').and.returnValue(false);
-      const id3: ID3V10 = await Id3Util.deleteID3V10({ path: mockPath });
+      spyOn(ID3Util, 'hasID3V1').and.returnValue(false);
+      const id3: ID3V10 = await ID3Util.deleteID3V10({ path: mockPath });
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V10());
@@ -81,16 +80,16 @@ describe('mp3Util', () => {
     });
 
     it('should return empty ID3V11 object and delete tag if it exists', async () => {
-      spyOn(Id3Util, 'hasID3V1').and.returnValue(true);
-      const id3: ID3V11 = await Id3Util.deleteID3V11({ path: mockPath });
+      spyOn(ID3Util, 'hasID3V1').and.returnValue(true);
+      const id3: ID3V11 = await ID3Util.deleteID3V11({ path: mockPath });
 
       expect(fs.truncate).toHaveBeenCalled();
       expect(id3).toEqual(new ID3V11());
     });
 
     it('should return empty ID3V11 object, but not delete tag if it does not exist', async () => {
-      spyOn(Id3Util, 'hasID3V1').and.returnValue(false);
-      const id3: ID3V11 = await Id3Util.deleteID3V11({ path: mockPath });
+      spyOn(ID3Util, 'hasID3V1').and.returnValue(false);
+      const id3: ID3V11 = await ID3Util.deleteID3V11({ path: mockPath });
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V11());
@@ -98,7 +97,7 @@ describe('mp3Util', () => {
   });
 
   describe('deleteID3V23 function', () => {
-    let emptyID3V2: ID3V23 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+    const emptyID3V2: ID3V23 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
 
     beforeEach(() => {
       spyOn(BlobUtil, 'blobToDataView');
@@ -106,16 +105,16 @@ describe('mp3Util', () => {
     });
 
     it('should return empty ID3V23 object and delete tag if it exists', async () => {
-      spyOn(Id3Util, 'hasID3V2').and.returnValue(true);
-      const id3: ID3V23 = await Id3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
+      spyOn(ID3Util, 'hasID3V2').and.returnValue(true);
+      const id3: ID3V23 = await ID3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
 
       expect(FsUtil.deleteFromBeginning).toHaveBeenCalled();
       expect(id3).toEqual(emptyID3V2);
     });
 
     it('should return empty ID3V23 object, but not delete tag if it does not exist', async () => {
-      spyOn(Id3Util, 'hasID3V2').and.returnValue(false);
-      const id3: ID3V23 = await Id3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
+      spyOn(ID3Util, 'hasID3V2').and.returnValue(false);
+      const id3: ID3V23 = await ID3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
 
       expect(FsUtil.deleteFromBeginning).not.toHaveBeenCalled();
       expect(id3).toEqual(emptyID3V2);
@@ -146,7 +145,7 @@ describe('mp3Util', () => {
     });
 
     it('should return found frame', () => {
-      let frame: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
       id3.body.push(frame);
 
       expect(ID3Util.findFrame(id3, 'COMM')).toEqual(frame);
@@ -165,8 +164,12 @@ describe('mp3Util', () => {
     });
 
     it('should update frame if it exists', () => {
-      let frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
-      let frame2: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Updated comment');
+      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame2: ID3V23Frame = new ID3V23Frame(
+        'COMM',
+        new ID3V23FrameFlags(),
+        'Updated comment'
+      );
       id3.body.push(frame1);
       id3 = ID3Util.updateFrame(id3, frame2);
 
@@ -178,7 +181,7 @@ describe('mp3Util', () => {
     });
 
     it('should add frame if it does not exist', () => {
-      let frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
       id3 = ID3Util.updateFrame(id3, frame1);
 
       expect(id3.body.length).toEqual(1);
