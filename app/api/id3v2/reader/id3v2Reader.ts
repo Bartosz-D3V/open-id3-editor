@@ -1,6 +1,6 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import Id3Reader from '@api/id3v1/reader/id3Reader';
+import ID3Util from '@api/id3/util/id3Util';
 import Genre from '@api/id3/domain/genre';
 import ID3V23 from '../domain/2.3/id3v2';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
@@ -87,7 +87,7 @@ export default class Id3v2Reader {
     const frameArr: Array<string> = frames.match(regex);
     if (!frameArr) return [];
     return frameArr.map((frame: string) => {
-      return Id3Reader.convertIndexToGenre(Number.parseInt(frame, 10));
+      return ID3Util.convertIndexToGenre(Number.parseInt(frame, 10));
     });
   }
 }

@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { AutoComplete, Button, Col, Form, Input, InputNumber, Row } from 'antd';
-import { oneInRow, twoInRow } from '@layout/grid';
-import { ITagFormV23Props } from './ITagFormV2-3Props';
-import { ITagFormV23State } from './ITagFormV2-3State';
+import { Button, Col, Form, Input, Row, Select } from 'antd';
+import FsUtil from '@api/common/fs/fsUtil';
+import BlobUtil from '@api/common/blob/blobUtil';
+import ID3Util from '@api/id3/util/id3Util';
+import ComponentUtil from '@api/common/component/componentUtil';
+import Id3Reader from '@api/id3v2/reader/id3v2Reader';
+import Id3Writer from '@api/id3v2/writer/id3v2Writer';
 import ID3V2 from '@api/id3v2/domain/2.3/id3v2';
 import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
-import BlobUtil from '@api/common/blob/blobUtil';
-import ID3Util from '@api/id3/util/id3Util';
-import Id3Reader from '@api/id3v2/reader/id3v2Reader';
-import FsUtil from '@api/common/fs/fsUtil';
-import Id3Writer from '@api/id3v2/writer/id3v2Writer';
-import ComponentUtil from '@api/common/component/componentUtil';
-import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import ID3V2Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V2FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
+import Genre from '@api/id3/domain/genre';
+import { oneInRow, twoInRow } from '@layout/grid';
+import { ITagFormV23Props } from './ITagFormV2-3Props';
+import { ITagFormV23State } from './ITagFormV2-3State';
+import { FrameID } from '@api/id3v2/domain/2.3/frameID';
+import { genres } from '@api/id3/domain/genres';
 
 const TextArea = Input.TextArea;
+const Option = Select.Option;
 
 export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
   constructor(props: ITagFormV23Props) {
@@ -26,18 +29,15 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     this.deleteTag = this.deleteTag.bind(this);
     this.getFrame = this.getFrame.bind(this);
     this.setFrame = this.setFrame.bind(this);
-    this.onYearInputChange = this.onYearInputChange.bind(this);
-    // this.onGenreInputChange = this.onGenreInputChange.bind(this);
+    this.onGenreInputChange = this.onGenreInputChange.bind(this);
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV23Props>): Promise<void> {
-    const id3: ID3V2 = await this.constructID3(nextProps);
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3(nextProps) });
   }
 
   public async componentDidMount(): Promise<void> {
-    const id3: ID3V2 = await this.constructID3();
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3() });
   }
 
   public render(): JSX.Element {
@@ -104,19 +104,15 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
           </Col>
         </Row>
         <Row gutter={5} justify="space-around">
-          {/*<Col {...twoInRow}>*/}
-          {/*<Form.Item label={FrameID.TCO}>*/}
-          {/*<AutoComplete*/}
-          {/*placeholder="Genre"*/}
-          {/*value={id3.genre && id3.genre.index > -1 ? id3.genre.index.toString(10) : ''}*/}
-          {/*onChange={this.onGenreInputChange}*/}
-          {/*>*/}
-          {/*{genres.map((genre: Genre) => (*/}
-          {/*<Option key={genre.index.toString(10)}>{genre.description}</Option>*/}
-          {/*))}*/}
-          {/*</AutoComplete>*/}
-          {/*</Form.Item>*/}
-          {/*</Col>*/}
+          <Col {...twoInRow}>
+            <Form.Item label={FrameID.TCON}>
+              <Select placeholder="Genre" mode="multiple" onChange={this.onGenreInputChange}>
+                {genres.map((genre: Genre) => (
+                  <Option key={genre.index.toString(10)}>{genre.description}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TCOM}>
               <Input
@@ -134,7 +130,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <TextArea
                 id="COMM"
                 name={FrameID.COMM}
-                value={this.getFrame('COMM').data.substring(3)}
+                value={this.getFrame('COMM').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -178,11 +174,10 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
 
   public getFrame(frameID: string): ID3V2Frame {
     const { id3 } = this.state;
-    const frame: ID3V2Frame = id3.body.find(v => v.frameID === frameID);
+    let frame: ID3V2Frame = ID3Util.findFrame(id3, frameID);
     if (!frame) {
-      const newFrame: ID3V2Frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '');
-      id3.body.push(newFrame);
-      return newFrame;
+      frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '');
+      id3.body.push(frame);
     }
     return frame;
   }
@@ -190,28 +185,25 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
   public setFrame(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ID3V2Frame {
     const target = event.target;
     const { id3 } = this.state;
-    const frameId = target.id;
-    const frame = id3.body.find(v => v.frameID === frameId);
-    if (frame) {
-      id3.body.splice(id3.body.indexOf(frame), 1);
-    }
-    frame.frameID = frameId;
+    const frameID = target.id;
+    const frame = ID3Util.findFrame(id3, frameID);
     frame.data = target.value;
     frame.size = target.value.length;
-    id3.body.push(frame);
-    id3.header.size = Id3Writer.calcV2HeaderSize(id3.body, 3);
-    this.setState({ id3 });
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
     return frame;
   }
 
-  private onYearInputChange(value: number): void {
+  private onGenreInputChange(value: Array<string>): void {
     const { id3 } = this.state;
-    const frame = id3.body.find(v => v.frameID === 'TYE');
-    frame.data = value.toString(10);
-    id3.body.splice(id3.body.indexOf(frame), 1);
-    id3.body.push(frame);
-    id3.header.size = Id3Writer.calcV2HeaderSize(id3.body, 3);
-    this.setState({ id3 });
+    const genreArr: Array<Genre> = value
+      .map(v => Number.parseInt(v, 10))
+      .map(v => ID3Util.convertIndexToGenre(v));
+    const encodedGenres = Id3Writer.writeGenres(genreArr);
+
+    const frame: ID3V2Frame = ID3Util.findFrame(id3, 'TCON');
+    frame.data = encodedGenres;
+    frame.size = encodedGenres.length;
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
   }
 
   public async constructID3(props: ITagFormV23Props = this.props): Promise<ID3V2> {

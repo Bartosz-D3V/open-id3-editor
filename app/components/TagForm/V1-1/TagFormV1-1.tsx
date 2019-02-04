@@ -32,13 +32,11 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>): Promise<void> {
-    const id3: ID3V11 = await this.constructID3(nextProps);
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3(nextProps) });
   }
 
   public async componentDidMount(): Promise<void> {
-    const id3: ID3V11 = await this.constructID3();
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3() });
   }
 
   public render(): JSX.Element {
@@ -204,7 +202,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
 
   private onGenreInputChange(value: string): void {
     const { id3 } = this.state;
-    id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
+    id3.genre = Id3Util.convertIndexToGenre(Number.parseInt(value, 10));
     this.setState({ id3 });
   }
 }
