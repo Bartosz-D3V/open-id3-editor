@@ -5,6 +5,14 @@ import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import ID3V11 from '@api/id3v1/domain/id3V1-1';
+import ID3V23 from '@api/id3v2/domain/2.3/id3v2';
+import ID3V23Frame from '@api/id3v2/domain/2.3/id3v2Frame';
+import ID3V23FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
+import ID3V23Header from '@api/id3v2/domain/2.3/id3v2Header';
+import ID3V23HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
+import FsUtil from '@api/common/fs/fsUtil';
+import ID3Util from './id3Util';
+import Genre from '../domain/genre';
 
 const mp3Dir: string = path.resolve('./example_mp3');
 const mockPath = `${mp3Dir}/ID3V10/id3v1_004_basic.mp3`;
@@ -86,6 +94,98 @@ describe('mp3Util', () => {
 
       expect(fs.truncate).not.toHaveBeenCalled();
       expect(id3).toEqual(new ID3V11());
+    });
+  });
+
+  describe('deleteID3V23 function', () => {
+    let emptyID3V2: ID3V23 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+
+    beforeEach(() => {
+      spyOn(BlobUtil, 'blobToDataView');
+      spyOn(FsUtil, 'deleteFromBeginning');
+    });
+
+    it('should return empty ID3V23 object and delete tag if it exists', async () => {
+      spyOn(Id3Util, 'hasID3V2').and.returnValue(true);
+      const id3: ID3V23 = await Id3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
+
+      expect(FsUtil.deleteFromBeginning).toHaveBeenCalled();
+      expect(id3).toEqual(emptyID3V2);
+    });
+
+    it('should return empty ID3V23 object, but not delete tag if it does not exist', async () => {
+      spyOn(Id3Util, 'hasID3V2').and.returnValue(false);
+      const id3: ID3V23 = await Id3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
+
+      expect(FsUtil.deleteFromBeginning).not.toHaveBeenCalled();
+      expect(id3).toEqual(emptyID3V2);
+    });
+  });
+
+  describe('convertIndexToGenre function', () => {
+    it('should return Genre object from a given index', () => {
+      expect(ID3Util.convertIndexToGenre(0)).toEqual(new Genre(0, 'Blues'));
+      expect(ID3Util.convertIndexToGenre(8)).toEqual(new Genre(8, 'Jazz'));
+      expect(ID3Util.convertIndexToGenre(16)).toEqual(new Genre(16, 'Reggae'));
+      expect(ID3Util.convertIndexToGenre(56)).toEqual(new Genre(56, 'Southern Rock'));
+    });
+
+    it('should return undefined for unrecognized tag index', () => {
+      expect(ID3Util.convertIndexToGenre(180)).toBeUndefined();
+      expect(ID3Util.convertIndexToGenre(200)).toBeUndefined();
+      expect(ID3Util.convertIndexToGenre(210)).toBeUndefined();
+      expect(ID3Util.convertIndexToGenre(220)).toBeUndefined();
+    });
+  });
+
+  describe('findFrame function', () => {
+    let id3: ID3V23;
+
+    beforeEach(() => {
+      id3 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+    });
+
+    it('should return found frame', () => {
+      let frame: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      id3.body.push(frame);
+
+      expect(ID3Util.findFrame(id3, 'COMM')).toEqual(frame);
+    });
+
+    it('should return undefined if frame was not found', () => {
+      expect(ID3Util.findFrame(id3, 'PCNT')).toBeUndefined();
+    });
+  });
+
+  describe('updateFrame function', () => {
+    let id3: ID3V23;
+
+    beforeEach(() => {
+      id3 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+    });
+
+    it('should update frame if it exists', () => {
+      let frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      let frame2: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Updated comment');
+      id3.body.push(frame1);
+      id3 = ID3Util.updateFrame(id3, frame2);
+
+      expect(id3.body.length).toEqual(1);
+      expect(id3.body[0].frameID).toEqual(frame2.frameID);
+      expect(id3.body[0].flags).toEqual(frame2.flags);
+      expect(id3.body[0].data).toEqual(frame2.data);
+      expect(id3.body[0].size).toEqual(frame2.size);
+    });
+
+    it('should add frame if it does not exist', () => {
+      let frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      id3 = ID3Util.updateFrame(id3, frame1);
+
+      expect(id3.body.length).toEqual(1);
+      expect(id3.body[0].frameID).toEqual(frame1.frameID);
+      expect(id3.body[0].flags).toEqual(frame1.flags);
+      expect(id3.body[0].data).toEqual(frame1.data);
+      expect(id3.body[0].size).toEqual(frame1.size);
     });
   });
 });
