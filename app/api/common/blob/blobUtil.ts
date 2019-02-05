@@ -31,6 +31,14 @@ export default class BlobUtil {
     return data;
   };
 
+  public static dataViewToUInt = (
+    dataView: DataView,
+    offset: number,
+    length: number
+  ): TypedArray => {
+    return new Uint8Array(dataView.buffer.slice(offset, length));
+  };
+
   public static writeToDataView<T>(dataView: DataView, data: T, offset: number): DataView {
     switch (typeof data) {
       case 'string':

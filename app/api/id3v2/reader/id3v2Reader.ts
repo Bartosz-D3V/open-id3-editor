@@ -25,7 +25,7 @@ export default class Id3v2Reader {
 
     const data: Array<ID3V23Frame> = [];
     let i = extendedHeader ? additionalHeader.size + 10 : 10;
-    while (i < size && dataView.getInt8(i) !== 0x00) {
+    while (i < size && dataView.getInt8(i) > 0x00) {
       const frame: ID3V23Frame = Id3v2Reader.readFrame(dataView, i);
       data.push(frame);
       i += frame.size + 10;
