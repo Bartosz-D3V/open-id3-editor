@@ -24,19 +24,11 @@ export default class BlobUtil {
     let data = '';
     for (let i = offset; i < length + offset; i++) {
       const charCode: number = dataView.getInt8(i);
-      if (charCode > 31) {
+      if (charCode > 30) {
         data += String.fromCharCode(charCode);
       }
     }
     return data;
-  };
-
-  public static dataViewToUInt = (
-    dataView: DataView,
-    offset: number,
-    length: number
-  ): TypedArray => {
-    return new Uint8Array(dataView.buffer.slice(offset, length));
   };
 
   public static writeToDataView<T>(dataView: DataView, data: T, offset: number): DataView {
