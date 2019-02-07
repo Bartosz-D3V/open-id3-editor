@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { Icon, Modal, Upload } from 'antd';
-import { IUploadSingleImgState } from './IUploadSingleImgState';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
+import { IUploadSingleImgState } from './IUploadSingleImgState';
+import { IUploadSingleImgProps } from './IUploadSingleImgProps';
+import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 
-export default class UploadSingleImg extends Component<{}, IUploadSingleImgState> {
-  constructor(props: {}) {
+const ImgWrapper = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+export default class UploadSingleImg extends Component<
+  IUploadSingleImgProps,
+  IUploadSingleImgState
+> {
+  constructor(props: IUploadSingleImgProps) {
     super(props);
     this.handlePreview = this.handlePreview.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -28,8 +39,8 @@ export default class UploadSingleImg extends Component<{}, IUploadSingleImgState
         >
           {fileList.length === 0 ? uploadButton : null}
         </Upload>
-        <Modal visible={previewVisible} footer={null}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        <Modal visible={previewVisible}>
+          <ImgWrapper alt={FrameID.APIC} src={previewImage} />
         </Modal>
       </div>
     );

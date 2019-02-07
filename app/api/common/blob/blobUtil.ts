@@ -24,9 +24,22 @@ export default class BlobUtil {
     let data = '';
     for (let i = offset; i < length + offset; i++) {
       const charCode: number = dataView.getInt8(i);
-      if (charCode > 30) {
+      if (charCode > 31) {
         data += String.fromCharCode(charCode);
       }
+    }
+    return data;
+  };
+
+  public static dataViewToRawString = (
+    dataView: DataView,
+    offset: number,
+    length: number
+  ): string => {
+    let data = '';
+    for (let i = offset; i < length + offset; i++) {
+      const charCode: number = dataView.getUint8(i);
+      data += String.fromCharCode(charCode);
     }
     return data;
   };
@@ -82,4 +95,8 @@ export default class BlobUtil {
       });
     return dataView;
   };
+
+  public static prepareImageBlob(data: string): string {
+    return '';
+  }
 }
