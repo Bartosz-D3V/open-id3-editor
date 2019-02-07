@@ -70,7 +70,9 @@ export default class Id3v2Reader {
       encryption,
       groupingEntity
     );
-    const frameData = BlobUtil.dataViewToString(dataView, offset + 10, frameSize);
+    const frameData = Id3v2Reader.isSpecialFrame(frameId)
+      ? BlobUtil.dataViewToRawString(dataView, offset + 10, frameSize)
+      : BlobUtil.dataViewToString(dataView, offset + 10, frameSize);
     return new ID3V23Frame(frameId, frameFlags, frameData, frameSize);
   }
 
@@ -80,6 +82,15 @@ export default class Id3v2Reader {
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
+  }
+
+  private static isSpecialFrame(frameId: string): boolean {
+    switch (frameId) {
+      case 'APIC':
+        return true;
+      default:
+        return false;
+    }
   }
 
   public static readGenres(frames: string): Array<Genre> {
