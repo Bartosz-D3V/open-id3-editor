@@ -31,6 +31,22 @@ export default class BlobUtil {
     return data;
   };
 
+  public static getTextTerminatedByCharCode = (
+    dataView: DataView,
+    offset: number,
+    charCode: number
+  ): string => {
+    let data = '';
+    for (let i = offset; i < dataView.byteLength; i++) {
+      const charInt: number = dataView.getInt8(i);
+      if (charInt === charCode) {
+        return data;
+      }
+      data += String.fromCharCode(charInt);
+    }
+    return data;
+  };
+
   public static dataViewToRawString = (
     dataView: DataView,
     offset: number,

@@ -28,6 +28,18 @@ describe('blobConverter class', () => {
     });
   });
 
+  describe('getTextTerminatedByCharCode function', () => {
+    it('should read string unless specific char is encountered', () => {
+      const mockTxt: ArrayBuffer = BufferUtil.createArrayBuffer('Hello world', 14);
+      const mockDataView: DataView = new DataView(mockTxt);
+      mockDataView.setInt8(mockDataView.byteLength - 3, 0);
+      mockDataView.setInt8(mockDataView.byteLength - 2, 31);
+      mockDataView.setInt8(mockDataView.byteLength - 1, 100);
+
+      expect(BlobUtil.getTextTerminatedByCharCode(mockDataView, 0, 0)).toEqual('Hello world');
+    });
+  });
+
   describe('writeToDataView function', () => {
     it('should write string to dataView', () => {
       const mockTxt = 'Example string';

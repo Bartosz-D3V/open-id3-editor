@@ -13,9 +13,24 @@ describe('ID3V2Writer', () => {
       const commData = 'Example comment';
       const toryData = '2000';
       const tlanData = 'English';
-      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), commData);
-      const frame2: ID3V23Frame = new ID3V23Frame('TORY', new ID3V23FrameFlags(), toryData);
-      const frame3: ID3V23Frame = new ID3V23Frame('TLAN', new ID3V23FrameFlags(), tlanData);
+      const frame1: ID3V23Frame = new ID3V23Frame(
+        'COMM',
+        new ID3V23FrameFlags(),
+        commData,
+        commData.length
+      );
+      const frame2: ID3V23Frame = new ID3V23Frame(
+        'TORY',
+        new ID3V23FrameFlags(),
+        toryData,
+        toryData.length
+      );
+      const frame3: ID3V23Frame = new ID3V23Frame(
+        'TLAN',
+        new ID3V23FrameFlags(),
+        tlanData,
+        tlanData.length
+      );
       const body: Array<ID3V23Frame> = [frame1, frame2, frame3];
       const id3Header: ID3V23Header = new ID3V23Header(
         '23',
@@ -88,9 +103,9 @@ describe('ID3V2Writer', () => {
   });
 
   it('calcV2HeaderSize should return size of the ID3 tag', () => {
-    const frame1: ID3V23Frame = new ID3V23Frame('WCM', new ID3V23FrameFlags(), 'Test');
-    const frame2: ID3V23Frame = new ID3V23Frame('XYZ', new ID3V23FrameFlags(), 'Test');
-    const frame3: ID3V23Frame = new ID3V23Frame('ZYX', new ID3V23FrameFlags(), 'Test');
+    const frame1: ID3V23Frame = new ID3V23Frame('WCM', new ID3V23FrameFlags(), 'Test', 4);
+    const frame2: ID3V23Frame = new ID3V23Frame('XYZ', new ID3V23FrameFlags(), 'Test', 4);
+    const frame3: ID3V23Frame = new ID3V23Frame('ZYX', new ID3V23FrameFlags(), 'Test', 4);
 
     expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
   });
