@@ -1,14 +1,14 @@
 export default class APICFrame {
   public textEncoding: number;
   public mimeType: string;
-  public pictureType: string;
+  public pictureType: number;
   public description: string;
   public rawData: string;
 
   constructor(
     textEncoding: number,
     mimeType: string,
-    pictureType: string,
+    pictureType: number,
     description: string,
     rawData: string
   ) {

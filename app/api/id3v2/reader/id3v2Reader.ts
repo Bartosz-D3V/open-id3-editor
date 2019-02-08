@@ -9,6 +9,7 @@ import ID3V2FrameFlags from '../domain/2.3/id3v2FrameFlags';
 import ID3V23Header from '../domain/2.3/id3v2Header';
 import ID3V23ExtendedHeader from '../domain/2.3/id3v2ExtendedHeader';
 import Id3v2ExtendedHeaderFlags from '../domain/2.3/id3v2ExtendedHeaderFlags';
+import APICFrame from '../domain/2.3/apicFrame';
 
 export default class Id3v2Reader {
   public static readID3V23(dataView: DataView): ID3V23 {
@@ -70,9 +71,10 @@ export default class Id3v2Reader {
       encryption,
       groupingEntity
     );
-    const frameData = Id3v2Reader.isSpecialFrame(frameId)
-      ? BlobUtil.dataViewToRawString(dataView, offset + 10, frameSize)
-      : BlobUtil.dataViewToString(dataView, offset + 10, frameSize);
+    const frameData =
+      frameId === 'APIC'
+        ? Id3v2Reader.dataViewToAPIC(dataView, offset + 10, frameSize)
+        : BlobUtil.dataViewToString(dataView, offset + 10, frameSize);
     return new ID3V23Frame(frameId, frameFlags, frameData, frameSize);
   }
 
@@ -84,13 +86,25 @@ export default class Id3v2Reader {
     return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
   }
 
-  private static isSpecialFrame(frameId: string): boolean {
-    switch (frameId) {
-      case 'APIC':
-        return true;
-      default:
-        return false;
-    }
+  private static dataViewToAPIC(dataView: DataView, offset: number, frameSize: number): APICFrame {
+    const encoding: number = BlobUtil.dataViewToNum(dataView, offset);
+    let internalOfffset = 1;
+    const mimeType: string = BlobUtil.getTextTerminatedByCharCode(dataView, offset + 1, 0);
+    internalOfffset += mimeType.length + 1;
+    const pictureType: number = BlobUtil.dataViewToNum(dataView, offset + internalOfffset);
+    internalOfffset += 1;
+    const description: string = BlobUtil.getTextTerminatedByCharCode(
+      dataView,
+      offset + internalOfffset,
+      0
+    );
+    internalOfffset += description.length + 1;
+    const imageData: string = BlobUtil.dataViewToRawString(
+      dataView,
+      offset + internalOfffset,
+      frameSize - internalOfffset
+    );
+    return new APICFrame(encoding, mimeType, pictureType, description, imageData);
   }
 
   public static readGenres(frames: string): Array<Genre> {
