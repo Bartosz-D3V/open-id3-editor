@@ -65,7 +65,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TALB"
                 name={FrameID.TALB}
-                value={this.getFrame('TALB').data}
+                value={this.getFrame('TALB').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -75,7 +75,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPE1"
                 name={FrameID.TPE1}
-                value={this.getFrame('TPE1').data}
+                value={this.getFrame('TPE1').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -87,7 +87,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPE2"
                 name={FrameID.TPE2}
-                value={this.getFrame('TPE2').data}
+                value={this.getFrame('TPE2').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -97,7 +97,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TCOM"
                 name={FrameID.TCOM}
-                value={this.getFrame('TCOM').data}
+                value={this.getFrame('TCOM').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -118,7 +118,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPOS"
                 name={FrameID.TPOS}
-                value={this.getFrame('TPOS').data}
+                value={this.getFrame('TPOS').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -130,7 +130,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <TextArea
                 id="COMM"
                 name={FrameID.COMM}
-                value={this.getFrame('COMM').data}
+                value={this.getFrame('COMM').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -140,7 +140,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TYER"
                 name={FrameID.TYER}
-                value={this.getFrame('TYER').data}
+                value={this.getFrame('TYER').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -152,7 +152,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TRCK"
                 name={FrameID.TRCK}
-                value={this.getFrame('TRCK').data}
+                value={this.getFrame('TRCK').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -162,7 +162,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TYER"
                 name={FrameID.TYER}
-                value={this.getFrame('TYER').data}
+                value={this.getFrame('TYER').data.toString()}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -176,7 +176,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     const { id3 } = this.state;
     let frame: ID3V2Frame = ID3Util.findFrame(id3, frameID);
     if (!frame) {
-      frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '');
+      frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '', 0);
       id3.body.push(frame);
     }
     return frame;
