@@ -1,4 +1,5 @@
 import BufferUtil from '../buffer/bufferUtil';
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
@@ -112,7 +113,6 @@ export default class BlobUtil {
     return dataView;
   };
 
-  public static prepareImageBlob(data: string): string {
-    return '';
-  }
+  public static apicToBase64 = (apicFrame: APICFrame): string =>
+    `data:${apicFrame.mimeType};base64,${window.btoa(apicFrame.rawData)}`;
 }

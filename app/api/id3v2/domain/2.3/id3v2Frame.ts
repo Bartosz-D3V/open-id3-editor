@@ -5,7 +5,7 @@ export default class {
   public frameID: string;
   public size: number;
   public flags: ID3V2FrameFlags;
-  public data: string | APICFrame;
+  public data: any;
 
   constructor(frameID: string, flags: ID3V2FrameFlags, data: string | APICFrame, size: number) {
     this.frameID = frameID;
