@@ -1,3 +1,5 @@
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
+
 export default class BufferUtil {
   public static createArrayBuffer<T>(data: T, bufferSize?: number): ArrayBuffer {
     if (data === null) return new ArrayBuffer(bufferSize);

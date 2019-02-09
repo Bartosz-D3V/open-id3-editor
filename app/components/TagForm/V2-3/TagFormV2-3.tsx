@@ -17,6 +17,7 @@ import { ITagFormV23Props } from './ITagFormV2-3Props';
 import { ITagFormV23State } from './ITagFormV2-3State';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import { genres } from '@api/id3/domain/genres';
+import SingleUpload from '@components/SingleUpload/SingleUpload';
 
 const TextArea = Input.TextArea;
 const Option = Select.Option;
@@ -65,7 +66,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TALB"
                 name={FrameID.TALB}
-                value={this.getFrame('TALB').data.toString()}
+                value={this.getFrame('TALB').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -75,7 +76,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPE1"
                 name={FrameID.TPE1}
-                value={this.getFrame('TPE1').data.toString()}
+                value={this.getFrame('TPE1').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -87,7 +88,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPE2"
                 name={FrameID.TPE2}
-                value={this.getFrame('TPE2').data.toString()}
+                value={this.getFrame('TPE2').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -97,7 +98,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TCOM"
                 name={FrameID.TCOM}
-                value={this.getFrame('TCOM').data.toString()}
+                value={this.getFrame('TCOM').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -118,7 +119,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TPOS"
                 name={FrameID.TPOS}
-                value={this.getFrame('TPOS').data.toString()}
+                value={this.getFrame('TPOS').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -130,7 +131,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <TextArea
                 id="COMM"
                 name={FrameID.COMM}
-                value={this.getFrame('COMM').data.toString()}
+                value={this.getFrame('COMM').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -140,7 +141,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TYER"
                 name={FrameID.TYER}
-                value={this.getFrame('TYER').data.toString()}
+                value={this.getFrame('TYER').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
@@ -152,19 +153,14 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
               <Input
                 id="TRCK"
                 name={FrameID.TRCK}
-                value={this.getFrame('TRCK').data.toString()}
+                value={this.getFrame('TRCK').data}
                 onChange={this.setFrame}
               />
             </Form.Item>
           </Col>
           <Col {...twoInRow}>
-            <Form.Item label={FrameID.TYER}>
-              <Input
-                id="TYER"
-                name={FrameID.TYER}
-                value={this.getFrame('TYER').data.toString()}
-                onChange={this.setFrame}
-              />
+            <Form.Item label={FrameID.APIC}>
+              <SingleUpload apicFrame={this.getFrame('APIC').data} />
             </Form.Item>
           </Col>
         </Row>
