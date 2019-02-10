@@ -109,23 +109,4 @@ describe('ID3V2Writer', () => {
 
     expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
   });
-
-  describe('writeGenres function', () => {
-    it('should return empty string if there are no genres', () => {
-      expect(ID3V2Writer.writeGenres([])).toEqual('');
-    });
-
-    it('should convert string of ID3V1 genres to array of genres', () => {
-      const expectedGenres = '(1)(2)(21)(30)(51)';
-      const mockGenres: Array<Genre> = [
-        new Genre(1, 'Classic Rock'),
-        new Genre(2, 'Country'),
-        new Genre(21, 'Ska'),
-        new Genre(30, 'Fusion'),
-        new Genre(51, 'Techno-Industrial'),
-      ];
-
-      expect(ID3V2Writer.writeGenres(mockGenres)).toEqual(expectedGenres);
-    });
-  });
 });

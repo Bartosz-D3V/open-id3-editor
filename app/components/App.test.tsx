@@ -1,9 +1,9 @@
 import React from 'react';
-import { ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { App } from './App';
 
 describe('App component', () => {
-  let wrapper: ReactWrapper | ShallowWrapper;
+  let wrapper: ShallowWrapper;
 
   afterEach(() => {
     wrapper.unmount();

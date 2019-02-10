@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Modal, Upload } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
-import UploadBtn from '@components/UploadBtn/UploadBtn';
+import UploadButton from '@components/UploadButton/UploadButton';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import BlobUtil from '@api/common/blob/blobUtil';
 import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
@@ -54,7 +54,7 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >
-          {fileList.length === 0 ? <UploadBtn /> : null}
+          {fileList.length === 0 ? <UploadButton /> : null}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <ImgWrapper alt={FrameID.APIC} src={previewImage} />
@@ -63,15 +63,15 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
     );
   }
 
-  public handlePreview = (file: UploadFile): void => {
+  private readonly handlePreview = (file: UploadFile): void => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
     });
   };
 
-  public handleChange = (params: UploadChangeParam): void =>
+  private readonly handleChange = (params: UploadChangeParam): void =>
     this.setState({ fileList: params.fileList });
 
-  public handleCancel = () => this.setState({ previewVisible: false });
+  private readonly handleCancel = () => this.setState({ previewVisible: false });
 }
