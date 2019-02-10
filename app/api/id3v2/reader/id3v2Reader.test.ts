@@ -43,6 +43,23 @@ describe('ID3V2Reader', () => {
       expect(id32.body[9].frameID).toEqual('TYER');
       expect(id32.body[9].data).toEqual('2020');
     });
+
+    it('should create ID3V23 object from DataView from real MP3 file with embedded picture', async () => {
+      const data: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V20/id3v2_003_cover.mp3`);
+      const dataView: DataView = new DataView(data.buffer);
+      const id3: ID3V23 = Id3v2Reader.readID3V23(dataView);
+      const apic: any = id3.body.find(v => v.frameID === 'APIC');
+
+      expect(apic).toBeDefined();
+      expect(apic.frameID).toEqual('APIC');
+      expect(apic.size).toEqual(13932099);
+      expect(apic.data.textEncoding).toEqual(0);
+      expect(apic.data.mimeType).toEqual('image/jpeg');
+      expect(apic.data.pictureType).toEqual(3);
+      expect(apic.data.description).toEqual('');
+      expect(apic.data.rawData).toBeDefined();
+      expect(apic.data.rawData.length).toEqual(13932085);
+    });
   });
 
   describe('readGenres function', () => {
