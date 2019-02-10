@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { AutoComplete, Button, Col, Form, Input, Row, Select } from 'antd';
 import FsUtil from '@api/common/fs/fsUtil';
-import BlobUtil from '@api/common/blob/blobUtil';
-import ID3Util from '@api/id3/util/id3Util';
 import ComponentUtil from '@api/common/component/componentUtil';
+import ID3Util from '@api/id3/util/id3Util';
+import BlobUtil from '@api/common/blob/blobUtil';
 import Id3Reader from '@api/id3v2/reader/id3v2Reader';
 import Id3Writer from '@api/id3v2/writer/id3v2Writer';
 import ID3V2 from '@api/id3v2/domain/2.3/id3v2';
@@ -11,11 +11,11 @@ import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
 import ID3V2Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V2FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
-import Genre from '@api/id3/domain/genre';
-import { oneInRow, twoInRow } from '@layout/grid';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
+import Genre from '@api/id3/domain/genre';
 import { genres } from '@api/id3/domain/genres';
 import SingleUpload from '@components/SingleUpload/SingleUpload';
+import { oneInRow, twoInRow } from '@layout/grid';
 import { ITagFormV23Props } from './ITagFormV2-3Props';
 import { ITagFormV23State } from './ITagFormV2-3State';
 

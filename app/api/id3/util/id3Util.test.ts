@@ -106,7 +106,7 @@ describe('mp3Util', () => {
       spyOn(FsUtil, 'deleteFromBeginning');
     });
 
-    it('should return empty ID3V23 object and delete tag if it exists', async () => {
+    it('should return empty ID3V2 object and delete tag if it exists', async () => {
       spyOn(ID3Util, 'hasID3V2').and.returnValue(true);
       const id3: ID3V23 = await ID3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
 
@@ -114,7 +114,7 @@ describe('mp3Util', () => {
       expect(id3).toEqual(emptyID3V2);
     });
 
-    it('should return empty ID3V23 object, but not delete tag if it does not exist', async () => {
+    it('should return empty ID3V2 object, but not delete tag if it does not exist', async () => {
       spyOn(ID3Util, 'hasID3V2').and.returnValue(false);
       const id3: ID3V23 = await ID3Util.deleteID3V23({ size: 222, path: mockPath }, 2);
 

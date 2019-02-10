@@ -1,4 +1,4 @@
-export default class Id3v2ExtendedHeaderFlags {
+export default class ID3V2ExtendedHeaderFlags {
   public crcDataPresent: boolean;
 
   constructor(crcDataPresent: boolean = false) {

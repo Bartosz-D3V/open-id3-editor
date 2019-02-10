@@ -49,7 +49,7 @@ export default class Id3v2Writer {
     if (flags.tagAlter) {
       dataView = BufferUtil.setBitAt(dataView, 0, 8);
     }
-    if (flags.fileALter) {
+    if (flags.fileAlter) {
       dataView = BufferUtil.setBitAt(dataView, 0, 7);
     }
     if (flags.readonly) {

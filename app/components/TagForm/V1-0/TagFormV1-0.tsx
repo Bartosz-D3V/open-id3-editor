@@ -30,13 +30,11 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>): Promise<void> {
-    const id3: ID3V10 = await this.constructID3(nextProps);
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3(nextProps) });
   }
 
   public async componentDidMount(): Promise<void> {
-    const id3: ID3V10 = await this.constructID3();
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3() });
   }
 
   public render(): JSX.Element {
