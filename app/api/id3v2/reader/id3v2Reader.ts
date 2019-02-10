@@ -83,7 +83,7 @@ export default class Id3v2Reader {
     const size2 = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3 = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4 = BlobUtil.dataViewToNum(dataView, offset + 3);
-    return (size1 << 21) + (size2 << 14) + (size3 << 7) + size4;
+    return (size1 << 24) | (size2 << 16) | (size3 << 8) | size4;
   }
 
   private static dataViewToAPIC(dataView: DataView, offset: number, frameSize: number): APICFrame {
