@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, Row, Select } from 'antd';
 import FsUtil from '@api/common/fs/fsUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3Util from '@api/id3/util/id3Util';
@@ -13,11 +13,11 @@ import ID3V2Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V2FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
 import Genre from '@api/id3/domain/genre';
 import { oneInRow, twoInRow } from '@layout/grid';
-import { ITagFormV23Props } from './ITagFormV2-3Props';
-import { ITagFormV23State } from './ITagFormV2-3State';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import { genres } from '@api/id3/domain/genres';
 import SingleUpload from '@components/SingleUpload/SingleUpload';
+import { ITagFormV23Props } from './ITagFormV2-3Props';
+import { ITagFormV23State } from './ITagFormV2-3State';
 
 const TextArea = Input.TextArea;
 const Option = Select.Option;
@@ -107,11 +107,15 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
         <Row gutter={5} justify="space-around">
           <Col {...twoInRow}>
             <Form.Item label={FrameID.TCON}>
-              <Select placeholder="Genre" mode="multiple" onChange={this.onGenreInputChange}>
+              <AutoComplete
+                placeholder="Genre"
+                value={this.getFrame('TCON').data}
+                onChange={this.onGenreInputChange}
+              >
                 {genres.map((genre: Genre) => (
                   <Option key={genre.index.toString(10)}>{genre.description}</Option>
                 ))}
-              </Select>
+              </AutoComplete>
             </Form.Item>
           </Col>
           <Col {...twoInRow}>
@@ -168,41 +172,6 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     );
   }
 
-  public getFrame(frameID: string): ID3V2Frame {
-    const { id3 } = this.state;
-    let frame: ID3V2Frame = ID3Util.findFrame(id3, frameID);
-    if (!frame) {
-      frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '', 0);
-      id3.body.push(frame);
-    }
-    return frame;
-  }
-
-  public setFrame(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ID3V2Frame {
-    const target = event.target;
-    const { id3 } = this.state;
-    const frameID = target.id;
-    const frame = ID3Util.findFrame(id3, frameID);
-    frame.data = target.value;
-    frame.size = target.value.length;
-    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
-    return frame;
-  }
-
-  private onGenreInputChange(value: Array<string>): ID3V2Frame {
-    const { id3 } = this.state;
-    const genreArr: Array<Genre> = value.map(v =>
-      ID3Util.convertIndexToGenre(Number.parseInt(v, 10))
-    );
-    const encodedGenres = Id3Writer.writeGenres(genreArr);
-
-    const frame: ID3V2Frame = ID3Util.findFrame(id3, 'TCON');
-    frame.data = encodedGenres;
-    frame.size = encodedGenres.length;
-    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
-    return frame;
-  }
-
   public async constructID3(props: ITagFormV23Props = this.props): Promise<ID3V2> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
@@ -213,6 +182,36 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
       id3 = new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 10), []);
     }
     return id3;
+  }
+
+  private getFrame(frameID: string): ID3V2Frame {
+    const { id3 } = this.state;
+    let frame: ID3V2Frame = ID3Util.findFrame(id3, frameID);
+    if (!frame) {
+      frame = new ID3V2Frame(frameID, new ID3V2FrameFlags(), '', 0);
+      id3.body.push(frame);
+    }
+    return frame;
+  }
+
+  private setFrame(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): ID3V2Frame {
+    const target = event.target;
+    const { id3 } = this.state;
+    const frameID = target.id;
+    const frame = ID3Util.findFrame(id3, frameID);
+    frame.data = target.value;
+    frame.size = target.value.length;
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
+    return frame;
+  }
+
+  private onGenreInputChange(value: string): ID3V2Frame {
+    const { id3 } = this.state;
+    const frame: ID3V2Frame = ID3Util.findFrame(id3, 'TCON');
+    frame.data = value;
+    frame.size = value.length;
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
+    return frame;
   }
 
   private async saveFile(): Promise<void> {

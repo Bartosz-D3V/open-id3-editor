@@ -8,7 +8,7 @@ const mp3Dir: string = path.resolve('./example_mp3');
 
 describe('ID3V2Reader', () => {
   describe('readID3V23 function', () => {
-    it('should create ID3V23 object from DataView from real MP3 file', async () => {
+    it('should create ID3V23 object from real MP3 file', async () => {
       const data1: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V20/id3v2_001_basic.mp3`);
       const dataView1: DataView = new DataView(data1.buffer);
       const id31: ID3V23 = Id3v2Reader.readID3V23(dataView1);
@@ -44,7 +44,7 @@ describe('ID3V2Reader', () => {
       expect(id32.body[9].data).toEqual('2020');
     });
 
-    it('should create ID3V23 object from DataView from real MP3 file with embedded picture', async () => {
+    it('should create ID3V23 object from real MP3 file with embedded picture', async () => {
       const data: Buffer = await FsUtil.readFile(`${mp3Dir}/ID3V20/id3v2_003_cover.mp3`);
       const dataView: DataView = new DataView(data.buffer);
       const id3: ID3V23 = Id3v2Reader.readID3V23(dataView);

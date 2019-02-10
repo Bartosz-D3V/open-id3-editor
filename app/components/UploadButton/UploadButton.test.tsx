@@ -5,19 +5,19 @@ import UploadButton from './UploadButton';
 describe('UploadButton component', () => {
   let wrapper: ReactWrapper;
 
+  beforeEach(() => {
+    wrapper = mount(<UploadButton />);
+  });
+
   afterEach(() => {
     wrapper.unmount();
   });
 
   it('should render', () => {
-    wrapper = mount(<UploadButton />);
-
     expect(wrapper).toBeTruthy();
   });
 
   it('should display "Upload" text', () => {
-    wrapper = mount(<UploadButton />);
-
     expect(wrapper.text()).toEqual('Upload');
   });
 });

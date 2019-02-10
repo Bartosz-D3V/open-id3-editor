@@ -9,18 +9,19 @@ describe('SingleUpload component', () => {
   let wrapper: ReactWrapper;
   const mockFrame: APICFrame = new APICFrame(0, 'image/jpeg', 3, null, 'BINARY_DATA');
 
+  beforeEach(() => {
+    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
+  });
+
   afterEach(() => {
     wrapper.unmount();
   });
 
   it('should render', () => {
-    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
-
-    expect(wrapper.find('SingleUpload')).toBeTruthy();
+    expect(wrapper.find(SingleUpload)).toBeTruthy();
   });
 
   it('should create UploadState and save to state after receiving props', () => {
-    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
     wrapper.setProps({ apicFrame: mockFrame });
     const fileList: Array<UploadFile> = wrapper.state('fileList');
 
@@ -32,7 +33,6 @@ describe('SingleUpload component', () => {
   });
 
   it('should render Upload tile with image', () => {
-    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
     wrapper.setProps({ apicFrame: mockFrame });
 
     expect(wrapper.find('img')).toBeTruthy();
@@ -43,7 +43,6 @@ describe('SingleUpload component', () => {
   });
 
   it('should render modal once click on expand button', () => {
-    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
     wrapper.setState({ previewVisible: true });
     wrapper.setProps({ apicFrame: mockFrame });
 

@@ -86,12 +86,4 @@ export default class Id3v2Writer {
     frames
       .map(value => value.size + frameSize + 3)
       .reduce((previousValue, currentValue) => previousValue + currentValue) + 10;
-
-  public static writeGenres(genres: Array<Genre>): string {
-    let contentType = '';
-    genres.forEach((genre: Genre) => {
-      contentType += `(${genre.index})`;
-    });
-    return contentType;
-  }
 }
