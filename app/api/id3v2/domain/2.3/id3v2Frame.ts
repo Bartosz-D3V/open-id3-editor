@@ -1,7 +1,7 @@
 import ID3V2FrameFlags from './id3v2FrameFlags';
 import APICFrame from './apicFrame';
 
-export default class {
+export default class ID3V2Frame {
   public frameID: string;
   public size: number;
   public flags: ID3V2FrameFlags;
