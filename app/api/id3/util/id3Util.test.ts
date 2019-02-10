@@ -147,7 +147,7 @@ describe('mp3Util', () => {
     });
 
     it('should return found frame', () => {
-      const frame: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment', 7);
       id3.body.push(frame);
 
       expect(ID3Util.findFrame(id3, 'COMM')).toEqual(frame);
@@ -170,11 +170,12 @@ describe('mp3Util', () => {
     });
 
     it('should update frame if it exists', () => {
-      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment', 7);
       const frame2: ID3V23Frame = new ID3V23Frame(
         'COMM',
         new ID3V23FrameFlags(),
-        'Updated comment'
+        'Updated comment',
+        15
       );
       id3.body.push(frame1);
       id3 = ID3Util.updateFrame(id3, frame2);
@@ -187,7 +188,7 @@ describe('mp3Util', () => {
     });
 
     it('should add frame if it does not exist', () => {
-      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment');
+      const frame1: ID3V23Frame = new ID3V23Frame('COMM', new ID3V23FrameFlags(), 'Comment', 7);
       id3 = ID3Util.updateFrame(id3, frame1);
 
       expect(id3.body.length).toEqual(1);

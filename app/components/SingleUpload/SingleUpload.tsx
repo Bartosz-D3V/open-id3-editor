@@ -10,8 +10,8 @@ import { ISingleUploadState } from './ISingleUploadState';
 import { ISingleUploadProps } from './ISingleUploadProps';
 
 const ImgWrapper = styled.img`
-  width: 100%;
   height: 100%;
+  width: 100%;
 `;
 
 export default class SingleUpload extends Component<ISingleUploadProps, ISingleUploadState> {
