@@ -1,6 +1,7 @@
 import { NodeStringDecoder, StringDecoder } from 'string_decoder';
 import BlobUtil from './blobUtil';
 import BufferUtil from '../buffer/bufferUtil';
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 
 describe('blobConverter class', () => {
   describe('blobToDataView function', async () => {
@@ -113,6 +114,13 @@ describe('blobConverter class', () => {
       expect(concatDataView.byteLength).toEqual(12);
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 1');
       expect(Buffer.from(concatDataView.buffer).toString()).toContain('Test 2');
+    });
+  });
+
+  describe('apicToBase64 function', () => {
+    it('should return encoded image', () => {
+      const mockAPIC: APICFrame = new APICFrame(0, 'image/png', 0, null, 'test');
+      expect(BlobUtil.apicToBase64(mockAPIC)).toEqual('data:image/png;base64,dGVzdA==');
     });
   });
 });

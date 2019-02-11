@@ -1,6 +1,5 @@
 import ID3V2Writer from '@api/id3v2/writer/id3v2Writer';
-import Genre from '@api/id3/domain/genre';
-import Id3v2Reader from '../reader/id3v2Reader';
+import ID3V2Reader from '../reader/id3v2Reader';
 import ID3V23 from '../domain/2.3/id3v2';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
 import ID3V23Header from '../domain/2.3/id3v2Header';
@@ -39,7 +38,7 @@ describe('ID3V2Writer', () => {
       );
       const id3v23: ID3V23 = new ID3V23(id3Header, body);
       const dataView: DataView = ID3V2Writer.convertID3V23ToDataView(id3v23);
-      const id31: ID3V23 = Id3v2Reader.readID3V23(dataView);
+      const id31: ID3V23 = ID3V2Reader.readID3V23(dataView);
 
       expect(id31.header.tagId).toEqual('ID3');
       expect(id31.header.size).toEqual(57);
@@ -61,44 +60,44 @@ describe('ID3V2Writer', () => {
       let frameSize: DataView;
 
       frameSize = ID3V2Writer.encodeFrameSize(-10000);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(-10000);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-10000);
 
       frameSize = ID3V2Writer.encodeFrameSize(-100);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(-100);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(-100);
 
       frameSize = ID3V2Writer.encodeFrameSize(0);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(0);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(0);
     });
 
     it('should encode number to format used by ID3', () => {
       let frameSize: DataView;
 
       frameSize = ID3V2Writer.encodeFrameSize(1);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(1);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(1);
 
       frameSize = ID3V2Writer.encodeFrameSize(4);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(4);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(4);
 
       frameSize = ID3V2Writer.encodeFrameSize(14);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(14);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(14);
 
       frameSize = ID3V2Writer.encodeFrameSize(16);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(16);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(16);
 
       frameSize = ID3V2Writer.encodeFrameSize(31);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(31);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(31);
 
       frameSize = ID3V2Writer.encodeFrameSize(257);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(257);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(257);
 
       frameSize = ID3V2Writer.encodeFrameSize(306004);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(306004);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(306004);
 
       frameSize = ID3V2Writer.encodeFrameSize(530772);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(530772);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(530772);
 
       frameSize = ID3V2Writer.encodeFrameSize(6407721);
-      expect(Id3v2Reader.readFrameSize(frameSize)).toEqual(6407721);
+      expect(ID3V2Reader.readFrameSize(frameSize)).toEqual(6407721);
     });
   });
 

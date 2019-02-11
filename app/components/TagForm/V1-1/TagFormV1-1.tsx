@@ -12,7 +12,7 @@ import BlobUtil from '@api/common/blob/blobUtil';
 import Id3Util from '@api/id3/util/id3Util';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
 import FsUtil from '@api/common/fs/fsUtil';
-import Id3Writer from '@api/id3v1/writer/id3Writer';
+import ID3Writer from '@api/id3v1/writer/id3writer';
 import ComponentUtil from '@api/common/component/componentUtil';
 
 const TextArea = Input.TextArea;
@@ -167,7 +167,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
     await Id3Util.deleteID3V11(originFileObj);
-    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V11ToDataView(id3));
+    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V11ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 

@@ -9,9 +9,9 @@ import ID3V2ExtendedHeader from '../domain/2.3/id3v2ExtendedHeader';
 import ID3V2ExtendedHeaderFlags from '../domain/2.3/id3v2ExtendedHeaderFlags';
 import APICFrame from '../domain/2.3/apicFrame';
 
-export default class Id3v2Reader {
+export default class ID3V2Reader {
   public static readID3V23(dataView: DataView): ID3V2 {
-    const header: ID3V2Header = Id3v2Reader.readHeader(dataView);
+    const header: ID3V2Header = ID3V2Reader.readHeader(dataView);
     const {
       size,
       flags: { extendedHeader },
@@ -19,13 +19,13 @@ export default class Id3v2Reader {
 
     let additionalHeader: ID3V2ExtendedHeader;
     if (extendedHeader) {
-      additionalHeader = Id3v2Reader.readExtendedHeader(dataView, 10);
+      additionalHeader = ID3V2Reader.readExtendedHeader(dataView, 10);
     }
 
     const data: Array<ID3V2Frame> = [];
     let i: number = extendedHeader ? additionalHeader.size + 10 : 10;
     while (i < size && dataView.getInt8(i) > 0x00) {
-      const frame: ID3V2Frame = Id3v2Reader.readFrame(dataView, i);
+      const frame: ID3V2Frame = ID3V2Reader.readFrame(dataView, i);
       data.push(frame);
       i += frame.size + 10;
     }
@@ -37,7 +37,7 @@ export default class Id3v2Reader {
     const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, 5, 8);
     const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, 5, 7);
     const experimental: boolean = BufferUtil.isBitSetAt(dataView, 5, 6);
-    const size: number = Id3v2Reader.readFrameSize(dataView, 6);
+    const size: number = ID3V2Reader.readFrameSize(dataView, 6);
     return new ID3V2Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
@@ -46,15 +46,15 @@ export default class Id3v2Reader {
   }
 
   private static readExtendedHeader(dataView: DataView, offset: number): ID3V2ExtendedHeader {
-    const size: number = Id3v2Reader.readFrameSize(dataView, offset);
+    const size: number = ID3V2Reader.readFrameSize(dataView, offset);
     const crcData: boolean = BufferUtil.isBitSetAt(dataView, offset + 4, 8);
-    const padding: number = Id3v2Reader.readFrameSize(dataView, offset + 6);
+    const padding: number = ID3V2Reader.readFrameSize(dataView, offset + 6);
     return new ID3V2ExtendedHeader(size, new ID3V2ExtendedHeaderFlags(crcData), padding);
   }
 
   private static readFrame(dataView: DataView, offset: number): ID3V2Frame {
     const frameId: string = BlobUtil.dataViewToString(dataView, offset, 4);
-    const frameSize: number = Id3v2Reader.readFrameSize(dataView, offset + 4);
+    const frameSize: number = ID3V2Reader.readFrameSize(dataView, offset + 4);
     const tagAlter: boolean = BufferUtil.isBitSetAt(dataView, 9, 8);
     const fileAlter: boolean = BufferUtil.isBitSetAt(dataView, 9, 7);
     const readonly: boolean = BufferUtil.isBitSetAt(dataView, 9, 6);
@@ -71,7 +71,7 @@ export default class Id3v2Reader {
     );
     const frameData =
       frameId === 'APIC'
-        ? Id3v2Reader.dataViewToAPIC(dataView, offset + 10, frameSize)
+        ? ID3V2Reader.dataViewToAPIC(dataView, offset + 10, frameSize)
         : BlobUtil.dataViewToString(dataView, offset + 10, frameSize);
     return new ID3V2Frame(frameId, frameFlags, frameData, frameSize);
   }

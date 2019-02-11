@@ -5,7 +5,7 @@ import ComponentUtil from '@api/common/component/componentUtil';
 import ID3Util from '@api/id3/util/id3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import Id3Reader from '@api/id3v2/reader/id3v2Reader';
-import Id3Writer from '@api/id3v2/writer/id3v2Writer';
+import ID3Writer from '@api/id3v2/writer/id3v2Writer';
 import ID3V2 from '@api/id3v2/domain/2.3/id3v2';
 import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
@@ -221,7 +221,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
     await ID3Util.deleteID3V23(originFileObj, id3.header.size);
-    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V23ToDataView(id3));
+    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V23ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 

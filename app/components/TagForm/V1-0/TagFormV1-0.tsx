@@ -12,7 +12,7 @@ import ComponentUtil from '@api/common/component/componentUtil';
 import Genre from '@api/id3/domain/genre';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
 import Id3Reader from '@api/id3v1/reader/id3Reader';
-import Id3Writer from '@api/id3v1/writer/id3Writer';
+import ID3Writer from '@api/id3v1/writer/id3writer';
 
 const TextArea = Input.TextArea;
 
@@ -153,7 +153,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
     await ID3Util.deleteID3V10(originFileObj);
-    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V10ToDataView(id3));
+    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V10ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 
