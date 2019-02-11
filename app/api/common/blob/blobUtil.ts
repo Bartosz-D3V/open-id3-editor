@@ -1,4 +1,5 @@
 import BufferUtil from '../buffer/bufferUtil';
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 
 export default class BlobUtil {
   private static readonly cannotReadFileErrorMsg = 'Cannot read the file';
@@ -31,6 +32,35 @@ export default class BlobUtil {
     return data;
   };
 
+  public static getTextTerminatedByCharCode = (
+    dataView: DataView,
+    offset: number,
+    charCode: number
+  ): string => {
+    let data = '';
+    for (let i = offset; i < dataView.byteLength; i++) {
+      const charInt: number = dataView.getInt8(i);
+      if (charInt === charCode) {
+        return data;
+      }
+      data += String.fromCharCode(charInt);
+    }
+    return data;
+  };
+
+  public static dataViewToRawString = (
+    dataView: DataView,
+    offset: number,
+    length: number
+  ): string => {
+    let data = '';
+    for (let i = offset; i < length + offset; i++) {
+      const charCode: number = dataView.getUint8(i);
+      data += String.fromCharCode(charCode);
+    }
+    return data;
+  };
+
   public static writeToDataView<T>(dataView: DataView, data: T, offset: number): DataView {
     switch (typeof data) {
       case 'string':
@@ -56,7 +86,7 @@ export default class BlobUtil {
   }
 
   public static dataViewToNum = (dataView: DataView, offset: number): number =>
-    dataView.getInt8(offset);
+    dataView.getUint8(offset);
 
   public static stringToUint8 = (data: string): Uint8Array => {
     const arr: Array<number> = [];
@@ -82,4 +112,7 @@ export default class BlobUtil {
       });
     return dataView;
   };
+
+  public static apicToBase64 = (apicFrame: APICFrame): string =>
+    `data:${apicFrame.mimeType};base64,${window.btoa(apicFrame.rawData)}`;
 }

@@ -5,17 +5,16 @@ import { ITagFormV10Props } from '@components/TagForm/V1-0/ITagFormV1-0Props';
 import { ITagFormV10State } from '@components/TagForm/V1-0/ITagFormV1-0State';
 import { genres } from '@api/id3/domain/genres';
 import { oneInRow, twoInRow } from '@layout/grid';
-import Id3Util from '@api/id3/util/id3Util';
+import ID3Util from '@api/id3/util/id3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
 import FsUtil from '@api/common/fs/fsUtil';
 import ComponentUtil from '@api/common/component/componentUtil';
 import Genre from '@api/id3/domain/genre';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
-import Id3Reader from '@api/id3v1/reader/id3Reader';
-import Id3Writer from '@api/id3v1/writer/id3Writer';
+import ID3Reader from '@api/id3v1/reader/id3Reader';
+import ID3Writer from '@api/id3v1/writer/id3Writer';
 
 const TextArea = Input.TextArea;
-
 const Option = AutoComplete.Option;
 
 export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
@@ -30,13 +29,11 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>): Promise<void> {
-    const id3: ID3V10 = await this.constructID3(nextProps);
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3(nextProps) });
   }
 
   public async componentDidMount(): Promise<void> {
-    const id3: ID3V10 = await this.constructID3();
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3() });
   }
 
   public render(): JSX.Element {
@@ -140,8 +137,8 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const { selectedFile } = props;
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V10;
-    if (Id3Util.hasID3V1(dataView)) {
-      id3 = Id3Reader.readID3V10(dataView);
+    if (ID3Util.hasID3V1(dataView)) {
+      id3 = ID3Reader.readID3V10(dataView);
     } else {
       id3 = new ID3V10();
     }
@@ -154,8 +151,8 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     } = this.props;
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
-    await Id3Util.deleteID3V10(originFileObj);
-    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V10ToDataView(id3));
+    await ID3Util.deleteID3V10(originFileObj);
+    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V10ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 
@@ -163,7 +160,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const {
       selectedFile: { originFileObj },
     } = this.props;
-    this.setState({ id3: await Id3Util.deleteID3V10(originFileObj) });
+    this.setState({ id3: await ID3Util.deleteID3V10(originFileObj) });
     ComponentUtil.openNotification('Tag has been deleted');
   }
 
@@ -184,7 +181,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
 
   private onGenreInputChange(value: string): void {
     const { id3 } = this.state;
-    id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
+    id3.genre = ID3Util.convertIndexToGenre(Number.parseInt(value, 10));
     this.setState({ id3 });
   }
 }

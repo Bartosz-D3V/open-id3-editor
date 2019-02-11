@@ -49,7 +49,7 @@ export default class Id3v2Writer {
     if (flags.tagAlter) {
       dataView = BufferUtil.setBitAt(dataView, 0, 8);
     }
-    if (flags.fileALter) {
+    if (flags.fileAlter) {
       dataView = BufferUtil.setBitAt(dataView, 0, 7);
     }
     if (flags.readonly) {
@@ -69,12 +69,12 @@ export default class Id3v2Writer {
 
   public static encodeFrameSize(size: number): DataView {
     const dataView: DataView = new DataView(new ArrayBuffer(4));
-    const encodedSize1: number = size >> 21;
-    let reminder: number = size - (encodedSize1 << 21);
-    const encodedSize2: number = reminder >> 14;
-    reminder -= encodedSize2 << 14;
-    const encodedSize3: number = reminder >> 7;
-    reminder -= encodedSize3 << 7;
+    const encodedSize1: number = size >> 24;
+    let reminder: number = size - (encodedSize1 << 24);
+    const encodedSize2: number = reminder >> 16;
+    reminder -= encodedSize2 << 16;
+    const encodedSize3: number = reminder >> 8;
+    reminder -= encodedSize3 << 8;
     dataView.setUint8(0, encodedSize1);
     dataView.setUint8(1, encodedSize2);
     dataView.setUint8(2, encodedSize3);
@@ -86,12 +86,4 @@ export default class Id3v2Writer {
     frames
       .map(value => value.size + frameSize + 3)
       .reduce((previousValue, currentValue) => previousValue + currentValue) + 10;
-
-  public static writeGenres(genres: Array<Genre>): string {
-    let contentType = '';
-    genres.forEach((genre: Genre) => {
-      contentType += `(${genre.index})`;
-    });
-    return contentType;
-  }
 }

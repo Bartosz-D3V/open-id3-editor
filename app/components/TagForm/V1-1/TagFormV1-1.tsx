@@ -10,9 +10,9 @@ import Genre from '@api/id3/domain/genre';
 import ID3V11 from '@api/id3v1/domain/id3V1-1';
 import BlobUtil from '@api/common/blob/blobUtil';
 import Id3Util from '@api/id3/util/id3Util';
-import Id3Reader from '@api/id3v1/reader/id3Reader';
+import ID3Reader from '@api/id3v1/reader/id3Reader';
 import FsUtil from '@api/common/fs/fsUtil';
-import Id3Writer from '@api/id3v1/writer/id3Writer';
+import ID3Writer from '@api/id3v1/writer/id3Writer';
 import ComponentUtil from '@api/common/component/componentUtil';
 
 const TextArea = Input.TextArea;
@@ -32,13 +32,11 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV10Props>): Promise<void> {
-    const id3: ID3V11 = await this.constructID3(nextProps);
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3(nextProps) });
   }
 
   public async componentDidMount(): Promise<void> {
-    const id3: ID3V11 = await this.constructID3();
-    this.setState({ id3 });
+    this.setState({ id3: await this.constructID3() });
   }
 
   public render(): JSX.Element {
@@ -155,7 +153,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V11;
     if (Id3Util.hasID3V1(dataView)) {
-      id3 = Id3Reader.readID3V11(dataView);
+      id3 = ID3Reader.readID3V11(dataView);
     } else {
       id3 = new ID3V11();
     }
@@ -169,7 +167,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
     await Id3Util.deleteID3V11(originFileObj);
-    await FsUtil.writeToFile(electronFile.path, Id3Writer.convertID3V11ToDataView(id3));
+    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V11ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 
@@ -204,7 +202,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
 
   private onGenreInputChange(value: string): void {
     const { id3 } = this.state;
-    id3.genre = Id3Reader.convertIndexToGenre(Number.parseInt(value, 10));
+    id3.genre = Id3Util.convertIndexToGenre(Number.parseInt(value, 10));
     this.setState({ id3 });
   }
 }
