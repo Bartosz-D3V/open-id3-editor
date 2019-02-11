@@ -10,9 +10,9 @@ import Genre from '@api/id3/domain/genre';
 import ID3V11 from '@api/id3v1/domain/id3V1-1';
 import BlobUtil from '@api/common/blob/blobUtil';
 import Id3Util from '@api/id3/util/id3Util';
-import Id3Reader from '@api/id3v1/reader/id3Reader';
+import ID3Reader from '@api/id3v1/reader/id3Reader';
 import FsUtil from '@api/common/fs/fsUtil';
-import ID3Writer from '@api/id3v1/writer/id3writer';
+import ID3Writer from '@api/id3v1/writer/id3Writer';
 import ComponentUtil from '@api/common/component/componentUtil';
 
 const TextArea = Input.TextArea;
@@ -153,7 +153,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V11;
     if (Id3Util.hasID3V1(dataView)) {
-      id3 = Id3Reader.readID3V11(dataView);
+      id3 = ID3Reader.readID3V11(dataView);
     } else {
       id3 = new ID3V11();
     }

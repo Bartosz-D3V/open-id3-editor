@@ -11,11 +11,10 @@ import FsUtil from '@api/common/fs/fsUtil';
 import ComponentUtil from '@api/common/component/componentUtil';
 import Genre from '@api/id3/domain/genre';
 import ID3V10 from '@api/id3v1/domain/id3V1-0';
-import Id3Reader from '@api/id3v1/reader/id3Reader';
-import ID3Writer from '@api/id3v1/writer/id3writer';
+import ID3Reader from '@api/id3v1/reader/id3Reader';
+import ID3Writer from '@api/id3v1/writer/id3Writer';
 
 const TextArea = Input.TextArea;
-
 const Option = AutoComplete.Option;
 
 export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
@@ -139,7 +138,7 @@ export class TagFormV10 extends Component<ITagFormV10Props, ITagFormV10State> {
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V10;
     if (ID3Util.hasID3V1(dataView)) {
-      id3 = Id3Reader.readID3V10(dataView);
+      id3 = ID3Reader.readID3V10(dataView);
     } else {
       id3 = new ID3V10();
     }

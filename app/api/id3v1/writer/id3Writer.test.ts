@@ -2,7 +2,7 @@ import Genre from '@api/id3/domain/genre';
 import BlobUtil from '@api/common/blob/blobUtil';
 import ID3V10 from '../domain/id3V1-0';
 import ID3V11 from '../domain/id3V1-1';
-import ID3Writer from './id3writer';
+import ID3Writer from './id3Writer';
 
 describe('ID3Writer', () => {
   describe('convertID3V10ToDataView function', () => {

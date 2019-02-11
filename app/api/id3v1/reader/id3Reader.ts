@@ -4,7 +4,7 @@ import ID3V11 from '../domain/id3V1-1';
 import ID3V10 from '../domain/id3V1-0';
 import ID3Util from '@api/id3/util/id3Util';
 
-export default class Id3Reader {
+export default class ID3Reader {
   public static readID3V10(dataView: DataView): ID3V10 {
     const offset: number = dataView.byteLength - 128;
     const title: string = BlobUtil.dataViewToString(dataView, offset + 3, 30);

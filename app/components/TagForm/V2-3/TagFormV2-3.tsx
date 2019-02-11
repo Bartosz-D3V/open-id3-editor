@@ -4,7 +4,7 @@ import FsUtil from '@api/common/fs/fsUtil';
 import ComponentUtil from '@api/common/component/componentUtil';
 import ID3Util from '@api/id3/util/id3Util';
 import BlobUtil from '@api/common/blob/blobUtil';
-import Id3Reader from '@api/id3v2/reader/id3v2Reader';
+import ID3Reader from '@api/id3v2/reader/id3v2Reader';
 import ID3Writer from '@api/id3v2/writer/id3v2Writer';
 import ID3V2 from '@api/id3v2/domain/2.3/id3v2';
 import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
@@ -177,7 +177,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     const dataView: DataView = await BlobUtil.blobToDataView(selectedFile.originFileObj);
     let id3: ID3V2;
     if (ID3Util.hasID3V2(dataView)) {
-      id3 = Id3Reader.readID3V23(dataView);
+      id3 = ID3Reader.readID3V23(dataView);
     } else {
       id3 = new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 10), []);
     }
