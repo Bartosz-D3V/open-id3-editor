@@ -37,7 +37,7 @@ export default class ID3V2Reader {
     const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, 5, 8);
     const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, 5, 7);
     const experimental: boolean = BufferUtil.isBitSetAt(dataView, 5, 6);
-    const size: number = ID3V2Reader.readFrameSize(dataView, 6);
+    const size: number = ID3V2Reader.readFrameSize(dataView, 6, false);
     return new ID3V2Header(
       version,
       new ID3V2HeaderFlags(unsynchronization, extenderHeader, experimental),
@@ -76,12 +76,13 @@ export default class ID3V2Reader {
     return new ID3V2Frame(frameId, frameFlags, frameData, frameSize);
   }
 
-  public static readFrameSize(dataView: DataView, offset: number = 0): number {
+  public static readFrameSize(dataView: DataView, offset: number = 0, big: boolean = true): number {
     const size1: number = BlobUtil.dataViewToNum(dataView, offset);
     const size2: number = BlobUtil.dataViewToNum(dataView, offset + 1);
     const size3: number = BlobUtil.dataViewToNum(dataView, offset + 2);
     const size4: number = BlobUtil.dataViewToNum(dataView, offset + 3);
-    return (size1 << 24) | (size2 << 16) | (size3 << 8) | size4;
+    const i: number = big ? 8 : 7;
+    return (size1 << (i * 3)) | (size2 << (i * 2)) | (size3 << i) | size4;
   }
 
   private static dataViewToAPIC(dataView: DataView, offset: number, frameSize: number): APICFrame {
