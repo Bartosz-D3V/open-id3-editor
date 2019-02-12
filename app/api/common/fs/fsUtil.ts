@@ -34,8 +34,6 @@ export default class FsUtil {
       const data: Buffer = await util.promisify(fs.readFile)(path);
       const stats: Stats = await util.promisify(fs.stat)(path);
       const newData = data.slice(length, stats.size);
-      console.log('LENGTH TO REMOVE: ' + length);
-      console.log('FILE SIZE: ' + stats.size);
       await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;
