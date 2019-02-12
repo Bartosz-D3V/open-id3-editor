@@ -60,4 +60,50 @@ describe('ID3V2Reader', () => {
       expect(apic.data.rawData.length).toEqual(13932085);
     });
   });
+
+  describe('readFrame size', () => {
+    let mockView: DataView;
+
+    beforeEach(() => {
+      mockView = new DataView(new ArrayBuffer(5));
+    });
+
+    it('should convert DataView to encoded number', () => {
+      mockView.setUint8(0, 1);
+      mockView.setUint8(1, 10);
+      mockView.setUint8(2, 20);
+      mockView.setUint8(3, 30);
+
+      expect(ID3V2Reader.readFrameSize(mockView)).toEqual(17437726);
+    });
+
+    it('should convert DataView to encoded number with smaller multiplier', () => {
+      mockView.setUint8(0, 1);
+      mockView.setUint8(1, 10);
+      mockView.setUint8(2, 20);
+      mockView.setUint8(3, 30);
+
+      expect(ID3V2Reader.readFrameSize(mockView, 0, false)).toEqual(2263582);
+    });
+
+    it('should convert DataView to encoded number starting with custom offset', () => {
+      mockView.setUint8(0, 1);
+      mockView.setUint8(1, 10);
+      mockView.setUint8(2, 20);
+      mockView.setUint8(3, 30);
+      mockView.setUint8(4, 40);
+
+      expect(ID3V2Reader.readFrameSize(mockView, 1)).toEqual(169090600);
+    });
+
+    it('should convert DataView to encoded number starting with custom offset and smaller multiplier', () => {
+      mockView.setUint8(0, 1);
+      mockView.setUint8(1, 10);
+      mockView.setUint8(2, 20);
+      mockView.setUint8(3, 30);
+      mockView.setUint8(4, 40);
+
+      expect(ID3V2Reader.readFrameSize(mockView, 1, false)).toEqual(21303080);
+    });
+  });
 });
