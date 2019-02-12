@@ -1,6 +1,5 @@
 import BufferUtil from '@api/common/buffer/bufferUtil';
 import BlobUtil from '@api/common/blob/blobUtil';
-import Genre from '@api/id3/domain/genre';
 import ID3V23 from '../domain/2.3/id3v2';
 import ID3V23Frame from '../domain/2.3/id3v2Frame';
 import ID3V23HeaderFlags from '../domain/2.3/id3v2HeaderFlags';

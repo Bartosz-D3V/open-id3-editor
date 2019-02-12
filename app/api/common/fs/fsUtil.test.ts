@@ -30,9 +30,9 @@ describe('fsUtil class', () => {
   describe('writeToFile function', () => {
     const mockData: DataView = new DataView(new ArrayBuffer(2));
 
-    it('should append a file', () => {
-      spyOn(fs, 'appendFile');
-      FsUtil.writeToFile(mockPath, mockData);
+    it('should append a file', async () => {
+      spyOn(fs, 'appendFile').and.callFake((...args) => args[2]());
+      await FsUtil.writeToFile(mockPath, mockData);
 
       expect(fs.appendFile).toHaveBeenCalled();
     });

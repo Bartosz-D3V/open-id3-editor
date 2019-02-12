@@ -32,7 +32,10 @@ export default class FsUtil {
   public static deleteFromBeginning = async (path: string, length: number): Promise<void> => {
     try {
       const data: Buffer = await util.promisify(fs.readFile)(path);
-      const newData = data.slice(0, length);
+      const stats: Stats = await util.promisify(fs.stat)(path);
+      const newData = data.slice(length, stats.size);
+      console.log('LENGTH TO REMOVE: ' + length);
+      console.log('FILE SIZE: ' + stats.size);
       await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;
