@@ -33,7 +33,7 @@ export default class FsUtil {
     try {
       const data: Buffer = await util.promisify(fs.readFile)(path);
       const stats: Stats = await util.promisify(fs.stat)(path);
-      const newData = data.slice(length, stats.size);
+      const newData: Buffer = data.slice(length, stats.size);
       await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;

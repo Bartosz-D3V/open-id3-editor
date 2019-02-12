@@ -96,7 +96,7 @@ describe('ID3V2Reader', () => {
       expect(ID3V2Reader.readFrameSize(mockView, 1)).toEqual(169090600);
     });
 
-    it('should convert DataView to encoded number starting with custom offset and smaller multiplier', () => {
+    it('should convert DataView to encoded number with custom offset & smaller multiplier', () => {
       mockView.setUint8(0, 1);
       mockView.setUint8(1, 10);
       mockView.setUint8(2, 20);
