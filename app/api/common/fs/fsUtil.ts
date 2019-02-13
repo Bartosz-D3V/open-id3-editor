@@ -12,8 +12,9 @@ export default class FsUtil {
 
   public static writeToFile = async (path: string, data: DataView): Promise<void> => {
     try {
-      const buffer = Buffer.from(data.buffer);
-      await util.promisify(fs.appendFile)(path, buffer);
+      const fileData: Buffer = await util.promisify(fs.readFile)(path);
+      const newData: Buffer = Buffer.concat([new Buffer(data.buffer), fileData]);
+      await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;
     }
