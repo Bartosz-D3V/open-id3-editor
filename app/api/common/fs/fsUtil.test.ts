@@ -32,14 +32,16 @@ describe('fsUtil class', () => {
     const mockData: DataView = new DataView(new ArrayBuffer(2));
 
     it('should append a file', async () => {
-      spyOn(fs, 'appendFile').and.callFake((...args) => args[2]());
+      spyOn(fs, 'writeFile').and.callFake((...args) => args[2]());
+      const data: Buffer = await util.promisify(fs.readFile)(mockPath);
+      const newData: Buffer = Buffer.concat([new Buffer(mockData.buffer), data]);
       await FsUtil.writeToFile(mockPath, mockData);
 
-      expect(fs.appendFile).toHaveBeenCalled();
+      expect(fs.writeFile).toHaveBeenCalledWith(mockPath, newData, expect.any(Function));
     });
 
     it('should re-throw error in case of error', async () => {
-      spyOn(fs, 'appendFile').and.throwError('ERR');
+      spyOn(fs, 'writeFile').and.throwError('ERR');
       let err;
       try {
         await FsUtil.writeToFile(mockPath, mockData);
@@ -54,9 +56,10 @@ describe('fsUtil class', () => {
   describe('truncate function', () => {
     it('should truncate a file', async () => {
       spyOn(fs, 'truncate').and.callFake((...args) => args[2]());
+      const data: Buffer = await util.promisify(fs.readFile)(mockPath);
       await FsUtil.truncate(mockPath, 2);
 
-      expect(fs.truncate).toHaveBeenCalled();
+      expect(fs.truncate).toHaveBeenCalledWith(mockPath, data.byteLength - 2, expect.any(Function));
     });
 
     it('should re-throw error in case of error', async () => {
@@ -80,7 +83,6 @@ describe('fsUtil class', () => {
       const newData = data.slice(20, stats.size);
       await FsUtil.deleteFromBeginning(mockPath, 20);
 
-      expect(fs.writeFile).toHaveBeenCalled();
       expect(fs.writeFile).toHaveBeenCalledWith(mockPath, newData, expect.any(Function));
     });
 
