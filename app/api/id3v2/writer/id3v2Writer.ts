@@ -16,6 +16,7 @@ export default class Id3v2Writer {
 
     const bodyView: Array<DataView> = [];
     for (let i = 0; i < body.length; i++) {
+      if (!body[i].data) continue;
       bodyView.push(Id3v2Writer.writeV23Frame(body[i]));
     }
     return BlobUtil.concatDataViews(tag, version, flags, size, ...bodyView);
@@ -37,7 +38,7 @@ export default class Id3v2Writer {
 
   private static writeV23Frame(frame: ID3V23Frame): DataView {
     const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
-    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.size);
+    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frame.data.length);
     const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
     const data: DataView = new DataView(BufferUtil.createArrayBuffer(frame.data));
     return BlobUtil.concatDataViews(frameId, frameSize, frameFlags, data);
