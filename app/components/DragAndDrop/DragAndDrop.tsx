@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { Upload, Icon, message } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
-import { UploadFile } from 'antd/lib/upload/interface';
+import { UploadFile, RcFile } from 'antd/lib/upload/interface';
 import { IDragAndDropProps } from './IDragAndDropProps';
 
 const Dragger = Upload.Dragger;
@@ -15,6 +15,38 @@ class DragAndDrop extends Component<IDragAndDropProps> {
   constructor(props: IDragAndDropProps) {
     super(props);
     this.onDrop = this.onDrop.bind(this);
+    this.validateFormat = this.validateFormat.bind(this);
+  }
+
+  public render(): JSX.Element {
+    return (
+      <DraggerWrapper>
+        <Dragger
+          multiple
+          showUploadList={false}
+          onChange={this.onDrop}
+          beforeUpload={this.validateFormat}
+        >
+          <p className="ant-upload-drag-icon">
+            <Icon type="inbox" />
+          </p>
+          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        </Dragger>
+      </DraggerWrapper>
+    );
+  }
+
+  public validateFormat(file: RcFile, files: Array<RcFile>): any {
+    console.log(files);
+    const onlyMP3s = DragAndDrop.onlyMP3s(files);
+    if (!onlyMP3s) {
+      message.error('Please provide MP3 file.');
+    }
+    return onlyMP3s;
+  }
+
+  private static onlyMP3s(files: Array<File>): boolean {
+    return files.filter(v => v.type === 'audio/mp3').length === files.length;
   }
 
   public onDrop(info: UploadChangeParam): void {
@@ -26,19 +58,6 @@ class DragAndDrop extends Component<IDragAndDropProps> {
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
-  }
-
-  public render(): JSX.Element {
-    return (
-      <DraggerWrapper>
-        <Dragger multiple showUploadList={false} onChange={this.onDrop}>
-          <p className="ant-upload-drag-icon">
-            <Icon type="inbox" />
-          </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        </Dragger>
-      </DraggerWrapper>
-    );
   }
 }
 export default withRouter(DragAndDrop);
