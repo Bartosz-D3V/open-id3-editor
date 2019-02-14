@@ -8,6 +8,7 @@ import BlobUtil from '@api/common/blob/blobUtil';
 import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 import { ISingleUploadState } from './ISingleUploadState';
 import { ISingleUploadProps } from './ISingleUploadProps';
+import FsUtil from '@api/common/fs/fsUtil';
 
 const ImgWrapper = styled.img`
   height: 100%;
@@ -70,8 +71,12 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
     });
   };
 
-  private readonly handleChange = (params: UploadChangeParam): void =>
+  private readonly handleChange = (params: UploadChangeParam): void => {
     this.setState({ fileList: params.fileList });
+    const { onImageChange } = this.props;
+    if (!params.file) return;
+    onImageChange(params.file.originFileObj);
+  };
 
   private readonly handleCancel = () => this.setState({ previewVisible: false });
 }

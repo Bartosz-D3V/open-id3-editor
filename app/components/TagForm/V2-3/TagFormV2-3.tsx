@@ -11,6 +11,7 @@ import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
 import ID3V2Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V2FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import Genre from '@api/id3/domain/genre';
 import { genres } from '@api/id3/domain/genres';
@@ -31,6 +32,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     this.getFrame = this.getFrame.bind(this);
     this.setFrame = this.setFrame.bind(this);
     this.onGenreInputChange = this.onGenreInputChange.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV23Props>): Promise<void> {
@@ -164,7 +166,10 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
           </Col>
           <Col {...twoInRow}>
             <Form.Item label={FrameID.APIC}>
-              <SingleUpload apicFrame={this.getFrame('APIC').data} />
+              <SingleUpload
+                apicFrame={this.getFrame('APIC').data}
+                onImageChange={this.onImageChange}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -213,6 +218,25 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     this.setState({ id3: ID3Util.updateFrame(id3, frame) });
     return frame;
   }
+
+  private readonly onImageChange = async (value: File): Promise<ID3V2Frame> => {
+    const { id3 } = this.state;
+    const frame: ID3V2Frame = ID3Util.findFrame(id3, 'APIC');
+    if (value) {
+      const file: Buffer = await FsUtil.readFile(value.path);
+      const rawImg: string = BlobUtil.dataViewToRawString(
+        new DataView(file.buffer),
+        0,
+        file.length
+      );
+      const apic: APICFrame = new APICFrame(0, value.type, 3, '', rawImg);
+      frame.size = rawImg.length;
+      frame.data = apic;
+    } else {
+      frame.data = null;
+    }
+    return frame;
+  };
 
   private async saveFile(): Promise<void> {
     const {
