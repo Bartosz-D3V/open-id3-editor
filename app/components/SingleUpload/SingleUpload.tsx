@@ -8,7 +8,6 @@ import BlobUtil from '@api/common/blob/blobUtil';
 import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 import { ISingleUploadState } from './ISingleUploadState';
 import { ISingleUploadProps } from './ISingleUploadProps';
-import FsUtil from '@api/common/fs/fsUtil';
 
 const ImgWrapper = styled.img`
   height: 100%;
@@ -41,7 +40,11 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
   public componentWillReceiveProps(nextProps: Readonly<ISingleUploadProps>): void {
     const { apicFrame } = nextProps;
     const { fileList } = this.state;
-    fileList[0] = SingleUpload.buildUploadFile(apicFrame);
+    if (apicFrame) {
+      fileList[0] = SingleUpload.buildUploadFile(apicFrame);
+    } else {
+      fileList.length = 0;
+    }
     this.setState({ fileList });
   }
 

@@ -17,18 +17,15 @@ export default class BufferUtil {
     for (let i = 0, strLen = text.length; i < strLen; i++) {
       bufView[i] = text.charCodeAt(i);
     }
+    bufView.fill(0x00, text.length, bufferSize);
     return buffer;
   }
 
   private static createArrayBufferFromNum(num: number, bufferSize?: number): ArrayBuffer {
-    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || 8);
+    const buffer: ArrayBuffer = new ArrayBuffer(bufferSize || 1);
     const bufView: Uint8Array = new Uint8Array(buffer);
-    let tmpNum = num;
-    for (let i = 0; i < bufView.length; i++) {
-      const byte = tmpNum & 0xff;
-      bufView[i] = byte;
-      tmpNum = (num - byte) / 256;
-    }
+    bufView[0] = num;
+    bufView.fill(0x00, 1, bufferSize);
     return buffer;
   }
 
@@ -39,6 +36,7 @@ export default class BufferUtil {
     for (let i = 0, strLen = charBool.length; i < strLen; i++) {
       bufView[i] = charBool.charCodeAt(i);
     }
+    bufView.fill(0x00, 1, bufferSize);
     return buffer;
   }
 

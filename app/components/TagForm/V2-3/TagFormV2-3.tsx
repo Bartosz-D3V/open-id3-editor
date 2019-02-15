@@ -235,6 +235,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     } else {
       frame.data = null;
     }
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
     return frame;
   };
 
