@@ -28,6 +28,32 @@ describe('BufferUtil class', () => {
       expect(actualData).toBeDefined();
       expect(actualNumber).toEqual(100);
     });
+
+    it('should create array buffer from number', () => {
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(0))[0]).toEqual(0);
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(0)).length).toEqual(1);
+
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(42))[0]).toEqual(42);
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(42)).length).toEqual(1);
+
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(70))[0]).toEqual(70);
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(70)).length).toEqual(1);
+
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(100))[0]).toEqual(100);
+      expect(new Uint8Array(BufferUtil.createArrayBuffer(100)).length).toEqual(1);
+    });
+
+    it('should create array buffer from number and fill to specified length', () => {
+      const actualVal: Uint8Array = new Uint8Array(BufferUtil.createArrayBuffer(42, 5));
+
+      expect(actualVal).toBeDefined();
+      expect(actualVal.byteLength).toEqual(5);
+      expect(actualVal[0]).toEqual(42);
+      expect(actualVal[1]).toEqual(0x00);
+      expect(actualVal[2]).toEqual(0x00);
+      expect(actualVal[3]).toEqual(0x00);
+      expect(actualVal[4]).toEqual(0x00);
+    });
   });
 
   describe('decodeArrayBuffer function', () => {

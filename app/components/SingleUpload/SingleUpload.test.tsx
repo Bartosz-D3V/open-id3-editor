@@ -10,7 +10,7 @@ describe('SingleUpload component', () => {
   const mockFrame: APICFrame = new APICFrame(0, 'image/jpeg', 3, null, 'BINARY_DATA');
 
   beforeEach(() => {
-    wrapper = mount(<SingleUpload apicFrame={mockFrame} />);
+    wrapper = mount(<SingleUpload apicFrame={mockFrame} onImageChange={jest.fn()} />);
   });
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('SingleUpload component', () => {
   });
 
   it('should render Upload button if fileList is empty', () => {
-    wrapper = mount(<SingleUpload apicFrame={null} />);
+    wrapper = mount(<SingleUpload apicFrame={null} onImageChange={jest.fn()} />);
 
     expect(wrapper.find('UploadButton')).toBeTruthy();
   });

@@ -39,7 +39,7 @@ export default class ID3Util {
 
   public static deleteID3V23 = async (electronFile: any, length: number): Promise<ID3V23> => {
     await ID3Util.truncateID3V2(electronFile, length);
-    return new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+    return new ID3V23(new ID3V23Header(3, new ID3V23HeaderFlags(), 0), []);
   };
 
   private static truncateID3V2 = async (electronFile: any, length: number): Promise<void> => {
