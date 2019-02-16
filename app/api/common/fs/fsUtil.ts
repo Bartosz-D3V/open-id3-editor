@@ -13,7 +13,7 @@ export default class FsUtil {
   public static writeToFile = async (path: string, data: DataView): Promise<void> => {
     try {
       const fileData: Buffer = await util.promisify(fs.readFile)(path);
-      const newData: Buffer = Buffer.concat([new Buffer(data.buffer), fileData]);
+      const newData: Buffer = Buffer.concat([Buffer.from(data.buffer), fileData]);
       await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;

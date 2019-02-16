@@ -34,7 +34,7 @@ describe('fsUtil class', () => {
     it('should append a file', async () => {
       spyOn(fs, 'writeFile').and.callFake((...args) => args[2]());
       const data: Buffer = await util.promisify(fs.readFile)(mockPath);
-      const newData: Buffer = Buffer.concat([new Buffer(mockData.buffer), data]);
+      const newData: Buffer = Buffer.concat([Buffer.from(mockData.buffer), data]);
       await FsUtil.writeToFile(mockPath, mockData);
 
       expect(fs.writeFile).toHaveBeenCalledWith(mockPath, newData, expect.any(Function));

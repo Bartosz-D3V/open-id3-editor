@@ -32,7 +32,7 @@ describe('ID3V2Writer', () => {
       );
       const body: Array<ID3V23Frame> = [frame1, frame2, frame3];
       const id3Header: ID3V23Header = new ID3V23Header(
-        '23',
+        3,
         new ID3V23HeaderFlags(),
         ID3V2Writer.calcV2HeaderSize(body, 4)
       );
@@ -42,7 +42,7 @@ describe('ID3V2Writer', () => {
 
       expect(id31.header.tagId).toEqual('ID3');
       expect(id31.header.size).toEqual(57);
-      expect(id31.header.version).toEqual('23');
+      expect(id31.header.version).toEqual(3);
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
       expect(id31.header.flags.experimental).toBeFalsy();
       expect(id31.header.flags.extendedHeader).toBeFalsy();

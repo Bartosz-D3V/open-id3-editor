@@ -26,7 +26,7 @@ const Option = Select.Option;
 export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
   constructor(props: ITagFormV23Props) {
     super(props);
-    this.state = { id3: new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 0), []) };
+    this.state = { id3: new ID3V2(new ID3V2Header(3, new ID3V2HeaderFlags(), 0), []) };
     this.saveFile = this.saveFile.bind(this);
     this.deleteTag = this.deleteTag.bind(this);
     this.getFrame = this.getFrame.bind(this);
@@ -184,7 +184,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     if (ID3Util.hasID3V2(dataView)) {
       id3 = ID3Reader.readID3V23(dataView);
     } else {
-      id3 = new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 10), []);
+      id3 = new ID3V2(new ID3V2Header(3, new ID3V2HeaderFlags(), 10), []);
     }
     return id3;
   }
