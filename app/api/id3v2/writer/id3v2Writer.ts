@@ -26,13 +26,13 @@ export default class Id3v2Writer {
   private static writeV23HeaderFlags(flags: ID3V23HeaderFlags): DataView {
     let dataView: DataView = new DataView(new ArrayBuffer(1));
     if (flags.unsynchronisation) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 8);
+      dataView = BufferUtil.setBitAt(dataView, 0, 2);
     }
     if (flags.extendedHeader) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 7);
+      dataView = BufferUtil.setBitAt(dataView, 0, 1);
     }
     if (flags.experimental) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 6);
+      dataView = BufferUtil.setBitAt(dataView, 0, 0);
     }
     return dataView;
   }
@@ -40,13 +40,19 @@ export default class Id3v2Writer {
   private static writeV23Frame(frame: ID3V23Frame): DataView {
     const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
     const frameLength: number = Id3v2Writer.getFrameLength(frame);
-    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frameLength);
+    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frameLength + 1);
     const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
-    const data: DataView =
-      frame.frameID === 'APIC'
-        ? Id3v2Writer.writeV23APICFrame(frame.data)
-        : new DataView(BufferUtil.createArrayBuffer(frame.data));
-    return BlobUtil.concatDataViews(frameId, frameSize, frameFlags, data);
+    const isAPIC: boolean = frame.frameID === 'APIC';
+    const data: DataView = isAPIC
+      ? Id3v2Writer.writeV23APICFrame(frame.data)
+      : new DataView(BufferUtil.createArrayBuffer(frame.data));
+    const encoding: DataView = new DataView(BufferUtil.createArrayBuffer(0));
+    return BlobUtil.concatDataViews(
+      frameId,
+      frameSize,
+      frameFlags,
+      isAPIC ? data : BlobUtil.concatDataViews(encoding, data)
+    );
   }
 
   private static getFrameLength(frame: ID3V23Frame): number {
@@ -73,22 +79,22 @@ export default class Id3v2Writer {
   private static writeV23FrameFlags(flags: ID3V23FrameFlags): DataView {
     let dataView: DataView = new DataView(new ArrayBuffer(2));
     if (flags.tagAlter) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 8);
+      dataView = BufferUtil.setBitAt(dataView, 0, 2);
     }
     if (flags.fileAlter) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 7);
+      dataView = BufferUtil.setBitAt(dataView, 0, 1);
     }
     if (flags.readonly) {
-      dataView = BufferUtil.setBitAt(dataView, 0, 6);
+      dataView = BufferUtil.setBitAt(dataView, 0, 0);
     }
     if (flags.compression) {
-      dataView = BufferUtil.setBitAt(dataView, 1, 8);
+      dataView = BufferUtil.setBitAt(dataView, 1, 2);
     }
     if (flags.encryption) {
-      dataView = BufferUtil.setBitAt(dataView, 1, 7);
+      dataView = BufferUtil.setBitAt(dataView, 1, 1);
     }
     if (flags.groupingEntity) {
-      dataView = BufferUtil.setBitAt(dataView, 1, 6);
+      dataView = BufferUtil.setBitAt(dataView, 1, 0);
     }
     return dataView;
   }
