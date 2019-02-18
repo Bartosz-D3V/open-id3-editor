@@ -167,7 +167,7 @@ export class TagFormV11 extends Component<ITagFormV11Props, ITagFormV11State> {
     const { id3 } = this.state;
     const electronFile: File = originFileObj;
     await Id3Util.deleteID3V11(originFileObj);
-    await FsUtil.writeToFile(electronFile.path, ID3Writer.convertID3V11ToDataView(id3));
+    await FsUtil.appentToFile(electronFile.path, ID3Writer.convertID3V11ToDataView(id3));
     ComponentUtil.openNotification('Tag has been saved');
   }
 
