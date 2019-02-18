@@ -31,7 +31,7 @@ describe('fsUtil class', () => {
   describe('writeToFile function', () => {
     const mockData: DataView = new DataView(new ArrayBuffer(2));
 
-    it('should append a file', async () => {
+    it('should append a file by writing data at the beginning', async () => {
       spyOn(fs, 'writeFile').and.callFake((...args) => args[2]());
       const data: Buffer = await util.promisify(fs.readFile)(mockPath);
       const newData: Buffer = Buffer.concat([Buffer.from(mockData.buffer), data]);
@@ -45,6 +45,30 @@ describe('fsUtil class', () => {
       let err;
       try {
         await FsUtil.writeToFile(mockPath, mockData);
+      } catch (e) {
+        err = e;
+      }
+
+      expect(err).toEqual(new Error('ERR'));
+    });
+  });
+
+  describe('appendToFile function', () => {
+    const buff: ArrayBuffer = new ArrayBuffer(2);
+    const mockData: DataView = new DataView(buff);
+
+    it('should append a file by writing data in the end', async () => {
+      spyOn(fs, 'appendFile').and.callFake((...args) => args[2]());
+      await FsUtil.appentToFile(mockPath, mockData);
+
+      expect(fs.appendFile).toHaveBeenCalledWith(mockPath, Buffer.from(buff), expect.any(Function));
+    });
+
+    it('should re-throw error in case of error', async () => {
+      spyOn(fs, 'writeFile').and.throwError('ERR');
+      let err;
+      try {
+        await FsUtil.appentToFile(mockPath, mockData);
       } catch (e) {
         err = e;
       }
