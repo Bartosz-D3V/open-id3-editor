@@ -232,7 +232,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
         file.length
       );
       const apic: APICFrame = new APICFrame(0, value.type, 3, '', rawImg);
-      frame.size = rawImg.length;
+      frame.size = file.byteLength + value.type.length + 3;
       frame.data = apic;
     } else {
       frame.data = null;

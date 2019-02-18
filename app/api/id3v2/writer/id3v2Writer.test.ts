@@ -41,7 +41,7 @@ describe('ID3V2Writer', () => {
       const id31: ID3V23 = ID3V2Reader.readID3V23(dataView);
 
       expect(id31.header.tagId).toEqual('ID3');
-      expect(id31.header.size).toEqual(57);
+      expect(id31.header.size).toEqual(60);
       expect(id31.header.version).toEqual(3);
       expect(id31.header.flags.unsynchronisation).toBeFalsy();
       expect(id31.header.flags.experimental).toBeFalsy();
@@ -106,6 +106,6 @@ describe('ID3V2Writer', () => {
     const frame2: ID3V23Frame = new ID3V23Frame('XYZ', new ID3V23FrameFlags(), 'Test', 4);
     const frame3: ID3V23Frame = new ID3V23Frame('ZYX', new ID3V23FrameFlags(), 'Test', 4);
 
-    expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(40);
+    expect(ID3V2Writer.calcV2HeaderSize([frame1, frame2, frame3], 3)).toEqual(43);
   });
 });

@@ -117,6 +117,6 @@ export default class Id3v2Writer {
 
   public static calcV2HeaderSize = (frames: Array<ID3V23Frame>, frameSize: number): number =>
     frames
-      .map(value => value.size + frameSize + 3)
+      .map(value => value.size + frameSize + 4)
       .reduce((previousValue, currentValue) => previousValue + currentValue) + 10;
 }
