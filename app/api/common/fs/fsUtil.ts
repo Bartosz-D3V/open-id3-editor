@@ -20,6 +20,15 @@ export default class FsUtil {
     }
   };
 
+  public static appentToFile = async (path: string, data: DataView): Promise<void> => {
+    try {
+      const buffer = Buffer.from(data.buffer);
+      await util.promisify(fs.appendFile)(path, buffer);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   public static truncate = async (path: string, length: number): Promise<void> => {
     try {
       const stats: Stats = await util.promisify(fs.stat)(path);

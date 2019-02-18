@@ -39,10 +39,10 @@ export default class Id3v2Writer {
 
   private static writeV23Frame(frame: ID3V23Frame): DataView {
     const frameId: DataView = new DataView(BufferUtil.createArrayBuffer(frame.frameID));
-    const frameLength: number = Id3v2Writer.getFrameLength(frame);
-    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frameLength + 1);
-    const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
     const isAPIC: boolean = frame.frameID === 'APIC';
+    const frameLength: number = Id3v2Writer.getFrameLength(frame);
+    const frameSize: DataView = Id3v2Writer.encodeFrameSize(frameLength + (!isAPIC ? 1 : 0));
+    const frameFlags: DataView = Id3v2Writer.writeV23FrameFlags(frame.flags);
     const data: DataView = isAPIC
       ? Id3v2Writer.writeV23APICFrame(frame.data)
       : new DataView(BufferUtil.createArrayBuffer(frame.data));
