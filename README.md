@@ -6,7 +6,7 @@ Minimalistic app to edit ID3 (MP3 metadata) tags.
 </br>
 
 <a href="https://opensource.org/licenses/MIT">
-  <img alt="license: MIT" src="https://opensource.org/licenses/MIT">
+  <img alt="license: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg">
 </a>
 <a href="https://travis-ci.com/Bartosz-D3V/open-id3-editor">
   <img alt="ci status" src="https://travis-ci.com/Bartosz-D3V/open-id3-editor.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master">
@@ -20,7 +20,7 @@ Minimalistic app to edit ID3 (MP3 metadata) tags.
 </br>
 </br>
 
-<img src="showcase/saving-id3.gif" width="607" height="290"/>
+<img src="showcase/saving-id3.gif" width="607" height="456"/>
 </p>
 
 ## About
