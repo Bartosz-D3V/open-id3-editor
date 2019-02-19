@@ -24,6 +24,10 @@ script:
   - yarn test
   - yarn build:prod
 
+after_success:
+  - yarn global add codecov
+  - codecov -t $CODECOV_TOKEN
+
 notifications:
   email:
     on_success: never

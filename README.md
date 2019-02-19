@@ -11,6 +11,9 @@ Minimalistic app to edit ID3 (MP3 metadata) tags.
 <a href="https://travis-ci.com/Bartosz-D3V/open-id3-editor">
   <img alt="ci status" src="https://travis-ci.com/Bartosz-D3V/open-id3-editor.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master">
 </a>
+<a href="https://codecov.io/gh/Bartosz-D3V/open-id3-editor">
+  <img src="https://codecov.io/gh/Bartosz-D3V/open-id3-editor/branch/master/graph/badge.svg" />
+</a>
 <a href="https://github.com/prettier/prettier">
   <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
 </a>
