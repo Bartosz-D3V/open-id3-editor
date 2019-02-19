@@ -12,6 +12,16 @@ export default class FsUtil {
 
   public static writeToFile = async (path: string, data: DataView): Promise<void> => {
     try {
+      const fileData: Buffer = await util.promisify(fs.readFile)(path);
+      const newData: Buffer = Buffer.concat([Buffer.from(data.buffer), fileData]);
+      await util.promisify(fs.writeFile)(path, newData);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public static appentToFile = async (path: string, data: DataView): Promise<void> => {
+    try {
       const buffer = Buffer.from(data.buffer);
       await util.promisify(fs.appendFile)(path, buffer);
     } catch (error) {
@@ -32,8 +42,7 @@ export default class FsUtil {
   public static deleteFromBeginning = async (path: string, length: number): Promise<void> => {
     try {
       const data: Buffer = await util.promisify(fs.readFile)(path);
-      const stats: Stats = await util.promisify(fs.stat)(path);
-      const newData: Buffer = data.slice(length, stats.size);
+      const newData: Buffer = data.slice(length, data.byteLength);
       await util.promisify(fs.writeFile)(path, newData);
     } catch (error) {
       throw error;

@@ -19,7 +19,7 @@ describe('TagFormV2-3 component', () => {
     name: 'Mock_Track_1',
     type: 'blob/mp3',
   };
-  const id3Header: ID3V2Header = new ID3V2Header('23', new ID3V2HeaderFlags(), 100);
+  const id3Header: ID3V2Header = new ID3V2Header(3, new ID3V2HeaderFlags(), 100);
   const talb: ID3V2Frame = new ID3V2Frame('TALB', new ID3V2FrameFlags(), 'Some title', 10);
   const tpe1: ID3V2Frame = new ID3V2Frame('TPE1', new ID3V2FrameFlags(), 'Soloist', 7);
   const tpe2: ID3V2Frame = new ID3V2Frame('TPE2', new ID3V2FrameFlags(), 'Band', 4);

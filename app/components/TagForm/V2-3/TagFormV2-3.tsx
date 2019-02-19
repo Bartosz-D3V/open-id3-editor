@@ -11,6 +11,7 @@ import ID3V2Header from '@api/id3v2/domain/2.3/id3v2Header';
 import ID3V2HeaderFlags from '@api/id3v2/domain/2.3/id3v2HeaderFlags';
 import ID3V2Frame from '@api/id3v2/domain/2.3/id3v2Frame';
 import ID3V2FrameFlags from '@api/id3v2/domain/2.3/id3v2FrameFlags';
+import APICFrame from '@api/id3v2/domain/2.3/apicFrame';
 import { FrameID } from '@api/id3v2/domain/2.3/frameID';
 import Genre from '@api/id3/domain/genre';
 import { genres } from '@api/id3/domain/genres';
@@ -25,12 +26,13 @@ const Option = Select.Option;
 export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
   constructor(props: ITagFormV23Props) {
     super(props);
-    this.state = { id3: new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 0), []) };
+    this.state = { id3: new ID3V2(new ID3V2Header(3, new ID3V2HeaderFlags(), 0), []) };
     this.saveFile = this.saveFile.bind(this);
     this.deleteTag = this.deleteTag.bind(this);
     this.getFrame = this.getFrame.bind(this);
     this.setFrame = this.setFrame.bind(this);
     this.onGenreInputChange = this.onGenreInputChange.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
   }
 
   public async componentWillReceiveProps(nextProps: Readonly<ITagFormV23Props>): Promise<void> {
@@ -113,7 +115,9 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
                 onChange={this.onGenreInputChange}
               >
                 {genres.map((genre: Genre) => (
-                  <Option key={genre.index.toString(10)}>{genre.description}</Option>
+                  <Option key={genre.index.toString(10)} value={genre.description}>
+                    {genre.description}
+                  </Option>
                 ))}
               </AutoComplete>
             </Form.Item>
@@ -164,7 +168,10 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
           </Col>
           <Col {...twoInRow}>
             <Form.Item label={FrameID.APIC}>
-              <SingleUpload apicFrame={this.getFrame('APIC').data} />
+              <SingleUpload
+                apicFrame={this.getFrame('APIC').data}
+                onImageChange={this.onImageChange}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -179,7 +186,7 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     if (ID3Util.hasID3V2(dataView)) {
       id3 = ID3Reader.readID3V23(dataView);
     } else {
-      id3 = new ID3V2(new ID3V2Header('23', new ID3V2HeaderFlags(), 10), []);
+      id3 = new ID3V2(new ID3V2Header(3, new ID3V2HeaderFlags(), 10), []);
     }
     return id3;
   }
@@ -213,6 +220,26 @@ export class TagFormV23 extends Component<ITagFormV23Props, ITagFormV23State> {
     this.setState({ id3: ID3Util.updateFrame(id3, frame) });
     return frame;
   }
+
+  private readonly onImageChange = async (value: File): Promise<ID3V2Frame> => {
+    const { id3 } = this.state;
+    const frame: ID3V2Frame = ID3Util.findFrame(id3, 'APIC');
+    if (value) {
+      const file: Buffer = await FsUtil.readFile(value.path);
+      const rawImg: string = BlobUtil.dataViewToRawString(
+        new DataView(file.buffer),
+        0,
+        file.length
+      );
+      const apic: APICFrame = new APICFrame(0, value.type, 3, '', rawImg);
+      frame.size = file.byteLength + value.type.length + 3;
+      frame.data = apic;
+    } else {
+      frame.data = null;
+    }
+    this.setState({ id3: ID3Util.updateFrame(id3, frame) });
+    return frame;
+  };
 
   private async saveFile(): Promise<void> {
     const {

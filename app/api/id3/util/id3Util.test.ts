@@ -99,7 +99,7 @@ describe('mp3Util', () => {
   });
 
   describe('deleteID3V23 function', () => {
-    const emptyID3V2: ID3V23 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+    const emptyID3V2: ID3V23 = new ID3V23(new ID3V23Header(3, new ID3V23HeaderFlags(), 0), []);
 
     beforeEach(() => {
       spyOn(BlobUtil, 'blobToDataView');
@@ -143,7 +143,7 @@ describe('mp3Util', () => {
     let id3: ID3V23;
 
     beforeEach(() => {
-      id3 = new ID3V23(new ID3V23Header('23', new ID3V23HeaderFlags(), 0), []);
+      id3 = new ID3V23(new ID3V23Header(3, new ID3V23HeaderFlags(), 0), []);
     });
 
     it('should return found frame', () => {
@@ -163,7 +163,7 @@ describe('mp3Util', () => {
 
     beforeEach(() => {
       id3 = new ID3V23(
-        new ID3V23Header('23', new ID3V23HeaderFlags(), 0),
+        new ID3V23Header(3, new ID3V23HeaderFlags(), 0),
         [],
         new Id3v2ExtendedHeader(20, new ID3V23ExtendedHeaderFlags(), 1)
       );

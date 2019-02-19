@@ -40,7 +40,11 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
   public componentWillReceiveProps(nextProps: Readonly<ISingleUploadProps>): void {
     const { apicFrame } = nextProps;
     const { fileList } = this.state;
-    fileList[0] = SingleUpload.buildUploadFile(apicFrame);
+    if (apicFrame) {
+      fileList[0] = SingleUpload.buildUploadFile(apicFrame);
+    } else {
+      fileList.length = 0;
+    }
     this.setState({ fileList });
   }
 
@@ -70,8 +74,12 @@ export default class SingleUpload extends Component<ISingleUploadProps, ISingleU
     });
   };
 
-  private readonly handleChange = (params: UploadChangeParam): void =>
+  private readonly handleChange = (params: UploadChangeParam): void => {
     this.setState({ fileList: params.fileList });
+    const { onImageChange } = this.props;
+    if (!params.file) return;
+    onImageChange(params.file.originFileObj);
+  };
 
   private readonly handleCancel = () => this.setState({ previewVisible: false });
 }

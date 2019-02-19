@@ -33,7 +33,7 @@ export default class ID3V2Reader {
   }
 
   private static readHeader(dataView: DataView): ID3V2Header {
-    const version: string = BlobUtil.dataViewToString(dataView, 3, 2);
+    const version: number = BlobUtil.dataViewToNum(dataView, 3);
     const unsynchronization: boolean = BufferUtil.isBitSetAt(dataView, 5, 8);
     const extenderHeader: boolean = BufferUtil.isBitSetAt(dataView, 5, 7);
     const experimental: boolean = BufferUtil.isBitSetAt(dataView, 5, 6);
